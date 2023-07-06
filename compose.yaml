@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  frontend:
+    image: "2023-kitayama:frontend-1.0.0"
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    tty: true
+  
+  backend:
+    image: "2023-kitayama:backend-1.0.0"
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8080:3000"
+    tty: true
