@@ -3,7 +3,7 @@ import * as React from "react";
 import { Button, TypeBackground } from "@mui/material";
 
 export const Menu = () => (
-    <MainLayout>
+    <MainLayout title={"Menu"}>
         <h1>メニュー画面</h1>
         <body>
             <section>
