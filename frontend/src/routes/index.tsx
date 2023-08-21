@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "../pages/Home";
-import { Example } from "../components/Layout/Example";
+import { Example } from "../pages/Example";
 import { Menu } from "../pages/Menu";
 
 export const AppRoutes = () => {

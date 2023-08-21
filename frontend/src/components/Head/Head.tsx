@@ -1,5 +1,5 @@
 import "../../App.css";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 
 type HeadProps = {
     title: string
@@ -11,10 +11,8 @@ type HeadProps = {
  */
 export const Head = ({ title }: HeadProps) => {
     return (
-        <HelmetProvider>
-            <Helmet>
-                <title>{title}</title>
-            </Helmet>
-        </HelmetProvider>
+        <Helmet>
+            <title>{title}</title>
+        </Helmet>
     );
 }

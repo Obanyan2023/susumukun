@@ -1,5 +1,5 @@
-import { Layout } from "../../features/example/components/Layout";
-import { MainLayout } from "./MainLayout";
+import { Layout } from "../features/example/components/Layout";
+import { MainLayout } from "../components/Layout/MainLayout";
 
 export const Example = () => (
     <MainLayout title={"Example"}>
