@@ -2,7 +2,8 @@ import React from "react";
 import { Head } from "../Head/Head";
 
 type MainLayoutProps = {
-    children: React.ReactNode
+    title: string;
+    children: React.ReactNode;
 };
 
 /**
@@ -10,9 +11,9 @@ type MainLayoutProps = {
  * @param {React.ReactNode} children - 子要素
  * @returns {JSX.Element} - レイアウト
  */
-export const MainLayout = ({ children }: MainLayoutProps) => (
+export const MainLayout = ({ title, children }: MainLayoutProps) => (
     <>
-        <Head />
+        <Head title={title} />
         {children}
     </>
 );
