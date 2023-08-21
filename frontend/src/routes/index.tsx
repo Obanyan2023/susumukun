@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "../components/Layout/Home";
 import { Example } from "../components/Layout/Example";
-import { Menu } from "../components/Layout/Menu";
+import { Menu } from "../pages/Menu";
 
 
 

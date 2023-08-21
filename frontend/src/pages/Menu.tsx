@@ -1,4 +1,4 @@
-import { MainLayout } from "./MainLayout";
+import { MainLayout } from "../components/Layout/MainLayout";
 import * as React from "react";
 import { Button, Grid, TypeBackground } from "@mui/material";
 
