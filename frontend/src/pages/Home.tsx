@@ -1,4 +1,4 @@
-import { MainLayout } from "./MainLayout";
+import { MainLayout } from "../components/Layout/MainLayout";
 import {
     Button,
     Grid,
