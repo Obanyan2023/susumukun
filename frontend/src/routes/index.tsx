@@ -3,8 +3,6 @@ import { Home } from "../components/Layout/Home";
 import { Example } from "../components/Layout/Example";
 import { Menu } from "../pages/Menu";
 
-
-
 export const AppRoutes = () => {
     return (
         <BrowserRouter>
