@@ -1,4 +1,5 @@
 import Phaser from "phaser"
+import { MainLayout } from "../components/Layout/MainLayout";
 
 export const Gamewindow = () => {
     const config = {
@@ -7,4 +8,11 @@ export const Gamewindow = () => {
         height: 600,
     };
     const game = new Phaser.Game(config);
+
+    return (
+        <MainLayout title={"Gamewindow"}>
+            <h1>Gamewindow</h1>
+        </MainLayout>
+    )
+        
 }
