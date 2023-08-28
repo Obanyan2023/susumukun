@@ -13,15 +13,10 @@ export const Home = () => (
                     {"アプリ探検隊と行くフラット開発ベアー"}
                 </Typography>
             </Grid>
-            <Grid item>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    href="/menu"
-                >メニュー</Button>
-            </Grid>
-            <Grid item m={15} border={1}>
-                {"ゲーム説明"}
+            <Grid container alignItems="center" justifyContent="center" direction="column">
+                <Button variant="contained" sx={{ margin: 3 }}>ゲームスタート</Button>
+                <Button variant="outlined" sx={{ margin: 3 }}>ルール説明</Button>
+                <Button variant="outlined" sx={{ margin: 3 }}> スコア確認</Button>
             </Grid>
         </Grid>
     </MainLayout>
