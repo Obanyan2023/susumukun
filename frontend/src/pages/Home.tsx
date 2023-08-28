@@ -14,7 +14,7 @@ export const Home = () => (
                 </Typography>
             </Grid>
             <Grid container alignItems="center" justifyContent="center" direction="column">
-                <Button variant="contained" sx={{ margin: 3 }}>ゲームスタート</Button>
+                <Button href="./Gamewindow.tsx" variant="contained" sx={{ margin: 3 }}>ゲームスタート</Button>
                 <Button variant="outlined" sx={{ margin: 3 }}>ルール説明</Button>
                 <Button variant="outlined" sx={{ margin: 3 }}> スコア確認</Button>
             </Grid>
