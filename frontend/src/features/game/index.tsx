@@ -2,21 +2,30 @@ import Phaser from "phaser"
 import { useEffect } from "react";
 
 export const Game = () => {
-    const config = {
-        type: Phaser.AUTO,
-        width: 800,
-        height: 600,
-    };
+  const fullscreen = () => {
+    const isFullscreen = document.fullscreenElement;
+    if (isFullscreen) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  };
 
-    useEffect(() => {
-        const g = new Phaser.Game(config)
-        return () => {
-          g?.destroy(true)
-        }
-      }, []);
+  const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+  };
 
-    return (
-        <div></div>
-    )
-        
+  useEffect(() => {
+    const game = new Phaser.Game(config);
+    return () => {
+      game?.destroy(true)
+    }
+  }, []);
+
+  return (
+    <button onClick={fullscreen}>「 」</button>
+  )
+
 }
