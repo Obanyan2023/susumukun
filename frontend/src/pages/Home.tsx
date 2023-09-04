@@ -34,7 +34,7 @@ export const Home = () => {
                     </Typography>
                 </Grid>
                 <Grid container alignItems="center" justifyContent="center" direction="column">
-                    <Button variant="contained" sx={{ margin: 3 }}>ゲームスタート</Button>
+                    <Button variant="contained" sx={{ margin: 3 }} href="gamewindow">ゲームスタート</Button>
                     <Button variant="outlined" sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button> 
                         <Modal
                             open={open}
