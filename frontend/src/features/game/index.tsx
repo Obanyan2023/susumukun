@@ -12,8 +12,8 @@ export const Game = () => {
   };
 
   const preload = () => {
-    //game.load.image('mario', 'assets/mario_run.jpg');
-    //game.load.image('mario', 'assets/mario_stop.jpg');
+    game.load.image('mario', 'assets/mario_run.jpg');
+    game.load.image('mario', 'assets/mario_stop.jpg');
   }
   const create = () => {
   }
@@ -52,4 +52,10 @@ export const Game = () => {
     <button onClick={fullscreen}>「 」</button>
   )
 
+}
+
+Class MainScene extends Phaser.Scene {
+  constructor() {
+    super({ key: 'MainScene' });
+  }
 }
