@@ -4,6 +4,7 @@ import {
     Button,
     Grid,
     Modal,
+    Container,
     Typography
 } from "@mui/material";
 import * as React from 'react';
@@ -54,6 +55,7 @@ export const Home = () => {
                             ・アイテム：100点（隠しアイテムは点数を高くする）<br />
                             ・敵：100点～（敵が強くなるたびに加算点数を増加させるから最高得点未定！敵の数によって決める) <br />
                             </Typography>
+                            <Button onClick={handleClose}>閉じる</Button>
                         </Box>
                     </Modal>
                     <Button variant="outlined" sx={{ margin: 3 }}> スコア確認</Button>
