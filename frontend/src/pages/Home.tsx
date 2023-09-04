@@ -27,11 +27,11 @@ export const Home = () => {
     const handleClose = () => setOpen(false);
 
     return(
-        <MainLayout title={"アプリ探検隊と行くフラット開発ベアー - ようこそ！"}>
+        <MainLayout title={"走れ！すすむ君！ - ようこそ！"}>
             <Grid container alignItems={"center"} direction={"column"}>
                 <Grid item m={15}>
                     <Typography variant="h2">
-                        {"アプリ探検隊と行くフラット開発ベアー"}
+                        {"走れ！すすむ君！"}
                     </Typography>
                 </Grid>
                 <Grid container alignItems="center" justifyContent="center" direction="column">
