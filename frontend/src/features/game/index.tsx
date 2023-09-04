@@ -11,11 +11,35 @@ export const Game = () => {
     }
   };
 
+  const preload = () => {
+    //game.load.image('mario', 'assets/mario_run.jpg');
+    //game.load.image('mario', 'assets/mario_stop.jpg');
+  }
+  const create = () => {
+  }
+  const update = () => {
+  }
+
   const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    physics: {
+      default: 'matter',
+      matter: {
+        gravity: {
+          y: 9.8,
+          debug: false
+        },
+      }
+    },
+    scene: {
+      preload: preload,
+      create: create,
+      update: update,
+    }
   };
+
 
   useEffect(() => {
     const game = new Phaser.Game(config);
