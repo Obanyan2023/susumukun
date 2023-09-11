@@ -4,8 +4,9 @@ import { useEffect } from "react";
 export class Game extends Phaser.Scene{
   config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    mode: Phaser.Scale.ScaleModes.FIT,
+    width: window.innerWidth,
+    height: window.innerHeight,
     physics: {
       default: 'matter',
       matter: {
