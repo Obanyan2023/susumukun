@@ -1,7 +1,7 @@
 import Phaser from "phaser"
 import { useEffect } from "react";
 
-export default class Game extends Phaser.Scene{
+export class Game extends Phaser.Scene{
   config = {
     type: Phaser.AUTO,
     width: 800,
