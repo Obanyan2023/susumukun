@@ -1,26 +1,8 @@
 import Phaser from "phaser"
 import { useEffect } from "react";
 
-export const Game = () => {
-  const fullscreen = () => {
-    const isFullscreen = document.fullscreenElement;
-    if (isFullscreen) {
-      document.exitFullscreen();
-    } else {
-      document.documentElement.requestFullscreen();
-    }
-  };
-
-  const preload = () => {
-    game.load.image('mario', 'assets/mario_run.jpg');
-    game.load.image('mario', 'assets/mario_stop.jpg');
-  }
-  const create = () => {
-  }
-  const update = () => {
-  }
-
-  const config = {
+export default class Game extends Phaser.Scene{
+  config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
@@ -34,27 +16,26 @@ export const Game = () => {
       }
     },
     scene: {
-      preload: preload,
-      create: create,
-      update: update,
+      preload: this.preload,
+      create: this.create,
+      update: this.update
     }
-  };
+  };  
 
+  preload () {
+    this.load.image('mario', 'assets/mario_run.jpg');
+    this.load.image('mario', 'assets/mario_stop.jpg');
+  }
 
-  useEffect(() => {
-    const game = new Phaser.Game(config);
-    return () => {
-      game?.destroy(true)
-    }
-  }, []);
+  create () {
+  }
 
-  return (
-    <button onClick={fullscreen}>「 」</button>
-  )
-
+  update () {
+  }
 }
 
-Class MainScene extends Phaser.Scene {
+
+class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: 'MainScene' });
   }
