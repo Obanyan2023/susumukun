@@ -7,8 +7,13 @@ import {
     Container,
     Typography
 } from "@mui/material";
+import { url } from "inspector";
 import * as React from 'react';
-
+import Background from '../assets/images/image.jpg';
+import '../index.css'
+import { useEffect, useState } from 'react';
+ 
+ 
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -19,24 +24,60 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    borderRadius: '16px',
   };
 
+const PreImage = () => {
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    
+      return (
+        windowSize.height
+      );
+    };
+
+
+const image =  {
+    backgroundImage: `url(${Background})`,
+    backgroundSize: PreImage(),
+    backgroundRepeat: 'no-repeat',  // 画像の繰り返しを無効にする
+    backgroundPosition: 'center',  
+};
+ 
+const closebutton={
+    textAlign: "right",
+};
+
+
+ 
+const head = () => {
+    return (
+        <link href="https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Dela+Gothic+One&family=DotGothic16&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+P+One&family=Zen+Antique&family=Zen+Kurenaido&display=swap" rel="stylesheet"></link>
+    );
+};
+ 
 export const Home = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+ 
     return(
-        <MainLayout title={"走れ！すすむ君！ - ようこそ！"}>
+        <MainLayout  title={"走れ！すすむ君！ - ようこそ！"} head={head()}>
+            <Typography className="image">
+            <Box sx={image}>
             <Grid container alignItems={"center"} direction={"column"}>
                 <Grid item m={15}>
-                    <Typography variant="h2">
+                    <Typography className="mfont">
+                        <h1 style={{ fontFamily:'Mochiy Pop P One', fontSize : 40}}>
                         {"走れ！すすむ君！"}
+                        </h1>
                     </Typography>
                 </Grid>
                 <Grid container alignItems="center" justifyContent="center" direction="column">
                     <Button variant="contained" sx={{ margin: 3 }} href="gamewindow">ゲームスタート</Button>
-                    <Button variant="outlined" sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button> 
+                    <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button> 
                         <Modal
                             open={open}
                             onClose={handleClose}
@@ -55,12 +96,16 @@ export const Home = () => {
                             ・アイテム：100点（隠しアイテムは点数を高くする）<br />
                             ・敵：100点～（敵が強くなるたびに加算点数を増加させるから最高得点未定！敵の数によって決める) <br />
                             </Typography>
-                            <Button onClick={handleClose}>閉じる</Button>
+                            <Box sx={closebutton}>
+                            <Button variant="contained" onClick={handleClose}>閉じる</Button>
+                            </Box>
                         </Box>
                     </Modal>
-                    <Button variant="outlined" sx={{ margin: 3 }}> スコア確認</Button>
+                    <Button variant="contained" color='inherit' sx={{ margin: 3 }}> スコア確認</Button>
                 </Grid>
             </Grid>
+            </Box>
+            </Typography>
         </MainLayout>
     )
 }
