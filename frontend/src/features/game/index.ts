@@ -1,13 +1,20 @@
 import Phaser from "phaser"
 
-class Game extends Phaser.Scene {
+class Game extends Phaser.Scene{  
+
+  leftButton: Phaser.GameObjects.Text | null = null;
+  rightButton: Phaser.GameObjects.Text | null = null;
+  jumpButton: Phaser.GameObjects.Text | null = null;
+  player: Phaser.Physics.Arcade.Sprite | null = null;
+
   constructor() {
     super({ key: 'Game' });
   }
 
-  preload() {
-    this.load.image('mario', 'assets/mario_run.jpg');
-    this.load.image('mario', 'assets/mario_stop.jpg');
+
+  preload () {
+
+    this.load.image('susumu-front', 'images/player/susumu-front.png' );
     this.load.image('sky', 'sky.png');
     this.load.image('ground', 'platform.png');
   }
@@ -24,9 +31,14 @@ class Game extends Phaser.Scene {
     const fullscreenButton = this.add.text(window.innerWidth - 100, 50, 'FS', { fontSize: '32px' });
     fullscreenButton.setInteractive();
     fullscreenButton.on('pointerup', this.toggleFullscreen, this);
-    const leftButton = this.add.text(50, window.innerHeight - 135, '←', { fontSize: '90px' });
-    const rightButton = this.add.text(170, window.innerHeight - 135, '→', { fontSize: '90px' });
-    const jumpButton = this.add.text(window.innerWidth - 200, window.innerHeight - 120, 'Jump', { fontSize: '50px' });
+
+    this.leftButton = this.add.text(50, window.innerHeight-135, '←', { fontSize: '90px' });
+    this.rightButton = this.add.text(170, window.innerHeight-135, '→', { fontSize: '90px' });
+    this.jumpButton = this.add.text(window.innerWidth-200, window.innerHeight-120, 'Jump', { fontSize: '50px' });
+
+    this.player = this.physics.add.sprite(600, 450, 'susumu-front');
+    this.player.setCollideWorldBounds(true);
+    this.physics.add.collider(this.player,platforms)
   }
 
   toggleFullscreen() {
@@ -38,6 +50,38 @@ class Game extends Phaser.Scene {
   }
 
   update() {
+    this.leftButton?.setInteractive();
+    this.rightButton?.setInteractive();
+    this.jumpButton?.setInteractive();
+
+
+    this.leftButton?.on('pointerdown', () => {
+        this.player?.setVelocityX(-160);
+     }, this)
+
+    // this.leftButton?.on('pointerup', () => { 
+    //   this.player?.setVelocityX(0);
+    // }, this)
+
+    this.rightButton?.on('pointerdown', () => { 
+      this.player?.setVelocityX(160); 
+    }, this)
+
+    // this.rightButton?.on('pointerup', () => {
+    //   this.player?.setVelocityX(0); 
+    // }, this)
+    this.jumpButton?.on('pointerdown', () => { 
+      if (this.player?.body?.touching.down) {
+        this.player?.setVelocityY(-400);
+      }
+    }, this)
+
+    this.input.on('pointerup', () => {
+      this.player?.setVelocityX(0);
+    })
+
+
+
   }
 }
 
@@ -49,7 +93,7 @@ export const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 300 },
+      gravity: { y: 900 },
       debug: false
     }
   },
@@ -59,4 +103,3 @@ export const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
 };
-
