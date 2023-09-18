@@ -1,4 +1,5 @@
 import Phaser from "phaser"
+import hero from '/app/src/assets/player/susumu-front.png'
 
 class Game extends Phaser.Scene{  
   constructor() {
@@ -7,7 +8,16 @@ class Game extends Phaser.Scene{
 
   preload () {
     this.load.image('mario', 'assets/mario_run.jpg');
-    this.load.image('mario', 'assets/mario_stop.jpg');
+    //this.load.image('mario', 'assets/mario_stop.jpg');
+
+    this.load.image('susumu-front', '/app/src/assets/plyer/susumu-front.png' );
+    // this.load.image('susumu-left1', 'assets/player/susumu-left1.png');
+    // this.load.image('susumu-left2', 'assets/player/susumu-left2.png');
+    // this.load.image('susumu-left3', 'assets/player/susumu-left3.png');
+    // this.load.image('susumu-right1', 'assets/player/susumu-right1.png');
+    // this.load.image('susumu-right2', 'assets/player/susumu-right2.png');
+    // this.load.image('susumu-right3', 'assets/player/susumu-right3.png');
+
   }
 
   create() {
@@ -19,6 +29,11 @@ class Game extends Phaser.Scene{
     const upButton = this.add.text(80, window.innerHeight-185, '↑', { fontSize: '50px' });
     const downButton = this.add.text(80, window.innerHeight-85, '↓', { fontSize: '50px' });
     const rightButton = this.add.text(130, window.innerHeight-135, '→', { fontSize: '50px' });
+
+
+    this.matter.world.setBounds(0, 0, this.sys.canvas.width, this.sys.canvas.height);
+    const player = this.matter.add.sprite(100, 450, 'mario');
+
   }
 
   toggleFullscreen() {
