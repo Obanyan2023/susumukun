@@ -21,6 +21,9 @@ class Game extends Phaser.Scene{
 
   create() {
 
+    const center_x = this.cameras.main.width / 2;
+    const center_y = this.cameras.main.height /2
+
     // 背景と地面の作成
     let platforms;
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky');
@@ -36,7 +39,7 @@ class Game extends Phaser.Scene{
     this.rightButton = this.add.text(170, window.innerHeight-135, '→', { fontSize: '90px' });
     this.jumpButton = this.add.text(window.innerWidth-200, window.innerHeight-120, 'Jump', { fontSize: '50px' });
 
-    this.player = this.physics.add.sprite(600, 450, 'susumu-front');
+    this.player = this.physics.add.sprite(center_x, center_y, 'susumu-front');
     this.player.setCollideWorldBounds(true);
     this.physics.add.collider(this.player,platforms)
   }
