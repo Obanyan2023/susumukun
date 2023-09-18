@@ -36,8 +36,9 @@ class Game extends Phaser.Scene{
     this.rightButton = this.add.text(170, window.innerHeight-135, '→', { fontSize: '90px' });
     this.jumpButton = this.add.text(window.innerWidth-200, window.innerHeight-120, 'Jump', { fontSize: '50px' });
 
-    this.physics.world.setBounds(0, 0, this.sys.canvas.width, this.sys.canvas.height);
-    this.player = this.physics.add.sprite(100, 450, 'susumu-front');
+    this.player = this.physics.add.sprite(600, 450, 'susumu-front');
+    this.player.setCollideWorldBounds(true);
+    this.physics.add.collider(this.player,platforms)
   }
 
   toggleFullscreen() {
