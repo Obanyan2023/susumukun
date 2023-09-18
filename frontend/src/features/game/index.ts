@@ -8,6 +8,8 @@ class Game extends Phaser.Scene{
   preload () {
     this.load.image('mario', 'assets/mario_run.jpg');
     this.load.image('mario', 'assets/mario_stop.jpg');
+    this.load.image('sky', 'sky.png');
+    this.load.image('ground', 'platform.png');
   }
 
   create() {
@@ -19,6 +21,15 @@ class Game extends Phaser.Scene{
     const upButton = this.add.text(80, window.innerHeight-185, '↑', { fontSize: '50px' });
     const downButton = this.add.text(80, window.innerHeight-85, '↓', { fontSize: '50px' });
     const rightButton = this.add.text(130, window.innerHeight-135, '→', { fontSize: '50px' });
+
+    // 背景と地面の作成
+    let platforms;
+    this.add.image(window.innerWidth/2, window.innerHeight/2, 'sky');
+    platforms = this.physics.add.staticGroup();
+    platforms.create(window.innerWidth/2, window.innerHeight-30, 'ground').setScale(2).refreshBody();
+    // platforms.create(window.innerWidth, window.innerHeight, 'ground');
+    // platforms.create(window.innerWidth, window.innerHeight, 'ground');
+    // platforms.create(window.innerWidth, window.innerHeight, 'ground');
   }
 
   toggleFullscreen() {
@@ -39,12 +50,10 @@ export const config = {
   width: window.innerWidth,
   height: window.innerHeight,
   physics: {
-    default: 'matter',
-    matter: {
-      gravity: {
-        y: 9.8,
-        debug: false
-      },
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 300 },
+      debug: false
     }
   },
   scene: [Game],
