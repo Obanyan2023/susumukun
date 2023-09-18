@@ -59,22 +59,26 @@ class Game extends Phaser.Scene{
         this.player?.setVelocityX(-160);
      }, this)
 
-    this.leftButton?.on('pointerup', () => { 
-      this.player?.setVelocityX(0);
-    }, this)
+    // this.leftButton?.on('pointerup', () => { 
+    //   this.player?.setVelocityX(0);
+    // }, this)
 
     this.rightButton?.on('pointerdown', () => { 
       this.player?.setVelocityX(160); 
     }, this)
 
-    this.rightButton?.on('pointerup', () => {
-      this.player?.setVelocityX(0); 
-    }, this)
+    // this.rightButton?.on('pointerup', () => {
+    //   this.player?.setVelocityX(0); 
+    // }, this)
     this.jumpButton?.on('pointerdown', () => { 
       if (this.player?.body?.touching.down) {
         this.player?.setVelocityY(-400);
       }
     }, this)
+
+    this.input.on('pointerup', () => {
+      this.player?.setVelocityX(0);
+    })
 
 
 
