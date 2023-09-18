@@ -1,12 +1,11 @@
 import Phaser from "phaser"
 
-
 class Game extends Phaser.Scene{  
 
   leftButton: Phaser.GameObjects.Text | null = null;
   rightButton: Phaser.GameObjects.Text | null = null;
   jumpButton: Phaser.GameObjects.Text | null = null;
-  player: Phaser.Physics.Matter.Sprite | null = null;
+  player: Phaser.Physics.Arcade.Sprite | null = null;
 
   constructor() {
     super({ key: 'Game' });
@@ -14,34 +13,31 @@ class Game extends Phaser.Scene{
 
 
   preload () {
-    this.load.image('mario', 'assets/mario_run.jpg');
-    //this.load.image('mario', 'assets/mario_stop.jpg');
 
     this.load.image('susumu-front', 'images/player/susumu-front.png' );
-    // this.load.image('susumu-left2', 'assets/player/susumu-left2.png');
-    // this.load.image('susumu-left3', 'assets/player/susumu-left3.png');
-    // this.load.image('susumu-right1', 'assets/player/susumu-right1.png');
-    // this.load.image('susumu-right2', 'assets/player/susumu-right2.png');
-    // this.load.image('susumu-right3', 'assets/player/susumu-right3.png');
-
+    this.load.image('sky', 'sky.png');
+    this.load.image('ground', 'platform.png');
   }
 
   create() {
+
+    // 背景と地面の作成
+    let platforms;
+    this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky');
+    platforms = this.physics.add.staticGroup();
+    platforms.create(window.innerWidth / 2, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
+
     // フルスクリーンボタンを作成
-    const fullscreenButton = this.add.text(window.innerWidth-100, 50, 'FS', { fontSize: '32px' });
+    const fullscreenButton = this.add.text(window.innerWidth - 100, 50, 'FS', { fontSize: '32px' });
     fullscreenButton.setInteractive();
     fullscreenButton.on('pointerup', this.toggleFullscreen, this);
+
     this.leftButton = this.add.text(50, window.innerHeight-135, '←', { fontSize: '90px' });
     this.rightButton = this.add.text(170, window.innerHeight-135, '→', { fontSize: '90px' });
     this.jumpButton = this.add.text(window.innerWidth-200, window.innerHeight-120, 'Jump', { fontSize: '50px' });
-    /*
-    const upButton = this.add.text(80, window.innerHeight-185, '↑', { fontSize: '50px' });
-    const downButton = this.add.text(80, window.innerHeight-85, '↓', { fontSize: '50px' });
-    */
 
-
-    this.matter.world.setBounds(0, 0, this.sys.canvas.width, this.sys.canvas.height);
-    this.player = this.matter.add.sprite(100, 450, 'susumu-front');
+    this.physics.world.setBounds(0, 0, this.sys.canvas.width, this.sys.canvas.height);
+    this.player = this.physics.add.sprite(100, 450, 'susumu-front');
   }
 
   toggleFullscreen() {
@@ -52,7 +48,7 @@ class Game extends Phaser.Scene{
     }
   }
 
-  update () {
+  update() {
   }
 }
 
@@ -62,12 +58,10 @@ export const config = {
   width: window.innerWidth,
   height: window.innerHeight,
   physics: {
-    default: 'matter',
-    matter: {
-      gravity: {
-        y: 9.8,
-        debug: false
-      },
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 300 },
+      debug: false
     }
   },
   scene: [Game],
