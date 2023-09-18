@@ -1,6 +1,4 @@
-import { wait } from "@testing-library/user-event/dist/utils";
 import Phaser from "phaser"
-import { useState } from "react";
 
 class Game extends Phaser.Scene{  
 
