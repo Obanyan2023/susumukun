@@ -1,4 +1,6 @@
+import { wait } from "@testing-library/user-event/dist/utils";
 import Phaser from "phaser"
+import { useState } from "react";
 
 class Game extends Phaser.Scene{  
 
@@ -50,6 +52,34 @@ class Game extends Phaser.Scene{
   }
 
   update() {
+    this.leftButton?.setInteractive();
+    this.rightButton?.setInteractive();
+    this.jumpButton?.setInteractive();
+
+
+    this.leftButton?.on('pointerdown', () => {
+        this.player?.setVelocityX(-160);
+     }, this)
+
+    this.leftButton?.on('pointerup', () => { 
+      this.player?.setVelocityX(0);
+    }, this)
+
+    this.rightButton?.on('pointerdown', () => { 
+      this.player?.setVelocityX(160); 
+    }, this)
+
+    this.rightButton?.on('pointerup', () => {
+      this.player?.setVelocityX(0); 
+    }, this)
+    this.jumpButton?.on('pointerdown', () => { 
+      if (this.player?.body?.touching.down) {
+        this.player?.setVelocityY(-400);
+      }
+    }, this)
+
+
+
   }
 }
 
@@ -61,7 +91,7 @@ export const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 300 },
+      gravity: { y: 900 },
       debug: false
     }
   },
