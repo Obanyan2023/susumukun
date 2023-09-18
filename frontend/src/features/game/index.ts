@@ -12,13 +12,16 @@ class Game extends Phaser.Scene{
 
   create() {
     // フルスクリーンボタンを作成
-    const fullscreenButton = this.add.text(window.innerWidth-100, window.innerHeight-50, 'FS', { fontSize: '32px' });
+    const fullscreenButton = this.add.text(window.innerWidth-100, 50, 'FS', { fontSize: '32px' });
     fullscreenButton.setInteractive();
     fullscreenButton.on('pointerup', this.toggleFullscreen, this);
-    const leftButton = this.add.text(30, window.innerHeight-135, '←', { fontSize: '50px' });
+    const leftButton = this.add.text(50, window.innerHeight-135, '←', { fontSize: '90px' });
+    /*
     const upButton = this.add.text(80, window.innerHeight-185, '↑', { fontSize: '50px' });
     const downButton = this.add.text(80, window.innerHeight-85, '↓', { fontSize: '50px' });
-    const rightButton = this.add.text(130, window.innerHeight-135, '→', { fontSize: '50px' });
+    */
+    const rightButton = this.add.text(170, window.innerHeight-135, '→', { fontSize: '90px' });
+    const jumpButton = this.add.text(window.innerWidth-200, window.innerHeight-120, 'Jump', { fontSize: '50px' });
   }
 
   toggleFullscreen() {
