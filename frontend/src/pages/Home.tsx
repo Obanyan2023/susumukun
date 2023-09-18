@@ -11,7 +11,7 @@ import { url } from "inspector";
 import * as React from 'react';
 import Background from '../assets/images/image.jpg';
 import '../index.css'
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
  
  
 const style = {
@@ -27,21 +27,22 @@ const style = {
     borderRadius: '16px',
   };
 
-const PreImage = () => {
-    const [windowSize, setWindowSize] = useState({
+const setWinSize = () => {
+    const windowSize = {
         width: window.innerWidth,
         height: window.innerHeight
-      });
-    
-      return (
-        windowSize.height
-      );
+      };
+      const imageUrlWithParams = `${Background}?w=${windowSize.width}&h=${windowSize.height}`;
+
+      return imageUrlWithParams;
     };
 
 
+
+
 const image =  {
-    backgroundImage: `url(${Background})`,
-    backgroundSize: PreImage(),
+    backgroundImage: `url(${setWinSize()})`,
+    backgroundSize: '100% 100%',
     backgroundRepeat: 'no-repeat',  // 画像の繰り返しを無効にする
     backgroundPosition: 'center',  
 };
@@ -67,9 +68,9 @@ export const Home = () => {
         <MainLayout  title={"走れ！すすむ君！ - ようこそ！"} head={head()}>
             <Typography className="image">
             <Box sx={image}>
-            <Grid container alignItems={"center"} direction={"column"}>
-                <Grid item m={15}>
-                    <Typography className="mfont">
+            <Grid container alignItems={"center"} direction={"column"} style={{overflow: 'hidden', height: '100vh', width: '100vw'}}>
+                <Grid item m={12}>
+                    <Typography className="mfont" align="center">
                         <h1 style={{ fontFamily:'Mochiy Pop P One', fontSize : 40}}>
                         {"走れ！すすむ君！"}
                         </h1>

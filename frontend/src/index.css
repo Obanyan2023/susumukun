@@ -12,14 +12,14 @@ code {
 }
 @media (max-width: 767px) {
   .image {
-    height: 'cover';
+
   }
 }
 
 
 @media (min-width: 768px) {
   .image {
-    height: auto;
+    height: 10px;
   }
 }
  
