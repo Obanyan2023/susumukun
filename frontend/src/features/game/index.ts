@@ -24,9 +24,6 @@ class Game extends Phaser.Scene{
     this.input.addPointer(1);
     this.input.addPointer(2);
 
-    const center_x = this.cameras.main.width / 2;
-    const center_y = this.cameras.main.height / 2;
-
     // 背景と地面の作成
     let platforms;
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky');
