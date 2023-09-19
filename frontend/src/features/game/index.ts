@@ -33,10 +33,9 @@ class Game extends Phaser.Scene{
     platforms = this.physics.add.staticGroup();
     platforms.create(window.innerWidth / 2, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
 
-    // プレイヤーの作成, 地に足をつけた状態でスタート
+    // プレイヤーの作成
     this.player = this.physics.add.sprite(window.innerWidth / 2, window.innerHeight - 80, 'susumu-front');
     this.player.setCollideWorldBounds(true);
-    this.player.setBounce(0.2);
     this.physics.add.collider(this.player,platforms)
 
     // フルスクリーンボタンを作成
