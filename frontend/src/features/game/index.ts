@@ -25,13 +25,19 @@ class Game extends Phaser.Scene{
     this.input.addPointer(2);
 
     const center_x = this.cameras.main.width / 2;
-    const center_y = this.cameras.main.height /2
+    const center_y = this.cameras.main.height / 2;
 
     // 背景と地面の作成
     let platforms;
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky');
     platforms = this.physics.add.staticGroup();
     platforms.create(window.innerWidth / 2, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
+
+    // プレイヤーの作成, 地に足をつけた状態でスタート
+    this.player = this.physics.add.sprite(window.innerWidth / 2, window.innerHeight - 80, 'susumu-front');
+    this.player.setCollideWorldBounds(true);
+    this.player.setBounce(0.2);
+    this.physics.add.collider(this.player,platforms)
 
     // フルスクリーンボタンを作成
     const fullscreenButton = this.add.text(window.innerWidth - 100, 50, 'FS', { fontSize: '32px' });
@@ -47,9 +53,6 @@ class Game extends Phaser.Scene{
     this.jumpButton?.setInteractive();
 
 
-    this.player = this.physics.add.sprite(center_x, center_y, 'susumu-front');
-    this.player.setCollideWorldBounds(true);
-    this.physics.add.collider(this.player,platforms)
   }
 
   toggleFullscreen() {
