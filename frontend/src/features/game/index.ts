@@ -1,5 +1,5 @@
-import { log } from "console";
 import Phaser from "phaser"
+import GameOver from "../../scene/gameover";
 
 class Game extends Phaser.Scene{  
 
@@ -85,7 +85,7 @@ class Game extends Phaser.Scene{
     }, this)
 
     if (!this.physics.world.bounds.contains(this.player?.x as number, this.player?.y as number)) {
-      console.log("gameOver!!!")
+      this.scene.start('GameOver');
     }
 
 
@@ -105,7 +105,7 @@ export const config = {
       debug: false
     }
   },
-  scene: [Game],
+  scene: [Game, GameOver],
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
