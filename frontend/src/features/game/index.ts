@@ -1,3 +1,4 @@
+import { log } from "console";
 import Phaser from "phaser"
 
 class Game extends Phaser.Scene{  
@@ -32,8 +33,8 @@ class Game extends Phaser.Scene{
 
     // プレイヤーの作成
     this.player = this.physics.add.sprite(window.innerWidth / 2, window.innerHeight - 80, 'susumu-front');
-    this.player.setCollideWorldBounds(true);
     this.physics.add.collider(this.player,platforms)
+
 
     // フルスクリーンボタンを作成
     const fullscreenButton = this.add.text(window.innerWidth - 100, 50, 'FS', { fontSize: '32px' });
@@ -83,10 +84,13 @@ class Game extends Phaser.Scene{
       
     }, this)
 
-
+    if (!this.physics.world.bounds.contains(this.player?.x as number, this.player?.y as number)) {
+      console.log("gameOver!!!")
+    }
 
 
   }
+
 }
 
 export const config = {
