@@ -21,8 +21,8 @@ class Game extends Phaser.Scene{
 
   create() {
 
-    const center_x = this.cameras.main.width / 2;
-    const center_y = this.cameras.main.height /2
+    this.input.addPointer(1);
+    this.input.addPointer(2);
 
     // 背景と地面の作成
     let platforms;
@@ -30,18 +30,25 @@ class Game extends Phaser.Scene{
     platforms = this.physics.add.staticGroup();
     platforms.create(window.innerWidth / 2, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
 
+    // プレイヤーの作成
+    this.player = this.physics.add.sprite(window.innerWidth / 2, window.innerHeight - 80, 'susumu-front');
+    this.player.setCollideWorldBounds(true);
+    this.physics.add.collider(this.player,platforms)
+
     // フルスクリーンボタンを作成
     const fullscreenButton = this.add.text(window.innerWidth - 100, 50, 'FS', { fontSize: '32px' });
     fullscreenButton.setInteractive();
     fullscreenButton.on('pointerup', this.toggleFullscreen, this);
 
+
     this.leftButton = this.add.text(50, window.innerHeight-135, '←', { fontSize: '90px' });
     this.rightButton = this.add.text(170, window.innerHeight-135, '→', { fontSize: '90px' });
     this.jumpButton = this.add.text(window.innerWidth-200, window.innerHeight-120, 'Jump', { fontSize: '50px' });
+    this.leftButton?.setInteractive();
+    this.rightButton?.setInteractive();
+    this.jumpButton?.setInteractive();
 
-    this.player = this.physics.add.sprite(center_x, center_y, 'susumu-front');
-    this.player.setCollideWorldBounds(true);
-    this.physics.add.collider(this.player,platforms)
+
   }
 
   toggleFullscreen() {
@@ -53,35 +60,29 @@ class Game extends Phaser.Scene{
   }
 
   update() {
-    this.leftButton?.setInteractive();
-    this.rightButton?.setInteractive();
-    this.jumpButton?.setInteractive();
-
 
     this.leftButton?.on('pointerdown', () => {
         this.player?.setVelocityX(-160);
      }, this)
 
-    // this.leftButton?.on('pointerup', () => { 
-    //   this.player?.setVelocityX(0);
-    // }, this)
 
     this.rightButton?.on('pointerdown', () => { 
       this.player?.setVelocityX(160); 
     }, this)
 
-    // this.rightButton?.on('pointerup', () => {
-    //   this.player?.setVelocityX(0); 
-    // }, this)
     this.jumpButton?.on('pointerdown', () => { 
       if (this.player?.body?.touching.down) {
         this.player?.setVelocityY(-400);
       }
     }, this)
 
-    this.input.on('pointerup', () => {
-      this.player?.setVelocityX(0);
-    })
+    this.input.on('pointerup', (pointer:Phaser.Input.Pointer) => {
+      if (pointer.x < this.cameras.main.width / 2 ) {
+        this.player?.setVelocityX(0);
+      }
+      
+    }, this)
+
 
 
 
@@ -105,4 +106,7 @@ export const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
+  input: {
+    activePointers: 2,
+  }
 };
