@@ -7,9 +7,12 @@ class Game extends Phaser.Scene {
   rightButton: Phaser.GameObjects.Text | null = null;
   jumpButton: Phaser.GameObjects.Text | null = null;
   player: Phaser.Physics.Arcade.Sprite | null = null;
+  platforms: Platform;
 
   constructor() {
     super({ key: 'Game' });
+
+    this.platforms = new Platform(this);
   }
 
 
@@ -17,7 +20,7 @@ class Game extends Phaser.Scene {
 
     this.load.image('susumu-front', 'images/player/susumu-front.png');
     this.load.image('sky', 'sky.png');
-
+    this.platforms.preload();
   }
 
   create() {
@@ -26,15 +29,14 @@ class Game extends Phaser.Scene {
     this.input.addPointer(2);
 
     // 背景と地面の作成
-    let platforms = new Platform(this);
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky');
-
+    this.platforms.create();
 
 
     // プレイヤーの作成
     this.player = this.physics.add.sprite(window.innerWidth / 2, window.innerHeight - 80, 'susumu-front');
     this.player.setCollideWorldBounds(true);
-    this.physics.add.collider(this.player, platforms.platform as Phaser.Physics.Arcade.StaticGroup)
+    this.physics.add.collider(this.player, this.platforms.platform as Phaser.Physics.Arcade.StaticGroup)
 
 
     // フルスクリーンボタンを作成
@@ -104,7 +106,7 @@ class Platform {
   }
 
   preload() {
-    this.self.load.image('ground', '../../../frontend/public/platform.png');
+    this.self.load.image('ground', 'platform.png');
 
     this.platform = this.self.physics.add.staticGroup();
   }
@@ -113,7 +115,6 @@ class Platform {
     if (this.platform === null) {
       return;
     }
-
     this.set_plat();
   }
 
@@ -122,11 +123,9 @@ class Platform {
       return;
     }
 
-    this.platform.create(window.innerWidth / 2 - 1, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
-    /*    for (let index = 16; index < window.innerWidth; index+=32) {
-          this.platform.create(index, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
-        }
-    */
+    for (let index = 16; index < window.innerWidth; index += 32) {
+      this.platform.create(index, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
+    }
   }
   update() {
 
