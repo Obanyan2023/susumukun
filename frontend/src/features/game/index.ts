@@ -1,7 +1,7 @@
 import { log } from "console";
 import Phaser from "phaser"
 
-class Game extends Phaser.Scene{  
+class Game extends Phaser.Scene {
 
   leftButton: Phaser.GameObjects.Text | null = null;
   rightButton: Phaser.GameObjects.Text | null = null;
@@ -13,11 +13,11 @@ class Game extends Phaser.Scene{
   }
 
 
-  preload () {
+  preload() {
 
-    this.load.image('susumu-front', 'images/player/susumu-front.png' );
+    this.load.image('susumu-front', 'images/player/susumu-front.png');
     this.load.image('sky', 'sky.png');
-    this.load.image('ground', 'platform.png');
+
   }
 
   create() {
@@ -26,14 +26,15 @@ class Game extends Phaser.Scene{
     this.input.addPointer(2);
 
     // 背景と地面の作成
-    let platforms;
+    let platforms = new Platform(this);
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky');
-    platforms = this.physics.add.staticGroup();
-    platforms.create(window.innerWidth / 2, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
+
+
 
     // プレイヤーの作成
     this.player = this.physics.add.sprite(window.innerWidth / 2, window.innerHeight - 80, 'susumu-front');
-    this.physics.add.collider(this.player,platforms)
+    this.player.setCollideWorldBounds(true);
+    this.physics.add.collider(this.player, platforms.platform as Phaser.Physics.Arcade.StaticGroup)
 
 
     // フルスクリーンボタンを作成
@@ -42,9 +43,9 @@ class Game extends Phaser.Scene{
     fullscreenButton.on('pointerup', this.toggleFullscreen, this);
 
 
-    this.leftButton = this.add.text(50, window.innerHeight-135, '←', { fontSize: '90px' });
-    this.rightButton = this.add.text(170, window.innerHeight-135, '→', { fontSize: '90px' });
-    this.jumpButton = this.add.text(window.innerWidth-200, window.innerHeight-120, 'Jump', { fontSize: '50px' });
+    this.leftButton = this.add.text(50, window.innerHeight - 135, '←', { fontSize: '90px' });
+    this.rightButton = this.add.text(170, window.innerHeight - 135, '→', { fontSize: '90px' });
+    this.jumpButton = this.add.text(window.innerWidth - 200, window.innerHeight - 120, 'Jump', { fontSize: '50px' });
     this.leftButton?.setInteractive();
     this.rightButton?.setInteractive();
     this.jumpButton?.setInteractive();
@@ -63,25 +64,25 @@ class Game extends Phaser.Scene{
   update() {
 
     this.leftButton?.on('pointerdown', () => {
-        this.player?.setVelocityX(-160);
-     }, this)
-
-
-    this.rightButton?.on('pointerdown', () => { 
-      this.player?.setVelocityX(160); 
+      this.player?.setVelocityX(-160);
     }, this)
 
-    this.jumpButton?.on('pointerdown', () => { 
+
+    this.rightButton?.on('pointerdown', () => {
+      this.player?.setVelocityX(160);
+    }, this)
+
+    this.jumpButton?.on('pointerdown', () => {
       if (this.player?.body?.touching.down) {
         this.player?.setVelocityY(-400);
       }
     }, this)
 
-    this.input.on('pointerup', (pointer:Phaser.Input.Pointer) => {
-      if (pointer.x < this.cameras.main.width / 2 ) {
+    this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+      if (pointer.x < this.cameras.main.width / 2) {
         this.player?.setVelocityX(0);
       }
-      
+
     }, this)
 
     if (!this.physics.world.bounds.contains(this.player?.x as number, this.player?.y as number)) {
@@ -91,6 +92,45 @@ class Game extends Phaser.Scene{
 
   }
 
+}
+
+//Platformクラス
+class Platform {
+  self: Phaser.Scene;
+  platform: Phaser.Physics.Arcade.StaticGroup | null = null;
+
+  constructor(self: Phaser.Scene) {
+    this.self = self;
+  }
+
+  preload() {
+    this.self.load.image('ground', '../../../frontend/public/platform.png');
+
+    this.platform = this.self.physics.add.staticGroup();
+  }
+
+  create() {
+    if (this.platform === null) {
+      return;
+    }
+
+    this.set_plat();
+  }
+
+  set_plat() {
+    if (this.platform === null) {
+      return;
+    }
+
+    this.platform.create(window.innerWidth / 2 - 1, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
+    /*    for (let index = 16; index < window.innerWidth; index+=32) {
+          this.platform.create(index, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
+        }
+    */
+  }
+  update() {
+
+  }
 }
 
 export const config = {
