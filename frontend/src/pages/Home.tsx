@@ -76,7 +76,7 @@ export const Home = () => {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid container alignItems="center" direction="column" sx={{ position: 'fixed', bottom: "10%" }} >
+                    <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
                         <Button variant="contained" sx={{ margin: 3 }} href="gamewindow">ゲームスタート</Button>
                         <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
                         <Modal
