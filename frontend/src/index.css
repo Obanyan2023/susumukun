@@ -10,18 +10,6 @@ code {
     
     monospace
 }
-@media (max-width: 767px) {
-  .image {
-
-  }
-}
-
-
-@media (min-width: 768px) {
-  .image {
-    height: 10px;
-  }
-}
  
 .mfont {
   font-family:  'Kiwi Maru', serif;
