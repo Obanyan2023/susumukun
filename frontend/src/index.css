@@ -1,13 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Dela+Gothic+One&family=DotGothic16&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+P+One&family=Zen+Antique&family=Zen+Kurenaido&display=swap%27');
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
-
+ 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    
+    monospace
+}
+ 
+.mfont {
+  font-family:  'Kiwi Maru', serif;
+  font-family: 'Zen Kurenaido', sans-serif;
+  font-family: 'DotGothic16', sans-serif; /* フォント名を指定 */
+  font-family: 'Dela Gothic One', cursive;
+  font-family: 'Mochiy Pop P One', sans-serif;
+ 
 }
