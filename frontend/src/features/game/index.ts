@@ -87,9 +87,14 @@ class Game extends Phaser.Scene {
 
     }, this)
 
-    if (!this.physics.world.bounds.contains(this.player?.x as number, this.player?.y as number)) {
-      this.scene.start('GameOver');
-    }
+    if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, this.player?.y as number + 17)) {
+      this.player?.setAlpha(0);
+      this.time.delayedCall(50, () => {
+        this.player?.destroy();
+        this.scene.start('GameOver');
+      }, [], this);
+  
+     }
 
 
   }
