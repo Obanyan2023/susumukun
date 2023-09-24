@@ -1,22 +1,26 @@
 import Phaser from "phaser"
+import GameOver from "../../scene/gameover";
 
-class Game extends Phaser.Scene{  
+class Game extends Phaser.Scene {
 
   leftButton: Phaser.GameObjects.Text | null = null;
   rightButton: Phaser.GameObjects.Text | null = null;
   jumpButton: Phaser.GameObjects.Text | null = null;
   player: Phaser.Physics.Arcade.Sprite | null = null;
+  platforms: Platform;
 
   constructor() {
     super({ key: 'Game' });
+
+    this.platforms = new Platform(this);
   }
 
 
-  preload () {
+  preload() {
 
-    this.load.image('susumu-front', 'images/player/susumu-front.png' );
+    this.load.image('susumu-front', 'images/player/susumu-front.png');
     this.load.image('sky', 'sky.png');
-    this.load.image('ground', 'platform.png');
+    this.platforms.preload();
   }
 
   create() {
@@ -25,9 +29,8 @@ class Game extends Phaser.Scene{
     this.input.addPointer(2);
 
     // 背景と地面の作成
-    let platforms;
     this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky').setScrollFactor(0);
-    platforms = this.physics.add.staticGroup();
+    this.platforms.create();
 
     const movebackground = {
       x: 800,
@@ -53,13 +56,12 @@ class Game extends Phaser.Scene{
       .setOrigin(movebackground.x_justtification, movebackground.y_justtification)
       .setScrollFactor(movebackground.move);
 
-    platforms.create(window.innerWidth / 2, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
-
 
     // プレイヤーの作成
-    this.player = this.physics.add.sprite(window.innerWidth / 3, window.innerHeight - 80, 'susumu-front');
+    this.player = this.physics.add.sprite(window.innerWidth / 2, window.innerHeight - 80, 'susumu-front');
     this.player.setCollideWorldBounds(true);
-    this.physics.add.collider(this.player,platforms)
+    this.physics.add.collider(this.player, this.platforms.platform as Phaser.Physics.Arcade.StaticGroup)
+
 
     // フルスクリーンボタンを作成
     const fullscreenButton = this.add.text(window.innerWidth - 100, 50, 'FS', { fontSize: '32px' }).setScrollFactor(0);
@@ -110,29 +112,68 @@ class Game extends Phaser.Scene{
   update() {
 
     this.leftButton?.on('pointerdown', () => {
-        this.player?.setVelocityX(-160);
-     }, this)
-
-
-    this.rightButton?.on('pointerdown', () => { 
-      this.player?.setVelocityX(160); 
+      this.player?.setVelocityX(-160);
     }, this)
 
-    this.jumpButton?.on('pointerdown', () => { 
+
+    this.rightButton?.on('pointerdown', () => {
+      this.player?.setVelocityX(160);
+    }, this)
+
+    this.jumpButton?.on('pointerdown', () => {
       if (this.player?.body?.touching.down) {
         this.player?.setVelocityY(-400);
       }
     }, this)
 
-    this.input.on('pointerup', (pointer:Phaser.Input.Pointer) => {
-      if (pointer.x < this.cameras.main.width / 2 ) {
+    this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+      if (pointer.x < this.cameras.main.width / 2) {
         this.player?.setVelocityX(0);
       }
-      
+
     }, this)
 
+    if (!this.physics.world.bounds.contains(this.player?.x as number, this.player?.y as number)) {
+      this.scene.start('GameOver');
+    }
 
 
+  }
+
+}
+
+//Platformクラス
+class Platform {
+  self: Phaser.Scene;
+  platform: Phaser.Physics.Arcade.StaticGroup | null = null;
+
+  constructor(self: Phaser.Scene) {
+    this.self = self;
+  }
+
+  preload() {
+    this.self.load.image('ground', 'platform.png');
+
+    this.platform = this.self.physics.add.staticGroup();
+  }
+
+  create() {
+    if (this.platform === null) {
+      return;
+    }
+    this.set_plat();
+  }
+
+  set_plat() {
+    if (this.platform === null) {
+      return;
+    }
+
+    for (let index = 16; index < window.innerWidth; index += 32) {
+      this.platform.create(index, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
+    }
+  }
+  update() {
 
   }
 }
@@ -149,7 +190,7 @@ export const config = {
       debug: false
     }
   },
-  scene: [Game],
+  scene: [Game, GameOver],
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
