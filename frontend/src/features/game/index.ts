@@ -24,50 +24,36 @@ class Game extends Phaser.Scene{
     this.input.addPointer(1);
     this.input.addPointer(2);
 
-    const width = this.scale.width;
-    const height = this.scale.height;
-
     // 背景と地面の作成
     let platforms;
-    this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky');
+    this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky').setScrollFactor(0);
     platforms = this.physics.add.staticGroup();
 
-    const sky = {
-      "x": window.innerWidth / 2,
-      "y": window.innerHeight / 2,
-      "img": 'sky',
-      "move": 0
-    };
-
-    this.add.image(sky.x, sky.y, sky.img).setScrollFactor(sky.move);
-
-    const 木の背景 = {
-      X座標: 800,
-      Y座標: height / 2,
-      画像名: "ground",
-      X位置調整: 0,
-      Y位置調整: 0.75,
-      移動量: 0.25
+    const movebackground = {
+      x: 800,
+      y: window.innerHeight / 2,
+      img: "ground",
+      x_justtification: 0,
+      y_justtification: 0.75,
+      move: 0.25
     };
 
     this.add
-      .image(木の背景.X座標 * 0, 木の背景.Y座標, 木の背景.画像名)
-      .setOrigin(木の背景.X位置調整, 木の背景.Y位置調整)
-      .setScrollFactor(木の背景.移動量);
+      .image(movebackground.x * 0, movebackground.y, movebackground.img)
+      .setOrigin(movebackground.x_justtification, movebackground.y_justtification)
+      .setScrollFactor(movebackground.move);
 
     this.add
-      .image(木の背景.X座標 * 1, 木の背景.Y座標, 木の背景.画像名)
-      .setOrigin(木の背景.X位置調整, 木の背景.Y位置調整)
-      .setScrollFactor(木の背景.移動量);
+      .image(movebackground.x * 1, movebackground.y, movebackground.img)
+      .setOrigin(movebackground.x_justtification, movebackground.y_justtification)
+      .setScrollFactor(movebackground.move);
 
     this.add
-      .image(木の背景.X座標 * 2, 木の背景.Y座標, 木の背景.画像名)
-      .setOrigin(木の背景.X位置調整, 木の背景.Y位置調整)
-      .setScrollFactor(木の背景.移動量);
+      .image(movebackground.x * 2, movebackground.y, movebackground.img)
+      .setOrigin(movebackground.x_justtification, movebackground.y_justtification)
+      .setScrollFactor(movebackground.move);
 
     platforms.create(window.innerWidth / 2, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
-    platforms.create(window.innerWidth / 3, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
-    platforms.create(window.innerWidth, window.innerHeight - 30, 'ground').setScale(2).refreshBody();
 
 
     // プレイヤーの作成
@@ -91,22 +77,22 @@ class Game extends Phaser.Scene{
     this.cameras.main.startFollow(this.player);
 
     const stage = {
-      "x": 0,
-      "y": 0,
-      "width": width * 3,
-      "height": height
+      "stage_x": 0,
+      "stage_y": 0,
+      "width": window.innerWidth * 3,
+      "height": window.innerHeight
     }
 
     this.cameras.main.setBounds(
-      stage.x,
-      stage.y,
+      stage.stage_x,
+      stage.stage_y,
       stage.width,
       stage.height
     );
 
     this.physics.world.setBounds(
-      stage.x,
-      stage.y,
+      stage.stage_x,
+      stage.stage_y,
       stage.width,
       stage.height
     );
