@@ -57,18 +57,20 @@ export default class MoveButton {
     /**
      * クリックがはなされたときのイベント
      *
-     * アニメーションを正面に設定する
-     * プレイヤーの移動を止める
+     * ポインターが画面左側の場合
+     *  - アニメーションを正面に設定する
+     *  - プレイヤーの移動を止める
      *
      * @param {Player} player プレイヤー
      * @param {Phaser.Input.Pointer} pointer ポインター
      * @returns {void} 戻り値なし
      */
     private event(player: Player, pointer: Phaser.Input.Pointer): void {
-        player.animation?.turn.update();
-
-        if (pointer.x < this.scene.cameras.main.width / 2) {
-            player.object?.setVelocityX(0);
+        if (pointer.x >= this.scene.cameras.main.width / 2) {
+            return;   
         }
+
+        player.animation?.turn.update();
+        player.object?.setVelocityX(0);
     }
 }
