@@ -35,6 +35,7 @@ export default class Enemy {
      * コンストラクタ
      *
      * @param {Phaser.Scene} scene シーン
+     * @param {string} name base-caterpillar, error-caterpillar, red-caterpillar or grasshopper
      */
     constructor(scene: Phaser.Scene, name: String) {
         this.scene = scene;
