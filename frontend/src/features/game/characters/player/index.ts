@@ -99,4 +99,22 @@ export default class Player {
             this.object.collider(object);
         }
     }
+
+    /*
+    * 削除処理
+    *
+    * 
+    * @param {()=>void} callback 削除時のコールバック関数
+    * @param {number} timeout コールバック関数が呼び出されるまでの待機時間
+    */
+    distroy(callback:()=>void, timeout:number): void {
+        this.object?.setVisible(false);
+        this.scene.cameras.main.stopFollow();
+        this.scene.time.delayedCall(
+            timeout,
+            () => {
+                callback();
+            }
+        )
+    }
 }

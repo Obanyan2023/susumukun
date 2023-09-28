@@ -97,17 +97,10 @@ export default class Enemy {
         player?.object &&
         this.scene.physics.add.overlap(this.object, player?.object, () => {
             //仮の衝突処理
-            console.log("Hit!");
-            player?.object?.setAlpha(0);
-            this.scene.time.delayedCall(
-                30,
-                () => {
-                    player?.object?.destroy();
-                    this.scene.scene.start("GameOver");
-                },
-                [],
-                this
-            )
+            player.distroy(() => {
+                this.scene.scene.start("GameOver")
+            }
+            , 1000);
         });
 
 
