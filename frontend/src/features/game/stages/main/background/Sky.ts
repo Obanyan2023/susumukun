@@ -15,7 +15,7 @@ export default class Sky extends BaseBackground {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image("sky", "sky.png");
+        this.scene.load.image("sky1", "hidari.jpg")
     }
 
     /**
@@ -24,6 +24,6 @@ export default class Sky extends BaseBackground {
      * @returns {void} 戻り値なし
      */
     create(): void {
-        this.image = this.scene.add.image(window.innerWidth / 2, window.innerHeight / 2, "sky").setScrollFactor(1);
+        this.image = this.scene.add.image(window.innerWidth, window.innerHeight, "sky1").setScrollFactor(1);
     }
 }
