@@ -24,13 +24,22 @@ export default class Platform extends BaseGround {
      * @returns {void} 戻り値なし
      */
     create(): void {
+        let x;
+        const bottom = window.innerHeight-30;
         this.object = this.scene.physics.add.staticGroup();
-
-        for (let index = 16; index < window.innerWidth; index += 32) {
+        
+        for (x = 16; x < window.innerWidth; x += 32) {
             this.object
-                .create(index, window.innerHeight - 30, "ground")
+                .create(x, bottom, "ground")
                 .setScale(2)
                 .refreshBody();
         }
+        x += 32;
+        this.object.create(x, bottom-64, "ground").setScale(2).refreshBody();
+        x += 64;
+        this.object.create(x, bottom-128, "ground").setScale(2).refreshBody();
+        x += 64;
+        this.object.create(x, bottom-192, "ground").setScale(2).refreshBody();
+
     }
 }
