@@ -18,7 +18,10 @@ export default class MainScene extends Phaser.Scene {
     /**
      * @var 敵
      */
-    private enemy: Enemy;
+    private enemy1: Enemy;
+    private enemy2: Enemy;
+    private enemy3: Enemy;
+    private enemy4: Enemy;
 
     /**
      * @var ステージ
@@ -54,12 +57,16 @@ export default class MainScene extends Phaser.Scene {
         super({ key: "Game" });
 
         this.player = new Player(this);
-        this.enemy = new Enemy(this);
         this.stage = new MainStage(this);
         this.fullScreenButton = new FullScreenButton(this);
         this.leftButton = new MoveLeftButton(this);
         this.rightButton = new MoveRightButton(this);
         this.jumpButton = new MoveJumpButton(this);
+
+        this.enemy1 = new Enemy(this, "base-caterpillar");
+        this.enemy2 = new Enemy(this, "error-caterpillar")
+        this.enemy3 = new Enemy(this, "red-caterpillar");
+        this.enemy4 = new Enemy(this, "grasshopper");
     }
 
     /**
@@ -69,8 +76,12 @@ export default class MainScene extends Phaser.Scene {
      */
     preload(): void {
         this.player.preload();
-        this.enemy.preload();
         this.stage.preload();
+
+        this.enemy1.preload();
+        this.enemy2.preload();
+        this.enemy3.preload();
+        this.enemy4.preload();
     }
 
     /**
@@ -89,7 +100,10 @@ export default class MainScene extends Phaser.Scene {
         this.player.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[]);
 
         // 敵の作成
-        this.enemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[]);
+        this.enemy1.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, 30, 30);
+        this.enemy2.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 4  , 30);
+        this.enemy3.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 2 - 40, 30);
+        this.enemy4.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width - 60, 30);
 
         // ボタンの作成
         this.fullScreenButton.create();
