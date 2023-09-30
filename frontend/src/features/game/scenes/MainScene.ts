@@ -132,13 +132,12 @@ export default class MainScene extends Phaser.Scene {
      */
     update(): void {
         // プレイヤー落下時にゲームオーバー画面に遷移する
-        let timeout = 1000;
         if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, (this.player.object?.y as number) + 17)) {
             this.player.distroy(
                () => {
                     this.scene.start("GameOver");
                } 
-                , timeout);
+                , 1000);
         }
     }
 }

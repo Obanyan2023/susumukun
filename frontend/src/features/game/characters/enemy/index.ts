@@ -66,13 +66,12 @@ export default class Enemy {
         }
 
         // プレイヤーと接触時の処理
-        let timeout: number = 1000;
         player.object &&
         this.scene.physics.add.overlap(this.object, player.object, () => {
             player.distroy(() => {
                 this.scene.scene.start("GameOver")
             }
-            , timeout);
+            , 1000);
         });
     }
 }
