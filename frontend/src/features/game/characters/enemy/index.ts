@@ -2,11 +2,6 @@ import Character from "../Character";
 import Player from "../player";
 
 /**
- * アニメーションクラスの型
- */
-
-
-/**
  * エネミークラス
  */
 export default class Enemy {
@@ -17,19 +12,13 @@ export default class Enemy {
 
     /**
      * @var エネミーオブジェクト
-     *
      */
     object: Character | null = null;
 
     /**
      * @var エネミーのアニメーション
      */
-    animation: Animation | null = null;
-
-    /**
-     * @var エネミーのアニメーション
-     */
-    name: String | null = null;
+    name: String;
 
     /**
      * コンストラクタ
@@ -48,32 +37,11 @@ export default class Enemy {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-
-        let spritesheetPath: string | null = null;
-
-        // スプライトシートの名前と画像のパスを条件に応じて設定
-        switch (this.name) {
-            case "base-caterpillar":
-                spritesheetPath = "images/enemy/base-caterpillar1.png";
-                break;
-            case "error-caterpillar":
-                spritesheetPath = "images/enemy/error-caterpillar1.png";
-                break;
-            case "red-caterpillar":
-                spritesheetPath = "images/enemy/red-caterpillar1.png";
-                break;
-            case "grasshopper":
-                spritesheetPath = "images/enemy/grasshopper1.png";
-                break;
-        }
-
-        // spritesheetPath が設定されている場合にのみ読み込みを行う
-        if (spritesheetPath) {
-            this.scene.load.spritesheet(`${this.name}`, spritesheetPath, {
-                frameWidth: 32,
-                frameHeight: 32,
-            });
-        }
+        let spritesheetPath: string = `images/enemy/${this.name}1.png`
+        this.scene.load.spritesheet(this.name as string, spritesheetPath, {
+            frameWidth: 32,
+            frameHeight: 32,
+        })
     }
 
     /**
@@ -83,27 +51,28 @@ export default class Enemy {
      * 衝突するオブジェクトを設定する
      *
      * @param {Phaser.Physics.Arcade.StaticGroup[]} objects 衝突するオブジェクト
+     * @param {Player} player プレイヤー
+     * @param {number} x 初期位置
+     * @param {number} y 初期位置
      * @returns {void} 戻り値なし
      */
-    create(objects?: Phaser.Physics.Arcade.StaticGroup[], player?: Player, x?: number, y?: number): void {
+    create(objects: Phaser.Physics.Arcade.StaticGroup[], player: Player, x: number, y: number): void {
         // エネミーとそのアニメーションの宣言
-        this.object = new Character(this.scene, x as number, y as number, `${this.name}`);
+        this.object = new Character(this.scene, x as number, y as number, this.name as string);
 
         // 衝突するオブジェクトの設定
         for (const object of objects ?? []) {
             this.object.collider(object);
         }
 
-        player?.object &&
-        this.scene.physics.add.overlap(this.object, player?.object, () => {
-            //仮の衝突処理
+        // プレイヤーと接触時の処理
+        let timeout: number = 1000;
+        player.object &&
+        this.scene.physics.add.overlap(this.object, player.object, () => {
             player.distroy(() => {
                 this.scene.scene.start("GameOver")
             }
-            , 1000);
+            , timeout);
         });
-
-
-
     }
 }
