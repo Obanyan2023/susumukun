@@ -1,4 +1,5 @@
 import Player from "../characters/player";
+import Enemy from "../characters/enemy";
 import FullScreenButton from "../components/buttons/FullScreenButton";
 import MoveJumpButton from "../components/buttons/move/MoveJumpButton";
 import MoveLeftButton from "../components/buttons/move/MoveLeftButton";
@@ -13,6 +14,14 @@ export default class MainScene extends Phaser.Scene {
      * @var プレイヤー
      */
     private player: Player;
+
+    /**
+     * @var 敵
+     */
+    private base_caterpillar: Enemy;
+    private error_caterpillar: Enemy;
+    private red_caterpillar: Enemy;
+    private grasshopper: Enemy;
 
     /**
      * @var ステージ
@@ -53,6 +62,11 @@ export default class MainScene extends Phaser.Scene {
         this.leftButton = new MoveLeftButton(this);
         this.rightButton = new MoveRightButton(this);
         this.jumpButton = new MoveJumpButton(this);
+
+        this.base_caterpillar = new Enemy(this, "base-caterpillar");
+        this.error_caterpillar = new Enemy(this, "error-caterpillar")
+        this.red_caterpillar = new Enemy(this, "red-caterpillar");
+        this.grasshopper = new Enemy(this, "grasshopper");
     }
 
     /**
@@ -63,6 +77,11 @@ export default class MainScene extends Phaser.Scene {
     preload(): void {
         this.player.preload();
         this.stage.preload();
+
+        this.base_caterpillar.preload();
+        this.error_caterpillar.preload();
+        this.red_caterpillar.preload();
+        this.grasshopper.preload();
     }
 
     /**
@@ -79,6 +98,12 @@ export default class MainScene extends Phaser.Scene {
 
         // キャラクターの作成
         this.player.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[]);
+
+        // 敵の作成
+        this.base_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, 30, 30);
+        this.error_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 4  , 30);
+        this.red_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 2 - 40, 30);
+        this.grasshopper.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width - 60, 30);
 
         // ボタンの作成
         this.fullScreenButton.create();
@@ -107,17 +132,13 @@ export default class MainScene extends Phaser.Scene {
      */
     update(): void {
         // プレイヤー落下時にゲームオーバー画面に遷移する
-        if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, (this.player.object?.y as number) + 17)) {
-            this.player.object?.setAlpha(0);
-            this.time.delayedCall(
-                50,
-                () => {
-                    this.player.object?.destroy();
+        const playerHeight : number = 17
+        if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, (this.player.object?.y as number) + playerHeight)) {
+            this.player.distroy(
+               () => {
                     this.scene.start("GameOver");
-                },
-                [],
-                this
-            );
+               } 
+                , 1000);
         }
     }
 }
