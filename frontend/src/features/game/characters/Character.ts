@@ -39,5 +39,4 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     collider(object: Phaser.Physics.Arcade.StaticGroup): void {
         this.scene.physics.add.collider(this, object);
     }
-
 }

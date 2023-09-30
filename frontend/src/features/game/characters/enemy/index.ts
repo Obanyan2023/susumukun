@@ -2,6 +2,10 @@ import Character from "../Character";
 import Player from "../player";
 
 /**
+ * エネミーの種類
+ */
+type EnemyName = "base-caterpillar" | "error-caterpillar" | "red-caterpillar" | "grasshopper";
+/**
  * エネミークラス
  */
 export default class Enemy {
@@ -18,15 +22,15 @@ export default class Enemy {
     /**
      * @var エネミーのアニメーション
      */
-    name: String;
+    private name: EnemyName;
 
     /**
      * コンストラクタ
      *
      * @param {Phaser.Scene} scene シーン
-     * @param {string} name base-caterpillar, error-caterpillar, red-caterpillar or grasshopper
+     * @param {EnemyName} name base-caterpillar, error-caterpillar, red-caterpillar or grasshopper
      */
-    constructor(scene: Phaser.Scene, name: String) {
+    constructor(scene: Phaser.Scene, name: EnemyName) {
         this.scene = scene;
         this.name = name;
     }
@@ -37,8 +41,7 @@ export default class Enemy {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        let spritesheetPath: string = `images/enemy/${this.name}1.png`
-        this.scene.load.spritesheet(this.name as string, spritesheetPath, {
+        this.scene.load.spritesheet(this.name , `images/enemy/${this.name}1.png`, {
             frameWidth: 32,
             frameHeight: 32,
         })
@@ -57,21 +60,22 @@ export default class Enemy {
      * @returns {void} 戻り値なし
      */
     create(objects: Phaser.Physics.Arcade.StaticGroup[], player: Player, x: number, y: number): void {
-        // エネミーとそのアニメーションの宣言
-        this.object = new Character(this.scene, x as number, y as number, this.name as string);
+        // エネミーの宣言
+        this.object = new Character(this.scene, x, y, this.name);
 
         // 衝突するオブジェクトの設定
-        for (const object of objects ?? []) {
+        for (const object of objects) {
             this.object.collider(object);
         }
 
         // プレイヤーと接触時の処理
-        player.object &&
-        this.scene.physics.add.overlap(this.object, player.object, () => {
-            player.distroy(() => {
-                this.scene.scene.start("GameOver")
-            }
-            , 1000);
-        });
+        if (player.object != null) {
+            this.scene.physics.add.overlap(this.object, player.object, () => {
+                player.distroy(() => {
+                    this.scene.scene.start("GameOver")
+                }
+                , 1000);
+            });
+        }
     }
 }
