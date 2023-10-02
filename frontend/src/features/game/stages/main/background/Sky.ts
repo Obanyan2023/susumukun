@@ -24,10 +24,10 @@ export default class Sky extends BaseBackground {
      * @returns {void} 戻り値なし
      */
     create(): void {
-        this.image = this.scene.add.image(0,0,"hidari").setScrollFactor(1);
+        this.image = this.scene.add.image(window.innerWidth/2, window.innerHeight/2,"hidari").setScrollFactor(1);
         const scaleX = window.innerWidth / this.image.width;
         const scaleY = window.innerHeight / this.image.height;
         this.image.setScale(scaleX, scaleY);
-
+        this.image.setOrigin(0.5,0.5);
     }
 }
