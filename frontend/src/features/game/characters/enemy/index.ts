@@ -35,6 +35,7 @@ export default class Enemy {
         this.name = name;
     }
 
+
     /**
      * エネミーの画像を読み込む
      *
@@ -68,14 +69,23 @@ export default class Enemy {
             this.object.collider(object);
         }
 
-        // プレイヤーと接触時の処理
+        // プレイヤーと接触時の処理　敵の消滅とゲームオーバ判定
         if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
-                player.distroy(() => {
-                    this.scene.scene.start("GameOver")
+                let height:number = 36
+                if (player.object?.body?.velocity != undefined && this.object?.y != null &&
+                     player.object?.body.velocity.y > 0 && player.object?.y < this.object?.y - height) {
+
+                    player.object?.setVelocityY(-200);
+                    this.object?.destroy();
+                } else {
+                    player.destroy(() => {
+                        this.scene.scene.start("GameOver")
+                    }
+                    , 1000);
                 }
-                , 1000);
             });
         }
+
     }
 }

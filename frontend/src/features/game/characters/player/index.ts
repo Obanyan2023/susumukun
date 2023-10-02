@@ -108,7 +108,7 @@ export default class Player {
     * @returns {void} 戻り値なし
     * @description プレイヤーを非表示にし、待機時間後にコールバック関数を呼び出す。
     */
-    distroy(callback:()=>void, timeout:number): void {
+    destroy(callback:()=>void, timeout:number): void {
         this.object?.setVisible(false);
         this.scene.cameras.main.stopFollow();
         this.scene.time.delayedCall(
