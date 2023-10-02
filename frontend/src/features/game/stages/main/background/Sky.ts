@@ -15,7 +15,7 @@ export default class Sky extends BaseBackground {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image("hidari", "images/background/parkingarea.jpg")
+        this.scene.load.image("parkingarea", "images/background/parkingarea.jpg")
     }
 
     /**
@@ -24,7 +24,7 @@ export default class Sky extends BaseBackground {
      * @returns {void} 戻り値なし
      */
     create(): void {
-        this.image = this.scene.add.image(0, window.innerHeight/2,"hidari").setScrollFactor(1);
+        this.image = this.scene.add.image(0, window.innerHeight/2,"parkingarea").setScrollFactor(1);
         const scaleY = window.innerHeight / this.image.height;
         const scaleX = scaleY;
         this.image.setScale(scaleX, scaleY);
