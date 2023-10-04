@@ -29,7 +29,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         // ワールドの境界に衝突するように設定
         this.setCollideWorldBounds(true);
         // x方向のバウンドを設定
-        this.setBounceX(0.2);
+        this.setBounceX(0.3);
     }
 
     /**
