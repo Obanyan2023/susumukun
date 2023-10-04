@@ -99,6 +99,17 @@ export default class Player {
             this.object.collider(object);
         }
     }
+    /**
+     * x方向の速度の上限・下限値を設定する
+     * 
+     * 
+     */
+    callLimitVelocityX(min:number, max:number): void {
+        if (this.object?.body !== null) {
+            this.object?.setVelocityX(Phaser.Math.Clamp(this.object?.body.velocity.x , min, max));
+        }
+    }
+
 
     /**
     * 削除処理

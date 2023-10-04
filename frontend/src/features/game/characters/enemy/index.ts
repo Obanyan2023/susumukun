@@ -72,7 +72,7 @@ export default class Enemy {
         // プレイヤーと接触時の処理　敵の消滅とゲームオーバ判定
         if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
-                let height:number = 36
+                let height:number = 34;
                 if (player.object?.body?.velocity != undefined && this.object?.y != null &&
                      player.object?.body.velocity.y > 0 && player.object?.y < this.object?.y - height) {
 
