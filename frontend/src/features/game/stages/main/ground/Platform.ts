@@ -30,6 +30,7 @@ export default class Platform extends BaseGround {
         const blocksize = 32;
         this.object = this.scene.physics.add.staticGroup();
 
+        console.log("window.innerWidth:" + window.innerWidth);
         for (x = 0; x <= window.innerWidth + blocksize *20; x += blocksize) {//全区画の1番下の地面
             console.log(x);
             this.setBlock(x, bottom);
@@ -49,7 +50,7 @@ export default class Platform extends BaseGround {
             this.setBlock(i, bottom - blocksize * 3);
         }
         x = window.innerWidth + blocksize * 10;
-        console.log(x);
+        //console.log(x);
         end = x + blocksize * 10;
         for (let i = bottom - blocksize; i >= bottom - blocksize * 5; i -= blocksize) {//3区画目の登り階段
             console.log("ii" + i);
@@ -73,6 +74,13 @@ export default class Platform extends BaseGround {
             }
             end += blocksize*2;
         }
+
+        x = window.innerWidth + blocksize * 53;
+        console.log(x);
+        this.setBlock(x, bottom - blocksize * 3);//4区画目左側のブロック
+
+        x += blocksize * 5;
+        this.setBlock(x, bottom - blocksize * 3);//4区画目中央のブロック
     }
     /**
      * ブロックの設置
