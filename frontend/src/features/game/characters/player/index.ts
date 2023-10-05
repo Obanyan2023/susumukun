@@ -105,16 +105,6 @@ export default class Player {
             this.object.collider(object);
         }
 
-        this.cursors?.left?.on("down", () => {
-            this.animation?.left.update();
-            this.object?.setVelocityX(-160);
-        });
-
-        this.cursors?.right?.on("down", () => {
-            this.animation?.right.update();
-            this.object?.setVelocityX(160);
-        })
-
         this.cursors?.up?.on("down", () => {
             if (this.object?.body?.touching.down) {
                 this.object?.setVelocityY(-400);
@@ -140,6 +130,22 @@ export default class Player {
     callLimitVelocityX(min:number, max:number): void {
         if (this.object?.body !== null) {
             this.object?.setVelocityX(Phaser.Math.Clamp(this.object?.body.velocity.x , min, max));
+        }
+    }
+
+    update(): void {
+        if (this.cursors === undefined) {
+            return;
+        }
+
+        if (this.cursors.left?.isDown) {
+            this.animation?.left.update();
+            this.object?.setVelocityX(-160);
+        };
+
+        if (this.cursors.right?.isDown) {
+            this.animation?.right.update();
+            this.object?.setVelocityX(160);
         }
     }
 
