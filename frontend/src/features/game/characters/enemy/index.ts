@@ -70,11 +70,11 @@ export default class Enemy {
         }
 
         // プレイヤーと接触時の処理　敵の消滅とゲームオーバ判定
-        if (player.object !== null) {
+        if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
-                const height:number = 25;
+                let height:number = 20
                 if (player.object?.body?.velocity !== undefined && this.object !== null &&
-                     player.object?.body.velocity.y > 0 && player.object?.y < this.object?.y - height) {
+                    player.object?.body.velocity.y > 0 && player.object?.y < this.object?.y - height) {
 
                     player.object?.setVelocityY(-200);
                     this.object?.destroy();

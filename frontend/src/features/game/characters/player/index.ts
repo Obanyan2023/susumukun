@@ -60,8 +60,8 @@ export default class Player {
     preload(): void {
         // プレイヤーの画像を読み込む
         this.scene.load.spritesheet("susumu", "images/player/susumu-sprite.png", {
-            frameWidth: 32,
-            frameHeight: 32,
+            frameWidth: 20,
+            frameHeight: 31,
         });
     }
 
