@@ -132,12 +132,12 @@ export default class MainScene extends Phaser.Scene {
      */
     update(): void {
         // プレイヤー落下時にゲームオーバー画面に遷移する
-        const playerHeight : number = 17
+        const playerHeight: number = 17
         if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, (this.player.object?.y as number) + playerHeight)) {
             this.player.destroy(
-               () => {
+                () => {
                     this.scene.start("GameOver");
-               } 
+                }
                 , 1000);
         }
         this.player.callLimitVelocityX(-160, 160);
