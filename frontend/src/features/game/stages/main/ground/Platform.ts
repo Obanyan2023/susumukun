@@ -1,4 +1,6 @@
 import BaseGround from "./BaseGround";
+import Player from "../../../characters/player";
+import Enemy from "../../../characters/enemy";
 
 /**
  * プラットフォームクラス
@@ -8,6 +10,8 @@ export default class Platform extends BaseGround {
      * @var プラットフォーム
      */
     object: Phaser.Physics.Arcade.StaticGroup | null = null;
+    
+
 
     /**
      * プラットフォームに使用する画像を読み込む
@@ -16,6 +20,7 @@ export default class Platform extends BaseGround {
      */
     preload(): void {
         this.scene.load.image("ground", "platform.png");
+        this.scene.load.image("enemy_block", "platform.png");
     }
 
     /**
@@ -30,7 +35,12 @@ export default class Platform extends BaseGround {
         const blocksize = 32;
         this.object = this.scene.physics.add.staticGroup();
 
+
+
+
+
         console.log("window.innerWidth:" + window.innerWidth + "600:" + 600);
+        this.setenemy_Block(32, 32);
         for (x = 0; x <= blocksize * 55; x += blocksize) {//全区画の1番下の地面
             console.log(x);
             this.setBlock(x, bottom);
@@ -112,5 +122,21 @@ export default class Platform extends BaseGround {
         }
 
         this.object.create(x, y, "ground").setScale(2).refreshBody();
+    }
+
+    /**
+    * ブロックの設置
+    * 
+    * @param {number: x, number: y} ブロックの座標
+    * @returns {void} 戻り値なし
+    */
+    setenemy_Block(x: number, y: number): void {
+        if (this.object === null) {
+            return;
+        }
+
+        this.object.create(x, y, "enemy_block").setScale(2).refreshBody();
+        //this.object.scaleX = 2;
+        this.object.setAlpha(0);
     }
 }

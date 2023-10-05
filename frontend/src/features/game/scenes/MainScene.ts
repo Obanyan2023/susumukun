@@ -101,9 +101,9 @@ export default class MainScene extends Phaser.Scene {
 
         // 敵の作成
         this.base_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, 30, 30);
-        this.error_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 4  , 30);
+        this.error_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 3  , 30);
         this.red_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 2 - 40, 30);
-        this.grasshopper.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width - 60, 30);
+        this.grasshopper.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width , 30);
 
         // ボタンの作成
         this.fullScreenButton.create();
