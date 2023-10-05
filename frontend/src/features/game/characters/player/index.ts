@@ -44,6 +44,11 @@ export default class Player {
     animation: Animation | null = null;
 
     /**
+     * @var キーボードのカーソルキー
+     */
+    cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+
+    /**
      * コンストラクタ
      *
      * @param {Phaser.Scene} scene シーン
@@ -77,6 +82,7 @@ export default class Player {
     create(objects?: Phaser.Physics.Arcade.StaticGroup[]): void {
         // プレイヤーとそのアニメーションの宣言
         this.object = new Character(this.scene, window.innerWidth / 2, window.innerHeight - 80, "susumu");
+        this.cursors = this.scene.input.keyboard?.createCursorKeys();
         this.animation = {
             turn: new TurnAnimation(this.scene, this),
             left: new LeftAnimation(this.scene, this),
@@ -98,6 +104,22 @@ export default class Player {
         for (const object of objects ?? []) {
             this.object.collider(object);
         }
+
+        this.cursors?.up?.on("down", () => {
+            if (this.object?.body?.touching.down) {
+                this.object?.setVelocityY(-400);
+            }
+        })
+
+        this.cursors?.left?.on("up", () => {
+            this.animation?.turn.update();
+            this.object?.setVelocityX(0);
+        })
+
+        this.cursors?.right?.on("up", () => {
+            this.animation?.turn.update();
+            this.object?.setVelocityX(0);
+        })
     }
     /**
      * x方向の速度の上限・下限値を設定する
@@ -111,6 +133,21 @@ export default class Player {
         }
     }
 
+    update(): void {
+        if (this.cursors === undefined) {
+            return;
+        }
+
+        if (this.cursors.left?.isDown) {
+            this.animation?.left.update();
+            this.object?.setVelocityX(-160);
+        };
+
+        if (this.cursors.right?.isDown) {
+            this.animation?.right.update();
+            this.object?.setVelocityX(160);
+        }
+    }
 
     /**
     * 削除処理

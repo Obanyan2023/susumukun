@@ -131,6 +131,8 @@ export default class MainScene extends Phaser.Scene {
      * @returns {void} 戻り値なし
      */
     update(): void {
+        this.player.update();
+
         // プレイヤー落下時にゲームオーバー画面に遷移する
         const playerHeight : number = 17
         if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, (this.player.object?.y as number) + playerHeight)) {
