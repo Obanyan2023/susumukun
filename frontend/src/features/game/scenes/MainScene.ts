@@ -140,5 +140,6 @@ export default class MainScene extends Phaser.Scene {
                } 
                 , 1000);
         }
+        this.player.callLimitVelocityX(-160, 160);
     }
 }
