@@ -114,8 +114,8 @@ export default class MainScene extends Phaser.Scene {
         const stage = {
             stage_x: 0,
             stage_y: 0,
-            width: window.innerWidth * 3,
-            height: window.innerHeight,
+            width: 3840,
+            height: 600,
         };
 
         // カメラの設定

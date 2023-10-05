@@ -22,7 +22,7 @@ export default class ExampleMoveEntity extends MoveEntity {
         super.create({
             texture: "ground",
             x: 0,
-            y: window.innerHeight / 2,
+            y: 600 / 2,
             xOrigin: 0,
             yOrigin: 0.75,
             scrollFactor: 0.25,
@@ -31,7 +31,7 @@ export default class ExampleMoveEntity extends MoveEntity {
         super.create({
             texture: "ground",
             x: 800 * 1,
-            y: window.innerHeight / 2,
+            y: 600 / 2,
             xOrigin: 0,
             yOrigin: 0.75,
             scrollFactor: 0.25,
@@ -40,7 +40,7 @@ export default class ExampleMoveEntity extends MoveEntity {
         super.create({
             texture: "ground",
             x: 800 * 2,
-            y: window.innerHeight / 2,
+            y: 600 / 2,
             xOrigin: 0,
             yOrigin: 0.75,
             scrollFactor: 0.25,

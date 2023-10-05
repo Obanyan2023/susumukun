@@ -26,23 +26,23 @@ export default class Platform extends BaseGround {
     create(): void {
         let x;
         let end;
-        const bottom = window.innerHeight - 30;
+        const bottom = 570;
         const blocksize = 32;
         this.object = this.scene.physics.add.staticGroup();
 
-        console.log("window.innerWidth:" + window.innerWidth);
-        for (x = 0; x <= window.innerWidth + blocksize * 20; x += blocksize) {//全区画の1番下の地面
+        console.log("window.innerWidth:" + window.innerWidth + "600:" + 600);
+        for (x = 0; x <= blocksize * 55; x += blocksize) {//全区画の1番下の地面
             console.log(x);
             this.setBlock(x, bottom);
             this.setBlock(x, bottom + blocksize);
         }
-        for (x = window.innerWidth + blocksize * 23; x < window.innerWidth * 3 + blocksize; x += blocksize) {//全区画の1番下の地面
+        for (x = blocksize * 59; x < blocksize * 121; x += blocksize) {//全区画の1番下の地面
             console.log(x);
             this.setBlock(x, bottom);
             this.setBlock(x, bottom + blocksize);
         }
 
-        x = window.innerWidth - blocksize * 10;
+        x = blocksize * 30;
         console.log(x);
         this.setBlock(x, bottom - blocksize * 3);//2区画目左側のブロック
         x += blocksize * 3;
@@ -50,33 +50,33 @@ export default class Platform extends BaseGround {
             console.log("i" + i);
             this.setBlock(i, bottom - blocksize * 3);
         }
-        x = window.innerWidth + blocksize * 10;
+        x = blocksize * 50;
         //console.log(x);
-        end = x + blocksize * 10;
+        end = x + blocksize * 6;
         for (let i = bottom - blocksize; i >= bottom - blocksize * 5; i -= blocksize) {//3区画目の登り階段
             console.log("ii" + i);
             for (let j = x; j < end; j += blocksize) {
                 console.log("j" + j);
                 this.setBlock(j, i);
-                this.setBlock(j + blocksize, i);
             }
-            x += blocksize * 2;
+            x += blocksize;
         }
 
-        x = window.innerWidth + blocksize * 23;
+        x = blocksize * 59;
         console.log(x);
-        end = x + blocksize * 2;
+        end = x + blocksize;
         for (let i = bottom - blocksize * 5; i <= bottom - blocksize; i += blocksize) {//3区画目の下り階段
             console.log("iiii" + i);
             for (let j = x; j < end; j += blocksize) {
                 console.log("jjjj" + j);
                 this.setBlock(j, i);
-                this.setBlock(j + blocksize, i);
             }
-            end += blocksize * 2;
+            end += blocksize;
         }
 
-        x = window.innerWidth + blocksize * 50;
+
+
+        x = blocksize * 90;
         console.log(x);
         this.setBlock(x, bottom - blocksize * 3);//4区画目左側のブロック
 
@@ -94,9 +94,11 @@ export default class Platform extends BaseGround {
         this.setBlock(x, bottom - blocksize * 2.5);//5区画目右側のブロック
         this.setBlock(x, bottom - blocksize * 8.5);//5区画目右側のブロック
 
-        for (let i = x; i < x + window.innerWidth/2; i++) {//5区画目上部の地面
+        for (let i = x; i < x + blocksize * 20; i++) {//5区画目上部の地面
             this.setBlock(i, bottom - blocksize * 14.5);
         }
+
+
     }
     /**
      * ブロックの設置

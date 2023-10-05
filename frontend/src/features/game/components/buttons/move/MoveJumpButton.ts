@@ -31,7 +31,7 @@ export default class MoveJumpButton extends MoveButton {
      * @returns {Button} ボタンオブジェクト
      */
     private createButton(): Button {
-        return new Button(this.scene, window.innerWidth - 200, window.innerHeight - 120, "Jump", {
+        return new Button(this.scene, window.innerWidth - 200, 600 - 120, "Jump", {
             fontSize: "50px",
         });
     }

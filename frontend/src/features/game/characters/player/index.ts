@@ -76,7 +76,7 @@ export default class Player {
      */
     create(objects?: Phaser.Physics.Arcade.StaticGroup[]): void {
         // プレイヤーとそのアニメーションの宣言
-        this.object = new Character(this.scene, window.innerWidth / 2, window.innerHeight - 80, "susumu");
+        this.object = new Character(this.scene, 320, 500, "susumu");
         this.animation = {
             turn: new TurnAnimation(this.scene, this),
             left: new LeftAnimation(this.scene, this),

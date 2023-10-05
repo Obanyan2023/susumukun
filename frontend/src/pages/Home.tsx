@@ -30,7 +30,7 @@ const style = {
 const setWinSize = () => {
     const windowSize = {
         width: window.innerWidth,
-        height: window.innerHeight
+        height: 600
     };
     const imageUrlWithParams = `${Background}?w=${windowSize.width}&h=${windowSize.height}`;
 
