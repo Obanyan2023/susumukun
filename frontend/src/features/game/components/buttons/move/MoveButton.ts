@@ -71,6 +71,7 @@ export default class MoveButton {
         }
 
         player.animation?.turn.update();
+        player.object?.setAccelerationX(0);
         player.object?.setVelocityX(0);
     }
 }
