@@ -29,16 +29,22 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         // ワールドの境界に衝突するように設定
         this.setCollideWorldBounds(true);
         // x方向のバウンドを設定
-        this.setBounceX(0.3);
     }
 
     /**
-     * 衝突するオブジェクトの設定
+     * 衝突するオブジェクトの設定,加速度と反対向きに減速する
      *
      * @param {Phaser.Physics.Arcade.StaticGroup} object 衝突するオブジェクト
      * @returns {void} 戻り値なし
      */
     collider(object: Phaser.Physics.Arcade.StaticGroup): void {
-        this.scene.physics.add.collider(this, object);
+        this.scene.physics.add.collider(this, object, () => {
+            if (this.body?.touching.right === true) {
+                this.setVelocityX(-20);            
+            }
+            if (this.body?.touching.left === true) {
+                this.setVelocityX(20);
+            }
+        });
     }
 }
