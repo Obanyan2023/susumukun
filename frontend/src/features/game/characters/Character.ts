@@ -32,18 +32,16 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
 
     /**
-     * 衝突するオブジェクトの設定,加速度と反対向きに減速する
+     * 衝突するオブジェクトの設定
      *
      * @param {Phaser.Physics.Arcade.StaticGroup} object 衝突するオブジェクト
+     * @param {()=>void} callback 衝突時のコールバック関数
      * @returns {void} 戻り値なし
      */
-    collider(object: Phaser.Physics.Arcade.StaticGroup): void {
+    collider(object: Phaser.Physics.Arcade.StaticGroup, callback?:()=>void): void {
         this.scene.physics.add.collider(this, object, () => {
-            if (this.body?.touching.right === true) {
-                this.setVelocityX(-20);            
-            }
-            if (this.body?.touching.left === true) {
-                this.setVelocityX(20);
+            if(callback !== undefined) {
+                callback();
             }
         });
     }

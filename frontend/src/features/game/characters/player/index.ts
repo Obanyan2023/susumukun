@@ -102,8 +102,16 @@ export default class Player {
         this.scene.cameras.main.startFollow(this.object);
 
         // 衝突するオブジェクトの設定
+        // 壁に衝突したら加速度と反対向きに減速
         for (const object of objects ?? []) {
-            this.object.collider(object);
+            this.object.collider(object, () => {
+                if(this.object?.body?.touching.left) {
+                    this.object?.setVelocityX(20);
+                }
+                if(this.object?.body?.touching.right) {
+                    this.object?.setVelocityX(-20);
+                }
+            });
         }
 
         this.cursors?.up?.on("down", () => {
