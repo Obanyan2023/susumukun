@@ -103,10 +103,9 @@ export default class Enemy {
         if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
                 if (player.object !== null && this.object !== null && player.object.y < this.object.y) {
-
-                    player.object?.setVelocityY(-200);
-                    this.object?.setOrigin(0.5, 0);
-                    this.object?.destroy();
+                    player.object.setVelocityY(-200);
+                    this.object.setOrigin(0.5, 0);
+                    this.object.destroy();
                 } else {
                     player.destroy(() => {
                         this.scene.scene.start("GameOver")
