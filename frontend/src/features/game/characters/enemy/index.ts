@@ -1,3 +1,4 @@
+import { createSecretKey } from "crypto";
 import Character from "../Character";
 import Player from "../player";
 
@@ -35,6 +36,35 @@ export default class Enemy {
         this.name = name;
     }
 
+    update(): void{
+       if(this.name=="error-caterpillar"){
+        var random=Phaser.Math.Between(1,50);
+                if(this.object?.body?.velocity!==undefined && random === 1){
+                    this.object?.setVelocityX(this.object.body?.velocity.x * -1 );
+            }
+       }
+    }
+
+    enemy_move(): void {
+        this.object?.setBounceX(1);
+        switch (this.name) {
+            case "base-caterpillar":
+                this.object?.setVelocity(20);
+                break;
+            case "red-caterpillar":
+                this.object?.setVelocity(100);
+                break;
+            case "error-caterpillar":
+                this.object?.setVelocity(40);
+                break;
+            case "grasshopper":
+                this.object?.setAccelerationY(50);
+                this.object?.setBounceY(1);
+                break;
+            default:
+                break;
+        }
+    } 
 
     /**
      * エネミーの画像を読み込む
@@ -63,21 +93,19 @@ export default class Enemy {
     create(objects: Phaser.Physics.Arcade.StaticGroup[], player: Player, x: number, y: number): void {
         // エネミーの宣言
         this.object = new Character(this.scene, x, y, this.name);
-
+        this.enemy_move();
         // 衝突するオブジェクトの設定
         for (const object of objects) {
             this.object.collider(object);
         }
-
+        
         // プレイヤーと接触時の処理　敵の消滅とゲームオーバ判定
-        if (player.object !== null) {
+        if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
-                const height:number = 25;
-                if (player.object?.body?.velocity !== undefined && this.object !== null &&
-                     player.object?.body.velocity.y > 0 && player.object?.y < this.object?.y - height) {
-
-                    player.object?.setVelocityY(-200);
-                    this.object?.destroy();
+                if (player.object !== null && this.object !== null && player.object.y < this.object.y) {
+                    player.object.setVelocityY(-200);
+                    this.object.setOrigin(0.5, 0);
+                    this.object.destroy();
                 } else {
                     player.destroy(() => {
                         this.scene.scene.start("GameOver")
@@ -88,4 +116,5 @@ export default class Enemy {
         }
 
     }
+
 }
