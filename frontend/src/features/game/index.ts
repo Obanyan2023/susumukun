@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import GameOverScene from "./scenes/GameOverScene";
 import MainScene from "./scenes/MainScene";
+import GameClearImage from "./components/images/GameClearImage";
+import GameClearScene from "./scenes/GameClearScene";
 
 /**
  * ゲームの設定
@@ -18,7 +20,7 @@ export const config = {
         },
     },
 
-    scene: [MainScene, GameOverScene],
+    scene: [MainScene, GameOverScene, GameClearScene],
 
     scale: {
         mode: Phaser.Scale.FIT,
