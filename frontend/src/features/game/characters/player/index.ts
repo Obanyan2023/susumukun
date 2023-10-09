@@ -122,6 +122,7 @@ export default class Player {
 
         this.cursors?.left?.on("up", () => {
             this.animation?.turn.update();
+            this.object?.setAccelerationX(0);
             this.object?.setVelocityX(0);
         })
 
