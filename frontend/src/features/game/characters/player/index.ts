@@ -82,6 +82,7 @@ export default class Player {
     create(objects?: Phaser.Physics.Arcade.StaticGroup[]): void {
         // プレイヤーとそのアニメーションの宣言
         this.object = new Character(this.scene, window.innerWidth / 2, window.innerHeight - 80, "susumu");
+        this.object.setOrigin(0.5, 1);
         this.cursors = this.scene.input.keyboard?.createCursorKeys();
         this.animation = {
             turn: new TurnAnimation(this.scene, this),
@@ -101,8 +102,16 @@ export default class Player {
         this.scene.cameras.main.startFollow(this.object);
 
         // 衝突するオブジェクトの設定
+        // 壁に衝突したら加速度と反対向きに減速
         for (const object of objects ?? []) {
-            this.object.collider(object);
+            this.object.collider(object, () => {
+                if(this.object?.body?.touching.left) {
+                    this.object?.setVelocityX(20);
+                }
+                if(this.object?.body?.touching.right) {
+                    this.object?.setVelocityX(-20);
+                }
+            });
         }
 
         this.cursors?.up?.on("down", () => {
@@ -113,13 +122,28 @@ export default class Player {
 
         this.cursors?.left?.on("up", () => {
             this.animation?.turn.update();
+            this.object?.setAccelerationX(0);
             this.object?.setVelocityX(0);
         })
 
         this.cursors?.right?.on("up", () => {
             this.animation?.turn.update();
+            this.object?.setAccelerationX(0);
             this.object?.setVelocityX(0);
         })
+
+        this.cursors?.left?.on( "down", () => {
+            this.animation?.left.update();
+            this.object?.setAccelerationX(-300);
+            this.object?.setVelocityX(-160);
+        })
+
+        this.cursors?.right?.on( "down", () => {
+            this.animation?.right.update();
+            this.object?.setAccelerationX(300);
+            this.object?.setVelocityX(160);
+        })
+
     }
     /**
      * x方向の速度の上限・下限値を設定する
@@ -134,19 +158,6 @@ export default class Player {
     }
 
     update(): void {
-        if (this.cursors === undefined) {
-            return;
-        }
-
-        if (this.cursors.left?.isDown) {
-            this.animation?.left.update();
-            this.object?.setVelocityX(-160);
-        };
-
-        if (this.cursors.right?.isDown) {
-            this.animation?.right.update();
-            this.object?.setVelocityX(160);
-        }
     }
 
     /**
