@@ -125,9 +125,10 @@ export default class MainScene extends Phaser.Scene {
         // ワールドの境界を設定する
         this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
 
+        // 初期画面に敵を配置
         for (let i = 0; i < 5; i++) {
             let newEnemy = new Enemy(this, this.get_enemyName());
-            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 4 + 40, window.innerWidth) , window.innerHeight/2);
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 4 + 100, window.innerWidth) , window.innerHeight/2);
             this.enemyGroup.push(newEnemy);
         }
     }
@@ -184,6 +185,10 @@ export default class MainScene extends Phaser.Scene {
         })
     }
 
+    /**
+     * 敵の名前をランダムに取得する 
+     * @returns {EnemyName} 敵の名前
+     */
     get_enemyName() : EnemyName {
         let enemy_name : EnemyName = "base-caterpillar";
         switch (Phaser.Math.Between(0, 3)) {
