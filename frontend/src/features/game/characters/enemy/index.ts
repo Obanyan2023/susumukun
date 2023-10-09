@@ -1,11 +1,10 @@
-import { createSecretKey } from "crypto";
 import Character from "../Character";
 import Player from "../player";
 
 /**
  * エネミーの種類
  */
-type EnemyName = "base-caterpillar" | "error-caterpillar" | "red-caterpillar" | "grasshopper";
+type EnemyName = "base-caterpillar" | "error-caterpillar" | "red-caterpillar" | "grasshopper"; 
 /**
  * エネミークラス
  */
@@ -46,6 +45,7 @@ export default class Enemy {
     }
 
     enemy_move(): void {
+        this.object?.setVelocityY(900);
         this.object?.setBounceX(1);
         switch (this.name) {
             case "base-caterpillar":
@@ -55,11 +55,10 @@ export default class Enemy {
                 this.object?.setVelocity(100);
                 break;
             case "error-caterpillar":
-                this.object?.setVelocity(40);
+                this.object?.setVelocity(80);
                 break;
             case "grasshopper":
-                this.object?.setAccelerationY(50);
-                this.object?.setBounceY(1);
+                this.object?.setVelocityX(80)
                 break;
             default:
                 break;
@@ -71,11 +70,13 @@ export default class Enemy {
      *
      * @returns {void} 戻り値なし
      */
-    preload(): void {
-        this.scene.load.spritesheet(this.name , `images/enemy/${this.name}1.png`, {
-            frameWidth: 32,
-            frameHeight: 32,
-        })
+    static preload(scene:Phaser.Scene): void {
+        for (let enemy of [ "base-caterpillar", "error-caterpillar", "red-caterpillar", "grasshopper"]) {
+            scene.load.spritesheet(enemy , `images/enemy/${enemy}1.png`, {
+                frameWidth: 32,
+                frameHeight: 32,
+            })
+        }
     }
 
     /**
@@ -93,10 +94,18 @@ export default class Enemy {
     create(objects: Phaser.Physics.Arcade.StaticGroup[], player: Player, x: number, y: number): void {
         // エネミーの宣言
         this.object = new Character(this.scene, x, y, this.name);
+        this.object.visible = false;
         this.enemy_move();
         // 衝突するオブジェクトの設定
         for (const object of objects) {
-            this.object.collider(object);
+            this.object.collider(object, () => {
+                if (this.object !== null) {
+                    this.object.visible= true;
+                }
+                if (this.name === "grasshopper" &&  this.object?.body?.touching.down === true) {
+                    this.object?.setVelocityY(-500);
+                }
+            });
         }
         
         // プレイヤーと接触時の処理　敵の消滅とゲームオーバ判定
