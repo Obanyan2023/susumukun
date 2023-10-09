@@ -127,8 +127,22 @@ export default class Player {
 
         this.cursors?.right?.on("up", () => {
             this.animation?.turn.update();
+            this.object?.setAccelerationX(0);
             this.object?.setVelocityX(0);
         })
+
+        this.cursors?.left?.on( "down", () => {
+            this.animation?.left.update();
+            this.object?.setAccelerationX(-300);
+            this.object?.setVelocityX(-160);
+        })
+
+        this.cursors?.right?.on( "down", () => {
+            this.animation?.right.update();
+            this.object?.setAccelerationX(300);
+            this.object?.setVelocityX(160);
+        })
+
     }
     /**
      * x方向の速度の上限・下限値を設定する
@@ -143,19 +157,6 @@ export default class Player {
     }
 
     update(): void {
-        if (this.cursors === undefined) {
-            return;
-        }
-
-        if (this.cursors.left?.isDown) {
-            this.animation?.left.update();
-            this.object?.setVelocityX(-160);
-        };
-
-        if (this.cursors.right?.isDown) {
-            this.animation?.right.update();
-            this.object?.setVelocityX(160);
-        }
     }
 
     /**
