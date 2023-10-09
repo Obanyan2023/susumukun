@@ -1,18 +1,22 @@
 import { axios } from "../../../lib/axios";
+import {ScoreEntity} from "../../../types";
+import {AxiosError, AxiosResponse} from "axios";
 
 /**
  * スコアを取得する
  *
  * @param {string} mode ソートモード (ASC: 昇順, DESC: 降順)
- * @returns {void} 戻り値無し
+ * @returns {Promise<ScoreEntity[] | []>} 戻り値無し
  */
-export const getScoresApi = (mode?: string): void => {
-    axios
+export const getScoresApi = async (mode?: string): Promise<ScoreEntity[] | []> => {
+    return await axios
         .get("/api/scores", {
             params: {
                 mode: mode,
             },
-        })
-        .then((response) => (process.env.NODE_ENV === "development" ? console.log(response.data) : null))
-        .catch((error) => (process.env.NODE_ENV === "development" ? console.log(error) : null));
+        }).then((response: AxiosResponse<{data: ScoreEntity[]}>) => {
+            return response.data.data;
+        }).catch((error: AxiosError) => {
+            return [];
+        });
 };
