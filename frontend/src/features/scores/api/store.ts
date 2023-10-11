@@ -1,18 +1,23 @@
 import { axios } from "../../../lib/axios";
+import Axios, {AxiosError, AxiosResponse} from "axios";
 
 /**
  * スコアを保存する
  *
  * @param {string} nickname ニックネーム
  * @param {number} score スコア
- * @returns {void} 戻り値無し
+ * @returns {Promise<void>} 戻り値無し
  */
-export const storeScoresApi = (nickname: string, score: number): void => {
-    axios
+export const storeScoresApi = async (nickname: string, score: number): Promise<void> => {
+    return await axios
         .post("/api/scores", {
             nickname: nickname,
             score: score,
         })
-        .then((response) => (process.env.NODE_ENV === "development" ? console.log(response.data) : null))
-        .catch((error) => (process.env.NODE_ENV === "development" ? console.log(error) : null));
+        .then((response: AxiosResponse) => {
+             //
+        })
+        .catch((error: AxiosError) => {
+            alert("スコアの保存に失敗しました")
+        });
 };

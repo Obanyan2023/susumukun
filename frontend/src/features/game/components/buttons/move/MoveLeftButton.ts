@@ -19,6 +19,7 @@ export default class MoveLeftButton extends MoveButton {
 
         // 左移動を行う
         super.create(player, () => {
+            player.object?.setVelocityX(-160);
             player.object?.setAccelerationX(-300);
             player.animation?.left.update();
         });

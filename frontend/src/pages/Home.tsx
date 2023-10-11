@@ -102,7 +102,7 @@ export const Home = () => {
                                 </Box>
                             </Box>
                         </Modal>
-                        <Button variant="contained" color='inherit' sx={{ margin: 3 }}> スコア確認</Button>
+                        <Button href="/scores" variant="contained" color='inherit' sx={{ margin: 3 }}> スコア確認</Button>
                     </Grid>
                 </Grid>
             </Box>
