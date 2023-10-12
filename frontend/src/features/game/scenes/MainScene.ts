@@ -156,10 +156,15 @@ export default class MainScene extends Phaser.Scene {
         // ワールドの境界を設定する
         this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
 
+
+        this.cameras.main.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
+        this.cameras.main.setScroll(0, 0);  // カメラのスクロールを0に設定
+    
+
       
         this.textObject = this.add.text(
-            this.cameras.main.width - 20,
-            20,
+            20,  // 固定のX座標
+            20,  // 固定のY座標
             '',
             {
                 fontFamily: 'Arial',
@@ -167,7 +172,9 @@ export default class MainScene extends Phaser.Scene {
                 color: '#ffffff'
             }
         );
-        this.textObject.setOrigin(1, 0);
+        this.textObject.setScrollFactor(0);  // スクロールに影響を受けないように設定
+        this.textObject.setOrigin(0, 0);  // テキストの原点を左上に設定
+
     
         this.updateTimerDisplay();
     }
