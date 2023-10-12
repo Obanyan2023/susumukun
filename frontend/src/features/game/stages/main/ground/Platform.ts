@@ -10,7 +10,7 @@ export default class Platform extends BaseGround {
      * @var プラットフォーム
      */
     object: Phaser.Physics.Arcade.StaticGroup | null = null;
-    
+
 
 
     /**
@@ -46,7 +46,7 @@ export default class Platform extends BaseGround {
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
         }
-        for (x = blocksize * 59; x < blocksize * 121; x += blocksize) {//全区画の1番下の地面
+        for (x = blocksize * 59; x < blocksize * 100; x += blocksize) {//全区画の1番下の地面
             console.log(x);
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
@@ -97,18 +97,40 @@ export default class Platform extends BaseGround {
         this.setBlock(x, bottom - blocksize * 3, 3);//4区画目右側のブロック
 
         x += blocksize * 6;
-        this.setBlock(x, bottom - blocksize * 5.5, 0);//5区画目左側のブロック
-        this.setBlock(x, bottom - blocksize * 11.5, 0);//5区画目左側のブロック
-
+        this.setBlock(x, bottom - blocksize * 2, 0);//5区画目1段目のブロック
         x += blocksize;
-        this.setBlock(x, bottom - blocksize * 2.5, 0);//5区画目右側のブロック
-        this.setBlock(x, bottom - blocksize * 8.5, 0);//5区画目右側のブロック
+        this.setBlock(x, bottom - blocksize * 2, 0);
 
-        for (let i = x; i < x + blocksize * 20; i++) {//5区画目上部の地面
-            this.setBlock(i, bottom - blocksize * 14.5, 0);
+        x += blocksize * 2;
+        this.setBlock(x, bottom - blocksize * 4, 0);//5区画目2段目のブロック
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize * 4, 0);
+
+        x += blocksize * 2;
+        this.setBlock(x, bottom - blocksize * 6, 0);//5区画目3段目のブロック
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize * 6, 0);
+
+        //oitのロゴ
+        x += blocksize * 2;
+        for (let i = x; i < x + blocksize * 7; i += blocksize) {
+            this.setBlock(i, bottom - blocksize * 8, 0);
+            this.setBlock(i, bottom - blocksize * 7, 0);
+            this.setBlock(i, bottom - blocksize * 3, 0);
+            this.setBlock(i, bottom - blocksize * 2, 0);
         }
-
-
+        this.setBlock(x, bottom - blocksize * 5, 0);
+        x += blocksize*2;
+        for (let i = bottom - blocksize * 6; i < bottom - blocksize * 3; i += blocksize) {
+            this.setBlock(x, i, 0);
+        }
+        x += blocksize*2;
+        for (let i = bottom - blocksize * 6; i < bottom - blocksize * 3; i += blocksize) {
+            this.setBlock(x, i, 0);
+        }
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize * 5, 0);
+        this.setBlock(x, bottom - blocksize * 4, 0);
     }
     /**
      * ブロックの設置
@@ -122,17 +144,17 @@ export default class Platform extends BaseGround {
         }
 
         this.object.create(x, y, "ground").setScale(2).refreshBody();
-        
+
         switch (mode) {
             case 1:
-                this.setenemy_Block(x-22.5, y-20.5);
+                this.setenemy_Block(x - 22.5, y - 20.5);
                 break;
             case 2:
-                this.setenemy_Block(x+22.5, y-20.5);
+                this.setenemy_Block(x + 22.5, y - 20.5);
                 break;
             case 3:
-                this.setenemy_Block(x-22.5, y-20.5);
-                this.setenemy_Block(x+22.5, y-20.5);
+                this.setenemy_Block(x - 22.5, y - 20.5);
+                this.setenemy_Block(x + 22.5, y - 20.5);
                 break;
             case 0:
                 break;
