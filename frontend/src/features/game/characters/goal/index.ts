@@ -1,4 +1,3 @@
-import { createSecretKey } from "crypto";
 import Character from "../Character";
 import Player from "../player";
 import MainScene from "../../scenes/MainScene";
@@ -34,21 +33,13 @@ export default class Goal {
         this.scene = scene;
         this.name = name;
     }
-
-    
-
-    
-
     /**
      * ゴールの画像を読み込む
      *
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.spritesheet(this.name , `images/enemy/${this.name}1.png`, {
-            frameWidth: 32,
-            frameHeight: 32,
-        })
+        this.scene.load.image(this.name , `images/enemy/${this.name}1.png`);
     }
 
     /**
@@ -66,6 +57,8 @@ export default class Goal {
     create(objects: Phaser.Physics.Arcade.StaticGroup[], player: Player, x: number, y: number): void {
         // ゴールの宣言
         this.object = new Character(this.scene, x, y, this.name);
+        this.object.setOrigin(1, 1);
+        this.object.setScale(window.innerHeight / this.object.height / 20);
         // 衝突するオブジェクトの設定
         for (const object of objects) {
             this.object.collider(object);

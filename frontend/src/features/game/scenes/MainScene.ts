@@ -135,7 +135,7 @@ export default class MainScene extends Phaser.Scene {
         // 初期画面に敵を配置
         for (let i = 0; i < 5; i++) {
             let newEnemy = new Enemy(this, Enemy.get_enemyName());
-            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 4 + 100, window.innerWidth) , window.innerHeight/2);
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 3, window.innerWidth) , window.innerHeight/3 * 2);
             this.enemyGroup.push(newEnemy);
         }
     }
@@ -146,7 +146,6 @@ export default class MainScene extends Phaser.Scene {
      * @returns {void} 戻り値なし
      */
     update(): void {
-        this.startScene('GameClear');
         this.player.update();
 
         // プレイヤー落下時にゲームオーバー画面に遷移する
@@ -178,7 +177,7 @@ export default class MainScene extends Phaser.Scene {
         }
         if (this.cameras.main.scrollX > this.before_x && rand === 1) {
             let newEnemy = new Enemy(this, enemy_name)
-            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth - 10 , window.innerHeight / 10 );
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth + 50 , window.innerHeight / 10 );
             this.enemyGroup.push(newEnemy);
             this.before_x = this.cameras.main.scrollX;
         }
