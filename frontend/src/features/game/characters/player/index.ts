@@ -81,7 +81,7 @@ export default class Player {
      */
     create(objects?: Phaser.Physics.Arcade.StaticGroup[]): void {
         // プレイヤーとそのアニメーションの宣言
-        this.object = new Character(this.scene, 320, 500, "susumu");
+        this.object = new Character(this.scene, window.innerWidth / 2, window.innerHeight - 80, "susumu");
         this.object.setOrigin(0.5, 1);
         this.cursors = this.scene.input.keyboard?.createCursorKeys();
         this.animation = {
