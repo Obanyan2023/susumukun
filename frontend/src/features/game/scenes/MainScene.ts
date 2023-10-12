@@ -175,6 +175,13 @@ export default class MainScene extends Phaser.Scene {
         this.textObject.setScrollFactor(0);  // スクロールに影響を受けないように設定
         this.textObject.setOrigin(0, 0);  // テキストの原点を左上に設定
 
+        this.time.addEvent({
+            delay: 1000,  // 1000ミリ秒ごと（1秒ごと）
+            loop: true,
+            callback: this.updateTimer,
+            callbackScope: this
+        });
+
     
         this.updateTimerDisplay();
     }
