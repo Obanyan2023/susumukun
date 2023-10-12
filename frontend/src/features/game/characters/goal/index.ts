@@ -58,7 +58,7 @@ export default class Goal {
         // ゴールの宣言
         this.object = new Character(this.scene, x, y, this.name);
         this.object.setOrigin(1, 1);
-        this.object.setScale(window.innerHeight / this.object.height / 20);
+        this.object.setScale(window.innerHeight / this.object.height / 10);
         // 衝突するオブジェクトの設定
         for (const object of objects) {
             this.object.collider(object);

@@ -116,7 +116,7 @@ export default class MainScene extends Phaser.Scene {
         this.jumpButton.create(this.player);
 
         // スコア表示
-        this.scoreText = this.add.text(10, 10, `Score: ${this.score}`, {fontSize: "90px",});
+        this.scoreText = this.add.text(10, 10, `Score: ${this.score}`, {fontSize: "40px",});
         this.scoreText.setScrollFactor(0);
 
         const stage = {
