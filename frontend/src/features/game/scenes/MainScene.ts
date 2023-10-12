@@ -103,7 +103,7 @@ export default class MainScene extends Phaser.Scene {
         this.player.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[]);
 
         // ゴールの作成
-        this.goal.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player,  this.cameras.main.width + 3100, 30)
+        this.goal.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player,  6840, 30)
 
         // ボタンの作成
         this.fullScreenButton.create();
