@@ -40,11 +40,11 @@ export default class Platform extends BaseGround {
 
 
         this.setenemy_Block(32, 32);
-        for (x = 0; x <= blocksize * 55; x += blocksize) {//全区画の1番下の地面
+        for (x = 0; x <= blocksize * 64; x += blocksize) {//全区画の1番下の地面
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
         }
-        for (x = blocksize * 59; x < blocksize * 100; x += blocksize) {//全区画の1番下の地面
+        for (x = blocksize * 67; x < blocksize * 113; x += blocksize) {//全区画の1番下の地面
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
         }
@@ -55,7 +55,19 @@ export default class Platform extends BaseGround {
         for (let i = x; i < x + blocksize * 3; i += blocksize) {//2区画目右側のブロック3つ
             this.setBlock(i, bottom - blocksize * 3, 0);
         }
+
         x = blocksize * 50;
+        this.setBlock(x, bottom - blocksize, 1);//2区画目中央下側のブロック
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize, 0);//3区画目左側のブロック
+        this.setBlock(x, bottom - blocksize * 2, 3);//3区画目右側のブロック
+        x += blocksize * 2;
+        this.setBlock(x, bottom - blocksize, 0);//3区画目中央下側のブロック
+        this.setBlock(x, bottom - blocksize * 2, 3);//3区画目中央下側のブロック
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize, 2);//3区画目右側のブロック
+
+        x = blocksize * 59;
         end = x + blocksize * 6;
         for (let i = bottom - blocksize; i >= bottom - blocksize * 5; i -= blocksize) {//3区画目の登り階段
             for (let j = x; j < end; j += blocksize) {
@@ -63,11 +75,7 @@ export default class Platform extends BaseGround {
             }
             x += blocksize;
         }
-
-        x = blocksize * 59;
-        this.setBlock(x, bottom - blocksize * 3, 3);//3区画目左側のブロック
-        this.setBlock(x, bottom - blocksize * 4, 3);//3区画目右側のブロック
-        x = blocksize * 70;
+        x += blocksize * 3;
         end = x + blocksize;
         for (let i = bottom - blocksize * 5; i <= bottom - blocksize; i += blocksize) {//3区画目の下り階段
             for (let j = x; j < end; j += blocksize) {
@@ -85,18 +93,114 @@ export default class Platform extends BaseGround {
         x += blocksize * 3;
         this.setBlock(x, bottom - blocksize * 3, 3);//4区画目右側のブロック
 
+
         x += blocksize * 6;
-        this.setBlock(x, bottom - blocksize * 2, 0);//5区画目1段目のブロック
+        this.setBlock(x, bottom - blocksize, 0);//5区画目左側のブロック
+        this.setBlock(x, bottom - blocksize * 2, 0);//5区画目右側のブロック
+        x += blocksize * 3;
+        this.setBlock(x, bottom - blocksize, 0);//5区画目左側のブロック
+        this.setBlock(x, bottom - blocksize * 2, 0);//5区画目右側のブロック
+        x += blocksize * 3;
+        this.setBlock(x, bottom - blocksize * 4, 0);//5区画目左側のブロック
+        x += blocksize * 4;
+        this.setBlock(x, bottom - blocksize, 0);//5区画目左側のブロック
+        this.setBlock(x, bottom - blocksize * 2, 0);//5区画目右側のブロック
+        this.setBlock(x, bottom - blocksize * 3, 0);//5区画目右側のブロック
+        this.setBlock(x, bottom - blocksize * 4, 0);//5区画目右側のブロック
+        console.log(x / blocksize);
+        for (x = blocksize * 115; x < blocksize * 130; x += blocksize) {//6区画目の地面
+            this.setBlock(x, bottom - blocksize, 0);
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+        for (x = blocksize * 132; x < blocksize * 150; x += blocksize) {//6区画目の地面
+            this.setBlock(x, bottom - blocksize * 3, 0);
+            this.setBlock(x, bottom - blocksize * 2, 0);
+            this.setBlock(x, bottom - blocksize, 0);
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+
+        x = blocksize * 135;
+        this.setBlock(x, bottom - blocksize * 7, 0);//6区画目の地面
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize * 7, 0);//6区画目の地面
+        x += blocksize * 2;
+        this.setBlock(x, bottom - blocksize * 9, 0);//6区画目の地面
+        this.setBlock(x, bottom - blocksize * 5, 0);//6区画目の地面
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize * 9, 0);//6区画目の地面
+        this.setBlock(x, bottom - blocksize * 5, 0);//6区画目の地面
+        x += blocksize * 2;
+        this.setBlock(x, bottom - blocksize * 7, 0);//6区画目の地面
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize * 7, 0);//6区画目の地面
+
+
+        for (x = blocksize * 152; x < blocksize * 160; x += blocksize) {//7区画目の地面
+            this.setBlock(x, bottom - blocksize * 5, 0);
+            this.setBlock(x, bottom - blocksize * 4, 0);
+            this.setBlock(x, bottom - blocksize * 3, 0);
+            this.setBlock(x, bottom - blocksize * 2, 0);
+            this.setBlock(x, bottom - blocksize, 0);
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+
+        x = blocksize * 156;
+        this.setBlock(x, bottom - blocksize * 8, 2);//7区画目の地面
+
+        x = blocksize * 163;
+        this.setBlock(x, bottom - blocksize * 6, 0);//7区画目の地面
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize * 6, 0);//7区画目の地面
+
+        for (x = blocksize * 167; x < blocksize * 177; x += blocksize) {//7区画目の地面
+            this.setBlock(x, bottom - blocksize * 7, 0);
+            this.setBlock(x, bottom - blocksize * 6, 0);
+            this.setBlock(x, bottom - blocksize * 5, 0);
+            this.setBlock(x, bottom - blocksize * 4, 0);
+            this.setBlock(x, bottom - blocksize * 3, 0);
+            this.setBlock(x, bottom - blocksize * 2, 0);
+            this.setBlock(x, bottom - blocksize, 0);
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+
+        x = blocksize * 170;
+        this.setBlock(x, bottom - blocksize * 8, 2);//7区画目の地面
+        x += blocksize * 2;
+        this.setBlock(x, bottom - blocksize * 10, 2);//7区画目の地面
+        x += blocksize * 2;
+        this.setBlock(x, bottom - blocksize * 8, 2);//7区画目の地面
+
+        for (x = blocksize * 183; x < blocksize * 198; x += blocksize) {
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+
+        x = blocksize * 187;
+        for (let i = x; i < blocksize * 195; i += blocksize) {
+            this.setBlock(i, bottom - blocksize * 2, 0);//7区画目の地面
+        }
+
+        x = blocksize * 190;
+        for (let i = x; i < blocksize * 193; i += blocksize) {
+            this.setBlock(i, bottom - blocksize * 4, 0);//7区画目の地面
+        }
+
+        x = blocksize * 200;
+        this.setBlock(x, bottom - blocksize * 2, 0);//ゴール区画1段目のブロック
         x += blocksize;
         this.setBlock(x, bottom - blocksize * 2, 0);
 
         x += blocksize * 2;
-        this.setBlock(x, bottom - blocksize * 4, 0);//5区画目2段目のブロック
+        this.setBlock(x, bottom - blocksize * 4, 0);//ゴール区画2段目のブロック
         x += blocksize;
         this.setBlock(x, bottom - blocksize * 4, 0);
 
         x += blocksize * 2;
-        this.setBlock(x, bottom - blocksize * 6, 0);//5区画目3段目のブロック
+        this.setBlock(x, bottom - blocksize * 6, 0);//ゴール区画3段目のブロック
         x += blocksize;
         this.setBlock(x, bottom - blocksize * 6, 0);
 
@@ -109,17 +213,18 @@ export default class Platform extends BaseGround {
             this.setBlock(i, bottom - blocksize * 2, 0);
         }
         this.setBlock(x, bottom - blocksize * 5, 0);
-        x += blocksize*2;
+        x += blocksize * 2;
         for (let i = bottom - blocksize * 6; i < bottom - blocksize * 3; i += blocksize) {
             this.setBlock(x, i, 0);
         }
-        x += blocksize*2;
+        x += blocksize * 2;
         for (let i = bottom - blocksize * 6; i < bottom - blocksize * 3; i += blocksize) {
             this.setBlock(x, i, 0);
         }
         x += blocksize;
         this.setBlock(x, bottom - blocksize * 5, 0);
         this.setBlock(x, bottom - blocksize * 4, 0);
+
     }
     /**
      * ブロックの設置
