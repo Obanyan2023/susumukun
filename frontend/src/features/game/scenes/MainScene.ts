@@ -54,6 +54,17 @@ export default class MainScene extends Phaser.Scene {
      */
      private goal: Goal;
 
+      /**
+     * @var 制限時間 (秒)
+     */
+    private timeLimit: number = 180; // 3分間
+
+    /**
+     * @var テキストオブジェクト
+     */
+    private textObject: Phaser.GameObjects.Text;
+
+
     /**
      * コンストラクタ
      *
@@ -75,6 +86,13 @@ export default class MainScene extends Phaser.Scene {
         this.grasshopper = new Enemy(this, "grasshopper");
 
         this.goal = new Goal(this, "goal");
+
+        this.textObject = {} as Phaser.GameObjects.Text;
+
+        this.events = new Phaser.Events.EventEmitter();
+    
+        this.events.on('update', this.updateTimer, this);
+        
     }
 
     /**
@@ -137,6 +155,21 @@ export default class MainScene extends Phaser.Scene {
 
         // ワールドの境界を設定する
         this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
+
+      
+        this.textObject = this.add.text(
+            this.cameras.main.width - 20,
+            20,
+            '',
+            {
+                fontFamily: 'Arial',
+                fontSize: '24px',
+                color: '#ffffff'
+            }
+        );
+        this.textObject.setOrigin(1, 0);
+    
+        this.updateTimerDisplay();
     }
 
     /**
@@ -157,5 +190,18 @@ export default class MainScene extends Phaser.Scene {
         }
         this.player.callLimitVelocityX(-160, 160);
         this.error_caterpillar.update();
+    }
+
+    private updateTimer(): void {
+        this.timeLimit--;
+        this.updateTimerDisplay();
+
+        if (this.timeLimit <= 0) {
+            this.scene.start("GameOver");
+        }
+    }
+
+    private updateTimerDisplay(): void {
+        this.textObject.setText(`Time: ${this.timeLimit} s`);
     }
 }
