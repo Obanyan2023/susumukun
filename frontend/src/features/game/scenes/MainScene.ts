@@ -19,10 +19,7 @@ export default class MainScene extends Phaser.Scene {
     /**
      * @var 敵
      */
-    private base_caterpillar: Enemy;
-    private error_caterpillar: Enemy;
-    private red_caterpillar: Enemy;
-    private grasshopper: Enemy;
+    private enemyGroup: Enemy[] = [];
 
     /**
      * @var ステージ
@@ -54,6 +51,11 @@ export default class MainScene extends Phaser.Scene {
      */
      private goal: Goal;
 
+     /**
+      * @var 前回のカメラ位置
+      */
+     private before_x: number | undefined;
+
     /**
      * コンストラクタ
      *
@@ -69,10 +71,6 @@ export default class MainScene extends Phaser.Scene {
         this.rightButton = new MoveRightButton(this);
         this.jumpButton = new MoveJumpButton(this);
 
-        this.base_caterpillar = new Enemy(this, "base-caterpillar");
-        this.error_caterpillar = new Enemy(this, "error-caterpillar")
-        this.red_caterpillar = new Enemy(this, "red-caterpillar");
-        this.grasshopper = new Enemy(this, "grasshopper");
 
         this.goal = new Goal(this, "goal");
     }
@@ -85,12 +83,7 @@ export default class MainScene extends Phaser.Scene {
     preload(): void {
         this.player.preload();
         this.stage.preload();
-
-        this.base_caterpillar.preload();
-        this.error_caterpillar.preload();
-        this.red_caterpillar.preload();
-        this.grasshopper.preload();
-
+        Enemy.preload(this);
         this.goal.preload();
     }
 
@@ -109,15 +102,17 @@ export default class MainScene extends Phaser.Scene {
         // キャラクターの作成
         this.player.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[]);
 
+<<<<<<< HEAD
         // 敵の作成
         this.base_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, 30, 30);
         this.error_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 3  , 30);
         this.red_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 2 - 40, 30);
         this.grasshopper.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width - 60, 30);
         
+=======
+        // ゴールの作成
+>>>>>>> main
         this.goal.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player,  this.cameras.main.width + 3100, 30)
-
-
 
         // ボタンの作成
         this.fullScreenButton.create();
@@ -137,6 +132,13 @@ export default class MainScene extends Phaser.Scene {
 
         // ワールドの境界を設定する
         this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
+
+        // 初期画面に敵を配置
+        for (let i = 0; i < 5; i++) {
+            let newEnemy = new Enemy(this, Enemy.get_enemyName());
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 4 + 100, window.innerWidth) , window.innerHeight/2);
+            this.enemyGroup.push(newEnemy);
+        }
     }
 
     /**
@@ -156,6 +158,39 @@ export default class MainScene extends Phaser.Scene {
                 , 1000);
         }
         this.player.callLimitVelocityX(-160, 160);
-        this.error_caterpillar.update();
+        this.enemy_update();
     }
+
+    /**
+     * 敵オブジェクトの更新を行う
+     *
+     * @returns {void} 戻り値なし
+     */
+    enemy_update(): void {
+        if (this.player.object === null ) {
+            return;
+        }
+
+        let rand = Phaser.Math.Between(0, 70);
+
+        let enemy_name = Enemy.get_enemyName();
+        if (this.before_x === undefined) { 
+            this.before_x = this.cameras.main.scrollX;
+        }
+        if (this.cameras.main.scrollX > this.before_x && rand === 1) {
+            let newEnemy = new Enemy(this, enemy_name)
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth - 10 , window.innerHeight / 10 );
+            this.enemyGroup.push(newEnemy);
+            this.before_x = this.cameras.main.scrollX;
+        }
+
+        this.enemyGroup.forEach((enemy) => {
+            enemy.update();
+            let height : number = 15;
+            if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, enemy.object?.y as number + height)) {
+                enemy.object?.destroy();
+            }
+        })
+    }
+
 }
