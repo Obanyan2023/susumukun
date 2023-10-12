@@ -143,19 +143,18 @@ export default class Enemy {
         // プレイヤーと接触時の処理　敵の消滅とゲームオーバ判定
         if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
+                let mainscene: MainScene | null = null;
+                if (this.scene instanceof MainScene) {
+                    mainscene = this.scene;
+                } 
                 if (player.object !== null && this.object !== null && player.object.y < this.object.y) {
                     player.object.setVelocityY(-200);
                     this.object.setOrigin(0.5, 0);
                     this.object.destroy();
-                    let mainscene: MainScene;
-                    if (this.scene instanceof MainScene) {
-                        mainscene = this.scene;
-                        mainscene.updateScore(this.point);
-                        console.log(mainscene.getScore());
-                    }
+                    mainscene?.updateScore(this.point);
                 } else {
                     player.destroy(() => {
-                        this.scene.scene.start("GameOver")
+                        mainscene?.startScene('GameOver');
                     }
                     , 1000);
                 }

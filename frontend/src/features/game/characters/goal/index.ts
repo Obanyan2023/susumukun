@@ -1,6 +1,7 @@
 import { createSecretKey } from "crypto";
 import Character from "../Character";
 import Player from "../player";
+import MainScene from "../../scenes/MainScene";
 
 
 type GoalName = "goal";
@@ -81,7 +82,10 @@ export default class Goal {
                     this.object?.destroy();
                 } else {
                     player.destroy(() => {
-                        this.scene.scene.start("GameClear")
+                        if (this.scene instanceof MainScene) {
+                            const mainscene = this.scene;
+                            mainscene.startScene('GameClear');
+                        }
                     }
                     , 1000);
                 }

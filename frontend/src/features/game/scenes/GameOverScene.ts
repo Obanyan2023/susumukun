@@ -28,14 +28,8 @@ export default class GameOverScene extends Phaser.Scene {
 
         this.gameOverImage = new GameOverImage(this);
         this.tmpButton = new TmpButton(this);
-        this.score = 0;
     }
     
-    public init(data: { score: number}): void {
-        console.log('init', data);
-        this.score = data.score;
-        
-    }
 
     /**
      * 画像を読み込む
@@ -46,6 +40,11 @@ export default class GameOverScene extends Phaser.Scene {
         this.gameOverImage.preload();
     }
 
+    init(data:any): void {
+        console.log(data);
+        this.score = data.score;
+    }
+
     /**
      * 画像やボタンを作成する
      */
@@ -53,7 +52,8 @@ export default class GameOverScene extends Phaser.Scene {
         this.gameOverImage.create();
         this.tmpButton.create();
 
-        this.add.text(window.innerWidth /2 , window.innerHeight /2, `Score: ${this.score}`);
+        const scoreText = this.add.text(window.innerWidth /2 , window.innerHeight /4, `Score: ${this.score}`, {fontSize: "50px"});
+        scoreText.setOrigin(0.5);
 
         console.log("GameOver!!");
     }

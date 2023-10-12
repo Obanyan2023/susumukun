@@ -6,7 +6,6 @@ import MoveLeftButton from "../components/buttons/move/MoveLeftButton";
 import MoveRightButton from "../components/buttons/move/MoveRightButton";
 import MainStage from "../stages/main";
 import Goal from "../characters/goal";
-
 /**
  * ゲームのメインシーン
  */
@@ -147,16 +146,15 @@ export default class MainScene extends Phaser.Scene {
      * @returns {void} 戻り値なし
      */
     update(): void {
+        this.startScene('GameClear');
         this.player.update();
 
         // プレイヤー落下時にゲームオーバー画面に遷移する
         if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, this.player.object?.y as number + 1)) {
             this.player.destroy(
                () => {
-                    this.scene.start("GameOver")
+                    this.startScene('GameOver');
                }, 1000 )
-               
-                
         }
         this.player.callLimitVelocityX(-160, 160);
         this.enemy_update();
@@ -203,4 +201,14 @@ export default class MainScene extends Phaser.Scene {
         return this.score;
     }
 
+    /**
+     * ゲームオーバー画面に遷移する 次のシーンにデータを引き継ぐ
+     * @returns {void} 戻り値なし
+     */
+    startScene(key:String) : void {
+        const data = {
+            score: this.score,
+        }
+        this.scene.start(`${key}`, data)
+    }
 }
