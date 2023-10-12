@@ -45,7 +45,7 @@ export default class Enemy {
     }
 
     enemy_move(): void {
-        this.object?.setVelocityY(2000);
+        this.object?.setVelocityY(3000);
         this.object?.setBounceX(1);
         switch (this.name) {
             case "base-caterpillar":

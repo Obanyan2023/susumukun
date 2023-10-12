@@ -170,7 +170,7 @@ export default class MainScene extends Phaser.Scene {
         }
         if (this.cameras.main.scrollX > this.before_x && rand === 1) {
             let newEnemy = new Enemy(this, enemy_name)
-            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth + 10 , window.innerHeight / 10 );
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth - 10 , window.innerHeight / 10 );
             this.enemyGroup.push(newEnemy);
             this.before_x = this.cameras.main.scrollX;
         }
