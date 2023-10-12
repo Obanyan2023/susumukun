@@ -56,6 +56,11 @@ export default class MainScene extends Phaser.Scene {
       */
      private before_x: number | undefined;
 
+     /**
+      * @var スコア
+      */
+     private score: number = 0;
+     private scoreText: Phaser.GameObjects.Text | null = null;
     /**
      * コンストラクタ
      *
@@ -111,6 +116,10 @@ export default class MainScene extends Phaser.Scene {
         this.rightButton.create(this.player);
         this.jumpButton.create(this.player);
 
+        // スコア表示
+        this.scoreText = this.add.text(10, 10, `Score: ${this.score}`, {fontSize: "90px",});
+        this.scoreText.setScrollFactor(0);
+
         const stage = {
             stage_x: 0,
             stage_y: 0,
@@ -144,9 +153,10 @@ export default class MainScene extends Phaser.Scene {
         if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, this.player.object?.y as number + 1)) {
             this.player.destroy(
                () => {
-                    this.scene.start("GameOver");
-               } 
-                , 1000);
+                    this.scene.start("GameOver")
+               }, 1000 )
+               
+                
         }
         this.player.callLimitVelocityX(-160, 160);
         this.enemy_update();
@@ -182,6 +192,15 @@ export default class MainScene extends Phaser.Scene {
                 enemy.object?.destroy();
             }
         })
+
+    }
+
+    updateScore(score: number): void {
+        this.score += score;
+        this.scoreText?.setText(`Score: ${this.score}`)
+    }
+    getScore(): number {
+        return this.score;
     }
 
 }

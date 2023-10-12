@@ -1,3 +1,4 @@
+import MainScene from "../../scenes/MainScene";
 import Character from "../Character";
 import Player from "../player";
 
@@ -25,6 +26,11 @@ export default class Enemy {
     private name: EnemyName;
 
     /**
+     * @var enemyを倒したときの得点
+     */
+    private point: number = 0;
+
+    /**
      * コンストラクタ
      *
      * @param {Phaser.Scene} scene シーン
@@ -44,21 +50,25 @@ export default class Enemy {
        }
     }
 
-    enemy_move(): void {
+    enemy_settings(): void {
         this.object?.setVelocityY(2000);
         this.object?.setBounceX(1);
         switch (this.name) {
             case "base-caterpillar":
                 this.object?.setVelocity(20);
+                this.point = 50;
                 break;
             case "red-caterpillar":
                 this.object?.setVelocity(100);
+                this.point = 100;
                 break;
             case "error-caterpillar":
                 this.object?.setVelocity(80);
+                this.point = 130;
                 break;
             case "grasshopper":
                 this.object?.setVelocityX(80)
+                this.point = 150;
                 break;
             default:
                 break;
@@ -117,7 +127,7 @@ export default class Enemy {
         // エネミーの宣言
         this.object = new Character(this.scene, x, y, this.name);
         this.object.visible = false;
-        this.enemy_move();
+        this.enemy_settings();
         // 衝突するオブジェクトの設定
         for (const object of objects) {
             this.object.collider(object, () => {
@@ -137,6 +147,12 @@ export default class Enemy {
                     player.object.setVelocityY(-200);
                     this.object.setOrigin(0.5, 0);
                     this.object.destroy();
+                    let mainscene: MainScene;
+                    if (this.scene instanceof MainScene) {
+                        mainscene = this.scene;
+                        mainscene.updateScore(this.point);
+                        console.log(mainscene.getScore());
+                    }
                 } else {
                     player.destroy(() => {
                         this.scene.scene.start("GameOver")
