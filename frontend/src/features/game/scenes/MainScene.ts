@@ -7,7 +7,6 @@ import MoveRightButton from "../components/buttons/move/MoveRightButton";
 import MainStage from "../stages/main";
 import Goal from "../characters/goal";
 
-type EnemyName = "base-caterpillar" | "error-caterpillar" | "red-caterpillar" | "grasshopper";
 /**
  * ゲームのメインシーン
  */
@@ -127,7 +126,7 @@ export default class MainScene extends Phaser.Scene {
 
         // 初期画面に敵を配置
         for (let i = 0; i < 5; i++) {
-            let newEnemy = new Enemy(this, this.get_enemyName());
+            let newEnemy = new Enemy(this, Enemy.get_enemyName());
             newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 4 + 100, window.innerWidth) , window.innerHeight/2);
             this.enemyGroup.push(newEnemy);
         }
@@ -165,13 +164,13 @@ export default class MainScene extends Phaser.Scene {
 
         let rand = Phaser.Math.Between(0, 70);
 
-        let enemy_name = this.get_enemyName();
+        let enemy_name = Enemy.get_enemyName();
         if (this.before_x === undefined) { 
             this.before_x = this.cameras.main.scrollX;
         }
         if (this.cameras.main.scrollX > this.before_x && rand === 1) {
             let newEnemy = new Enemy(this, enemy_name)
-            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth + 10 , window.innerHeight/2);
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth + 10 , window.innerHeight / 10 );
             this.enemyGroup.push(newEnemy);
             this.before_x = this.cameras.main.scrollX;
         }
@@ -185,26 +184,4 @@ export default class MainScene extends Phaser.Scene {
         })
     }
 
-    /**
-     * 敵の名前をランダムに取得する 
-     * @returns {EnemyName} 敵の名前
-     */
-    get_enemyName() : EnemyName {
-        let enemy_name : EnemyName = "base-caterpillar";
-        switch (Phaser.Math.Between(0, 3)) {
-            case 0:
-                enemy_name = "base-caterpillar";
-                break;
-            case 1:
-                enemy_name = "error-caterpillar";
-                break;
-            case 2:
-                enemy_name = "red-caterpillar";
-                break;
-            case 3:
-                enemy_name = "grasshopper";
-                break;
-        }
-        return enemy_name;
-    }
 }

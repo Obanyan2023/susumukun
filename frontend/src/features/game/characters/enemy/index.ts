@@ -45,7 +45,7 @@ export default class Enemy {
     }
 
     enemy_move(): void {
-        this.object?.setVelocityY(900);
+        this.object?.setVelocityY(2000);
         this.object?.setBounceX(1);
         switch (this.name) {
             case "base-caterpillar":
@@ -77,6 +77,28 @@ export default class Enemy {
                 frameHeight: 32,
             })
         }
+    }
+    /**
+     * 敵の名前をランダムに取得する 
+     * @returns {EnemyName} 敵の名前
+     */
+    static get_enemyName() : EnemyName {
+        let enemy_name : EnemyName = "base-caterpillar";
+        switch (Phaser.Math.Between(0, 3)) {
+            case 0:
+                enemy_name = "base-caterpillar";
+                break;
+            case 1:
+                enemy_name = "error-caterpillar";
+                break;
+            case 2:
+                enemy_name = "red-caterpillar";
+                break;
+            case 3:
+                enemy_name = "grasshopper";
+                break;
+        }
+        return enemy_name;
     }
 
     /**
