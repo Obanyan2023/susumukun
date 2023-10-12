@@ -39,55 +39,44 @@ export default class Platform extends BaseGround {
 
 
 
-        console.log("window.innerWidth:" + window.innerWidth + "600:" + 600);
         this.setenemy_Block(32, 32);
         for (x = 0; x <= blocksize * 55; x += blocksize) {//全区画の1番下の地面
-            console.log(x);
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
         }
         for (x = blocksize * 59; x < blocksize * 100; x += blocksize) {//全区画の1番下の地面
-            console.log(x);
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
         }
 
         x = blocksize * 30;
-        console.log(x);
         this.setBlock(x, bottom - blocksize * 3, 3);//2区画目左側のブロック
         x += blocksize * 3;
         for (let i = x; i < x + blocksize * 3; i += blocksize) {//2区画目右側のブロック3つ
-            console.log("i" + i);
             this.setBlock(i, bottom - blocksize * 3, 0);
         }
         x = blocksize * 50;
-        //console.log(x);
         end = x + blocksize * 6;
         for (let i = bottom - blocksize; i >= bottom - blocksize * 5; i -= blocksize) {//3区画目の登り階段
-            console.log("ii" + i);
             for (let j = x; j < end; j += blocksize) {
-                console.log("j" + j);
                 this.setBlock(j, i, 0);
             }
             x += blocksize;
         }
 
         x = blocksize * 59;
-        console.log(x);
+        this.setBlock(x, bottom - blocksize * 3, 3);//3区画目左側のブロック
+        this.setBlock(x, bottom - blocksize * 4, 3);//3区画目右側のブロック
+        x = blocksize * 70;
         end = x + blocksize;
         for (let i = bottom - blocksize * 5; i <= bottom - blocksize; i += blocksize) {//3区画目の下り階段
-            console.log("iiii" + i);
             for (let j = x; j < end; j += blocksize) {
-                console.log("jjjj" + j);
                 this.setBlock(j, i, 0);
             }
             end += blocksize;
         }
 
-
-
         x = blocksize * 90;
-        console.log(x);
         this.setBlock(x, bottom - blocksize * 3, 3);//4区画目左側のブロック
 
         x += blocksize * 3;
