@@ -1,12 +1,10 @@
 import Player from "../characters/player";
 import Enemy from "../characters/enemy";
-import FullScreenButton from "../components/buttons/FullScreenButton";
 import MoveJumpButton from "../components/buttons/move/MoveJumpButton";
 import MoveLeftButton from "../components/buttons/move/MoveLeftButton";
 import MoveRightButton from "../components/buttons/move/MoveRightButton";
 import MainStage from "../stages/main";
 import Goal from "../characters/goal";
-
 /**
  * ゲームのメインシーン
  */
@@ -19,20 +17,12 @@ export default class MainScene extends Phaser.Scene {
     /**
      * @var 敵
      */
-    private base_caterpillar: Enemy;
-    private error_caterpillar: Enemy;
-    private red_caterpillar: Enemy;
-    private grasshopper: Enemy;
+    private enemyGroup: Enemy[] = [];
 
     /**
      * @var ステージ
      */
     private stage: MainStage;
-
-    /**
-     * @var フルスクリーンボタン
-     */
-    private fullScreenButton: FullScreenButton;
 
     /**
      * @var 左移動ボタン
@@ -54,7 +44,17 @@ export default class MainScene extends Phaser.Scene {
      */
      private goal: Goal;
 
-      /**
+       /**
+      * @var 前回のカメラ位置
+      */
+     private before_x: number | undefined;
+
+     /**
+      * @var スコア
+      */
+     private score: number = 0;
+     private scoreText: Phaser.GameObjects.Text | null = null;
+    /**
      * @var 制限時間 (秒)
      */
     private timeLimit: number = 180; // 3分間
@@ -62,7 +62,8 @@ export default class MainScene extends Phaser.Scene {
     /**
      * @var テキストオブジェクト
      */
-    private textObject: Phaser.GameObjects.Text;
+    private timeObject: Phaser.GameObjects.Text;
+    
 
 
     /**
@@ -75,19 +76,16 @@ export default class MainScene extends Phaser.Scene {
 
         this.player = new Player(this);
         this.stage = new MainStage(this);
-        this.fullScreenButton = new FullScreenButton(this);
         this.leftButton = new MoveLeftButton(this);
         this.rightButton = new MoveRightButton(this);
         this.jumpButton = new MoveJumpButton(this);
 
-        this.base_caterpillar = new Enemy(this, "base-caterpillar");
-        this.error_caterpillar = new Enemy(this, "error-caterpillar")
-        this.red_caterpillar = new Enemy(this, "red-caterpillar");
-        this.grasshopper = new Enemy(this, "grasshopper");
 
         this.goal = new Goal(this, "goal");
 
-        this.textObject = {} as Phaser.GameObjects.Text;
+        this.timeObject = {} as Phaser.GameObjects.Text;
+
+        this.timeObject = {} as Phaser.GameObjects.Text;
 
         this.events = new Phaser.Events.EventEmitter();
     
@@ -103,12 +101,7 @@ export default class MainScene extends Phaser.Scene {
     preload(): void {
         this.player.preload();
         this.stage.preload();
-
-        this.base_caterpillar.preload();
-        this.error_caterpillar.preload();
-        this.red_caterpillar.preload();
-        this.grasshopper.preload();
-
+        Enemy.preload(this);
         this.goal.preload();
     }
 
@@ -127,21 +120,17 @@ export default class MainScene extends Phaser.Scene {
         // キャラクターの作成
         this.player.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[]);
 
-        // 敵の作成
-        this.base_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, 30, 30);
-        this.error_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 4  , 30);
-        this.red_caterpillar.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width / 2 - 40, 30);
-        this.grasshopper.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.width - 60, 30);
-        
+        // ゴールの作成
         this.goal.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player,  this.cameras.main.width + 3100, 30)
 
-
-
         // ボタンの作成
-        this.fullScreenButton.create();
         this.leftButton.create(this.player);
         this.rightButton.create(this.player);
         this.jumpButton.create(this.player);
+
+        // スコア表示
+        this.scoreText = this.add.text(10, 10, `Score: ${this.score}`, {fontSize: "40px",});
+        this.scoreText.setScrollFactor(0);
 
         const stage = {
             stage_x: 0,
@@ -156,14 +145,13 @@ export default class MainScene extends Phaser.Scene {
         // ワールドの境界を設定する
         this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
 
-
         this.cameras.main.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
         this.cameras.main.setScroll(0, 0);  // カメラのスクロールを0に設定
     
 
       
-        this.textObject = this.add.text(
-            20,  // 固定のX座標
+        this.timeObject = this.add.text(
+            window.innerWidth - 20,  // 固定のX座標
             20,  // 固定のY座標
             '',
             {
@@ -172,8 +160,8 @@ export default class MainScene extends Phaser.Scene {
                 color: '#ffffff'
             }
         );
-        this.textObject.setScrollFactor(0);  // スクロールに影響を受けないように設定
-        this.textObject.setOrigin(0, 0);  // テキストの原点を左上に設定
+        this.timeObject.setScrollFactor(0);  // スクロールに影響を受けないように設定
+        this.timeObject.setOrigin(1, 0);  // テキストの原点を左上に設定
 
         this.time.addEvent({
             delay: 1000,  // 1000ミリ秒ごと（1秒ごと）
@@ -184,6 +172,13 @@ export default class MainScene extends Phaser.Scene {
 
     
         this.updateTimerDisplay();
+
+        // 初期画面に敵を配置
+        for (let i = 0; i < 5; i++) {
+            let newEnemy = new Enemy(this, Enemy.get_enemyName());
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 3, window.innerWidth) , window.innerHeight/3 * 2);
+            this.enemyGroup.push(newEnemy);
+        }
     }
 
     /**
@@ -198,14 +193,64 @@ export default class MainScene extends Phaser.Scene {
         if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, this.player.object?.y as number + 1)) {
             this.player.destroy(
                () => {
-                    this.scene.start("GameOver");
-               } 
-                , 1000);
+                    this.startScene('GameOver');
+               }, 1000 )
         }
         this.player.callLimitVelocityX(-160, 160);
-        this.error_caterpillar.update();
+        this.enemy_update();
     }
 
+    /**
+     * 敵オブジェクトの更新を行う
+     *
+     * @returns {void} 戻り値なし
+     */
+    enemy_update(): void {
+        if (this.player.object === null ) {
+            return;
+        }
+
+        let rand = Phaser.Math.Between(0, 70);
+
+        let enemy_name = Enemy.get_enemyName();
+        if (this.before_x === undefined) { 
+            this.before_x = this.cameras.main.scrollX;
+        }
+        if (this.cameras.main.scrollX > this.before_x && rand === 1) {
+            let newEnemy = new Enemy(this, enemy_name)
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth + 50 , window.innerHeight / 10 );
+            this.enemyGroup.push(newEnemy);
+            this.before_x = this.cameras.main.scrollX;
+        }
+
+        this.enemyGroup.forEach((enemy) => {
+            enemy.update();
+            let height : number = 15;
+            if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, enemy.object?.y as number + height)) {
+                enemy.object?.destroy();
+            }
+        })
+
+    }
+
+    updateScore(score: number): void {
+        this.score += score;
+        this.scoreText?.setText(`Score: ${this.score}`)
+    }
+    getScore(): number {
+        return this.score;
+    }
+
+    /**
+     * ゲームオーバー画面に遷移する 次のシーンにデータを引き継ぐ
+     * @returns {void} 戻り値なし
+     */
+    startScene(key:String) : void {
+        const data = {
+            score: this.score,
+        }
+        this.scene.start(`${key}`, data)
+    }
     private updateTimer(): void {
         this.timeLimit--;
         this.updateTimerDisplay();
@@ -216,6 +261,6 @@ export default class MainScene extends Phaser.Scene {
     }
 
     private updateTimerDisplay(): void {
-        this.textObject.setText(`Time: ${this.timeLimit} s`);
+        this.timeObject.setText(`Time: ${this.timeLimit} s`);
     }
 }

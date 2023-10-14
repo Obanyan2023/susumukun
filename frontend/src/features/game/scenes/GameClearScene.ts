@@ -17,6 +17,11 @@ export default class GameClearScene extends Phaser.Scene {
     private tmpButton: TmpButton;
 
     /**
+     * @var スコア
+     */
+    private score: number = 0;
+
+    /**
      * コンストラクタ
      */
     constructor() {
@@ -26,6 +31,12 @@ export default class GameClearScene extends Phaser.Scene {
         this.tmpButton = new TmpButton(this);
     }
 
+    /**
+     * データの引き継ぎ
+     */
+    init(data:any) {
+        this.score = data.score;
+    }
     /**
      * 画像を読み込む
      *
@@ -41,6 +52,9 @@ export default class GameClearScene extends Phaser.Scene {
     create(): void {
         this.gameClearImage.create();
         this.tmpButton.create();
+
+        const scoreText = this.add.text(window.innerWidth /2 , window.innerHeight /4, `Score: ${this.score}`, {fontSize: "50px"});
+        scoreText.setOrigin(0.5);
 
         console.log("GameClear!!");
     }

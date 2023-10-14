@@ -1,11 +1,11 @@
-import { createSecretKey } from "crypto";
+import MainScene from "../../scenes/MainScene";
 import Character from "../Character";
 import Player from "../player";
 
 /**
  * エネミーの種類
  */
-type EnemyName = "base-caterpillar" | "error-caterpillar" | "red-caterpillar" | "grasshopper";
+type EnemyName = "base-caterpillar" | "error-caterpillar" | "red-caterpillar" | "grasshopper"; 
 /**
  * エネミークラス
  */
@@ -24,6 +24,11 @@ export default class Enemy {
      * @var エネミーのアニメーション
      */
     private name: EnemyName;
+
+    /**
+     * @var enemyを倒したときの得点
+     */
+    private point: number = 0;
 
     /**
      * コンストラクタ
@@ -45,21 +50,25 @@ export default class Enemy {
        }
     }
 
-    enemy_move(): void {
+    enemy_settings(): void {
+        this.object?.setVelocityY(1000);
         this.object?.setBounceX(1);
         switch (this.name) {
             case "base-caterpillar":
                 this.object?.setVelocity(20);
+                this.point = 50;
                 break;
             case "red-caterpillar":
                 this.object?.setVelocity(100);
+                this.point = 100;
                 break;
             case "error-caterpillar":
-                this.object?.setVelocity(40);
+                this.object?.setVelocity(80);
+                this.point = 130;
                 break;
             case "grasshopper":
-                this.object?.setAccelerationY(50);
-                this.object?.setBounceY(1);
+                this.object?.setVelocityX(80)
+                this.point = 150;
                 break;
             default:
                 break;
@@ -71,11 +80,35 @@ export default class Enemy {
      *
      * @returns {void} 戻り値なし
      */
-    preload(): void {
-        this.scene.load.spritesheet(this.name , `images/enemy/${this.name}1.png`, {
-            frameWidth: 32,
-            frameHeight: 32,
-        })
+    static preload(scene:Phaser.Scene): void {
+        for (let enemy of [ "base-caterpillar", "error-caterpillar", "red-caterpillar", "grasshopper"]) {
+            scene.load.spritesheet(enemy , `images/enemy/${enemy}1.png`, {
+                frameWidth: 32,
+                frameHeight: 32,
+            })
+        }
+    }
+    /**
+     * 敵の名前をランダムに取得する 
+     * @returns {EnemyName} 敵の名前
+     */
+    static get_enemyName() : EnemyName {
+        let enemy_name : EnemyName = "base-caterpillar";
+        switch (Phaser.Math.Between(0, 3)) {
+            case 0:
+                enemy_name = "base-caterpillar";
+                break;
+            case 1:
+                enemy_name = "error-caterpillar";
+                break;
+            case 2:
+                enemy_name = "red-caterpillar";
+                break;
+            case 3:
+                enemy_name = "grasshopper";
+                break;
+        }
+        return enemy_name;
     }
 
     /**
@@ -93,22 +126,35 @@ export default class Enemy {
     create(objects: Phaser.Physics.Arcade.StaticGroup[], player: Player, x: number, y: number): void {
         // エネミーの宣言
         this.object = new Character(this.scene, x, y, this.name);
-        this.enemy_move();
+        this.object.visible = false;
+        this.enemy_settings();
         // 衝突するオブジェクトの設定
         for (const object of objects) {
-            this.object.collider(object);
+            this.object.collider(object, () => {
+                if (this.object !== null) {
+                    this.object.visible= true;
+                }
+                if (this.name === "grasshopper" &&  this.object?.body?.touching.down === true) {
+                    this.object?.setVelocityY(-500);
+                }
+            });
         }
         
         // プレイヤーと接触時の処理　敵の消滅とゲームオーバ判定
         if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
+                let mainscene: MainScene | null = null;
+                if (this.scene instanceof MainScene) {
+                    mainscene = this.scene;
+                } 
                 if (player.object !== null && this.object !== null && player.object.y < this.object.y) {
                     player.object.setVelocityY(-200);
                     this.object.setOrigin(0.5, 0);
                     this.object.destroy();
+                    mainscene?.updateScore(this.point);
                 } else {
                     player.destroy(() => {
-                        this.scene.scene.start("GameOver")
+                        mainscene?.startScene('GameOver');
                     }
                     , 1000);
                 }
