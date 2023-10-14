@@ -15,7 +15,7 @@ export default class Sky extends BaseBackground {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image("parkingarea", "images/background/parkingarea.jpg")
+        this.scene.load.image("parkingarea", "images/background/ground.png")
     }
 
     /**
