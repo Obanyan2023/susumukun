@@ -1,6 +1,5 @@
 import Player from "../characters/player";
 import Enemy from "../characters/enemy";
-import FullScreenButton from "../components/buttons/FullScreenButton";
 import MoveJumpButton from "../components/buttons/move/MoveJumpButton";
 import MoveLeftButton from "../components/buttons/move/MoveLeftButton";
 import MoveRightButton from "../components/buttons/move/MoveRightButton";
@@ -25,11 +24,6 @@ export default class MainScene extends Phaser.Scene {
      * @var ステージ
      */
     private stage: MainStage;
-
-    /**
-     * @var フルスクリーンボタン
-     */
-    private fullScreenButton: FullScreenButton;
 
     /**
      * @var 左移動ボタン
@@ -66,7 +60,6 @@ export default class MainScene extends Phaser.Scene {
 
         this.player = new Player(this);
         this.stage = new MainStage(this);
-        this.fullScreenButton = new FullScreenButton(this);
         this.leftButton = new MoveLeftButton(this);
         this.rightButton = new MoveRightButton(this);
         this.jumpButton = new MoveJumpButton(this);
@@ -106,7 +99,6 @@ export default class MainScene extends Phaser.Scene {
         this.goal.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player,  6840, 30)
 
         // ボタンの作成
-        this.fullScreenButton.create();
         this.leftButton.create(this.player);
         this.rightButton.create(this.player);
         this.jumpButton.create(this.player);

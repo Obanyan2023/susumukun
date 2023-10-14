@@ -4,15 +4,13 @@ import {
     Button,
     Grid,
     Modal,
-    Container,
     Typography
 } from "@mui/material";
-import { url } from "inspector";
 import * as React from 'react';
 import Background from '../assets/images/image.jpg';
 import '../index.css'
 import { useState } from 'react';
-
+import {GameComponent} from "../components/Game";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -30,16 +28,12 @@ const style = {
 const setWinSize = () => {
     const windowSize = {
         width: window.innerWidth,
-        height: 600
+        height: window.innerHeight
     };
     const imageUrlWithParams = `${Background}?w=${windowSize.width}&h=${windowSize.height}`;
 
     return imageUrlWithParams;
 };
-
-
-
-
 
 const image = {
     backgroundImage: `url(${setWinSize()})`,
@@ -52,8 +46,6 @@ const closebutton = {
     textAlign: "right",
 };
 
-
-
 const head = () => {
     return (
         <link href="https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Dela+Gothic+One&family=DotGothic16&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+P+One&family=Zen+Antique&family=Zen+Kurenaido&display=swap" rel="stylesheet"></link>
@@ -61,12 +53,23 @@ const head = () => {
 };
 
 export const Home = () => {
+    const [ isFullScreen, setIsFullScreen ] = React.useState<boolean>(document.fullscreenElement ? true : false);
     const [open, setOpen] = React.useState(false);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    return (
-        <MainLayout title={"走れ！すすむ君！ - ようこそ！"} head={head()}>
+    const handleGameStart = () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            document.documentElement.requestFullscreen();
+        }
+
+        setIsFullScreen(!isFullScreen);
+    }
+
+    const HomeComponent = () => (
             <Box sx={image}>
                 <Grid container alignItems={"center"} direction={"column"} sx={{ overflow: 'hidden', height: '100vh', width: '100vw' }}>
                     <Grid container spacing={2} sx={{ height: "30%" }} alignItems="center">
@@ -77,7 +80,7 @@ export const Home = () => {
                         </Grid>
                     </Grid>
                     <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
-                        <Button variant="contained" sx={{ margin: 3 }} href="gamewindow">ゲームスタート</Button>
+                        <Button variant="contained" sx={{ margin: 3 }} onClick={() => handleGameStart()}>ゲームスタート</Button>
                         <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
                         <Modal
                             open={open}
@@ -106,6 +109,11 @@ export const Home = () => {
                     </Grid>
                 </Grid>
             </Box>
-        </MainLayout >
+    );
+
+    return (
+        <MainLayout title={"走れ！すすむ君！ - " + isFullScreen ? "ようこそ！" : "ゲーム"} head={head()}>
+            {isFullScreen ? <GameComponent/> : <HomeComponent/>}
+        </MainLayout>
     )
 }
