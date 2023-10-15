@@ -188,12 +188,9 @@ export default class MainScene extends Phaser.Scene {
         this.score += score;
         this.scoreText?.setText(`Score: ${this.score}`)
     }
-    getScore(): number {
-        return this.score;
-    }
-
     /**
      * ゲームオーバー画面に遷移する 次のシーンにデータを引き継ぐ
+     * @param {string} key 次のシーンのキー
      * @returns {void} 戻り値なし
      */
     startScene(key:String) : void {

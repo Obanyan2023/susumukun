@@ -43,7 +43,7 @@ export default class Enemy {
 
     update(): void{
        if(this.name=="error-caterpillar"){
-        var random=Phaser.Math.Between(1,50);
+        let random=Phaser.Math.Between(1,50);
                 if(this.object?.body?.velocity!==undefined && random === 1){
                     this.object?.setVelocityX(this.object.body?.velocity.x * -1 );
             }
@@ -146,8 +146,9 @@ export default class Enemy {
                 let mainscene: MainScene | null = null;
                 if (this.scene instanceof MainScene) {
                     mainscene = this.scene;
-                } 
-                if (player.object !== null && this.object !== null && player.object.y < this.object.y) {
+                }
+                // プレイヤが死亡していないかつ，プレイヤーが敵より上にいる場合
+                if (player.object !== null && this.object !== null && player.object.visible && player.object.y < this.object.y) {
                     player.object.setVelocityY(-200);
                     this.object.setOrigin(0.5, 0);
                     this.object.destroy();
