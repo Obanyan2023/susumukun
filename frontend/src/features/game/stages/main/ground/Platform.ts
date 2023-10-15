@@ -31,7 +31,7 @@ export default class Platform extends BaseGround {
     create(): void {
         let x;
         let end;
-        const bottom = 570;
+        const bottom = 600;
         const blocksize = 32;
         this.object = this.scene.physics.add.staticGroup();
 

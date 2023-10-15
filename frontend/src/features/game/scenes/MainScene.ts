@@ -113,16 +113,16 @@ export default class MainScene extends Phaser.Scene {
 
         const stage = {
             stage_x: 0,
-            stage_y: 0,
+            stage_y: -100,
             width: 7680,
-            height: 600,
+            height: window.innerHeight,
         };
 
         // カメラの設定
         this.cameras.main.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
 
         // ワールドの境界を設定する
-        this.physics.world.setBounds(stage.stage_x, stage.stage_y-100, stage.width, stage.height+400);
+        this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
 
         // 初期画面に敵を配置
         for (let i = 0; i < 5; i++) {
