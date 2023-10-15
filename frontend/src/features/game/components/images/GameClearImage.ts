@@ -31,9 +31,10 @@ export default class GameClearImage {
      * @returns {void} 戻り値なし
      */
     create(): void {
-        const gameClearImage = this.scene.add.image(0, 0, "gameclear");
-        gameClearImage.setOrigin(0, 0);
-        gameClearImage.setScale(window.innerWidth / gameClearImage.width, window.innerHeight / gameClearImage.height);
+        const gameClearImage = this.scene.add.image(window.innerWidth/2, window.innerHeight/2, "gameclear");
+        const scale = window.innerWidth / gameClearImage.width;
+        gameClearImage.setOrigin(0.5);
+        gameClearImage.setScale(scale);
         }
     
 }

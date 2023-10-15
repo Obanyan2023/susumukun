@@ -5,7 +5,6 @@ import MoveLeftButton from "../components/buttons/move/MoveLeftButton";
 import MoveRightButton from "../components/buttons/move/MoveRightButton";
 import MainStage from "../stages/main";
 import Goal from "../characters/goal";
-
 /**
  * ゲームのメインシーン
  */
@@ -50,6 +49,11 @@ export default class MainScene extends Phaser.Scene {
       */
      private before_x: number | undefined;
 
+     /**
+      * @var スコア
+      */
+     private score: number = 0;
+     private scoreText: Phaser.GameObjects.Text | null = null;
     /**
      * コンストラクタ
      *
@@ -103,6 +107,10 @@ export default class MainScene extends Phaser.Scene {
         this.rightButton.create(this.player);
         this.jumpButton.create(this.player);
 
+        // スコア表示
+        this.scoreText = this.add.text(10, 10, `Score: ${this.score}`, {fontSize: "40px",});
+        this.scoreText.setScrollFactor(0);
+
         const stage = {
             stage_x: 0,
             stage_y: 0,
@@ -119,7 +127,7 @@ export default class MainScene extends Phaser.Scene {
         // 初期画面に敵を配置
         for (let i = 0; i < 5; i++) {
             let newEnemy = new Enemy(this, Enemy.get_enemyName());
-            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 4 + 100, window.innerWidth) , window.innerHeight/2);
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, Phaser.Math.Between(window.innerWidth / 3, window.innerWidth) , window.innerHeight/3 * 2);
             this.enemyGroup.push(newEnemy);
         }
     }
@@ -135,10 +143,9 @@ export default class MainScene extends Phaser.Scene {
         // プレイヤー落下時にゲームオーバー画面に遷移する
         if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, this.player.object?.y as number + 1)) {
             this.player.destroy(
-                () => {
-                    this.scene.start("GameOver");
-                }
-                , 1000);
+               () => {
+                    this.startScene('GameOver');
+               }, 1000 )
         }
         this.player.callLimitVelocityX(-160, 160);
         this.enemy_update();
@@ -162,7 +169,7 @@ export default class MainScene extends Phaser.Scene {
         }
         if (this.cameras.main.scrollX > this.before_x && rand === 1) {
             let newEnemy = new Enemy(this, enemy_name)
-            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth - 10 , window.innerHeight / 10 );
+            newEnemy.create([this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[], this.player, this.cameras.main.scrollX + window.innerWidth + 50 , window.innerHeight / 10 );
             this.enemyGroup.push(newEnemy);
             this.before_x = this.cameras.main.scrollX;
         }
@@ -174,6 +181,25 @@ export default class MainScene extends Phaser.Scene {
                 enemy.object?.destroy();
             }
         })
+
     }
 
+    updateScore(score: number): void {
+        this.score += score;
+        this.scoreText?.setText(`Score: ${this.score}`)
+    }
+    getScore(): number {
+        return this.score;
+    }
+
+    /**
+     * ゲームオーバー画面に遷移する 次のシーンにデータを引き継ぐ
+     * @returns {void} 戻り値なし
+     */
+    startScene(key:String) : void {
+        const data = {
+            score: this.score,
+        }
+        this.scene.start(`${key}`, data)
+    }
 }
