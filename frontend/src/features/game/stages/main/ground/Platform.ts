@@ -57,15 +57,15 @@ export default class Platform extends BaseGround {
         }
 
         x = blocksize * 50;
-        this.setBlock(x, bottom - blocksize, 1);//2区画目中央下側のブロック
+        this.setBlock(x, bottom - blocksize, 0);//2区画目中央下側のブロック
         x += blocksize;
         this.setBlock(x, bottom - blocksize, 0);//3区画目左側のブロック
-        this.setBlock(x, bottom - blocksize * 2, 3);//3区画目右側のブロック
+        this.setBlock(x, bottom - blocksize * 2, 0);//3区画目右側のブロック
         x += blocksize * 2;
         this.setBlock(x, bottom - blocksize, 0);//3区画目中央下側のブロック
-        this.setBlock(x, bottom - blocksize * 2, 3);//3区画目中央下側のブロック
+        this.setBlock(x, bottom - blocksize * 2, 0);//3区画目中央下側のブロック
         x += blocksize;
-        this.setBlock(x, bottom - blocksize, 2);//3区画目右側のブロック
+        this.setBlock(x, bottom - blocksize, 0);//3区画目右側のブロック
 
         x = blocksize * 59;
         end = x + blocksize * 6;
@@ -85,13 +85,13 @@ export default class Platform extends BaseGround {
         }
 
         x = blocksize * 90;
-        this.setBlock(x, bottom - blocksize * 3, 3);//4区画目左側のブロック
+        this.setBlock(x, bottom - blocksize * 3, 0);//4区画目左側のブロック
 
         x += blocksize * 3;
-        this.setBlock(x, bottom - blocksize * 3, 3);//4区画目中央下側のブロック
-        this.setBlock(x, bottom - blocksize * 6, 3);//4区画目中央上側のブロック
+        this.setBlock(x, bottom - blocksize * 3, 0);//4区画目中央下側のブロック
+        this.setBlock(x, bottom - blocksize * 6, 0);//4区画目中央上側のブロック
         x += blocksize * 3;
-        this.setBlock(x, bottom - blocksize * 3, 3);//4区画目右側のブロック
+        this.setBlock(x, bottom - blocksize * 3, 0);//4区画目右側のブロック
 
 
         x += blocksize * 6;
@@ -148,7 +148,7 @@ export default class Platform extends BaseGround {
         }
 
         x = blocksize * 156;
-        this.setBlock(x, bottom - blocksize * 8, 2);//7区画目の地面
+        this.setBlock(x, bottom - blocksize * 8, 0);//7区画目の地面
 
         x = blocksize * 163;
         this.setBlock(x, bottom - blocksize * 6, 0);//7区画目の地面
@@ -168,11 +168,11 @@ export default class Platform extends BaseGround {
         }
 
         x = blocksize * 170;
-        this.setBlock(x, bottom - blocksize * 8, 2);//7区画目の地面
+        this.setBlock(x, bottom - blocksize * 8, 0);//7区画目の地面
         x += blocksize * 2;
-        this.setBlock(x, bottom - blocksize * 10, 2);//7区画目の地面
+        this.setBlock(x, bottom - blocksize * 10, 0);//7区画目の地面
         x += blocksize * 2;
-        this.setBlock(x, bottom - blocksize * 8, 2);//7区画目の地面
+        this.setBlock(x, bottom - blocksize * 8, 0);//7区画目の地面
 
         for (x = blocksize * 183; x < blocksize * 198; x += blocksize) {
             this.setBlock(x, bottom, 0);
