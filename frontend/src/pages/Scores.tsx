@@ -1,9 +1,9 @@
 import React from 'react';
-import {MainLayout} from "../components/Layout/MainLayout";
-import {DESC} from "../config";
-import {ScoreEntity} from "../types";
-import {is_set} from "../utils/isType";
-import {getScoresApi, storeScoresApi} from "../features/scores/api";
+import { MainLayout } from "../components/Layout/MainLayout";
+import { DESC } from "../config";
+import { ScoreEntity } from "../types";
+import { is_set } from "../utils/isType";
+import { getScoresApi } from "../features/scores/api";
 
 /**
  * スコア画面
@@ -32,10 +32,6 @@ export default function Scores(): JSX.Element {
 
     return (
         <MainLayout title={"走れ！すすむ君！ - スコア"}>
-            <button onClick={() => storeScoresApi(
-                Math.random().toString(32).substring(2),
-                Math.floor(Math.random() * 100 + 1)
-            )}>Debug用 - ランダムデータ保存</button>
             <div>
                 {is_set<ScoreEntity[]>(scores) && scoreList}
             </div>
