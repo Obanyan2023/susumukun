@@ -54,6 +54,16 @@ export default class MainScene extends Phaser.Scene {
       */
      private score: number = 0;
      private scoreText: Phaser.GameObjects.Text | null = null;
+
+      /**
+     * @var 制限時間 (秒)
+     */
+    private timeLimit: number = 180; // 3分間
+
+    /**
+     * @var テキストオブジェクト
+     */
+    private timeObject: Phaser.GameObjects.Text;
     /**
      * コンストラクタ
      *
@@ -70,6 +80,13 @@ export default class MainScene extends Phaser.Scene {
 
 
         this.goal = new Goal(this, "goal");
+
+        this.timeObject = {} as Phaser.GameObjects.Text;
+
+        this.events = new Phaser.Events.EventEmitter();
+
+        this.events.on('update', this.updateTimer, this);
+
     }
 
     /**
@@ -123,6 +140,34 @@ export default class MainScene extends Phaser.Scene {
 
         // ワールドの境界を設定する
         this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
+
+        this.cameras.main.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
+        this.cameras.main.setScroll(0, 0);  // カメラのスクロールを0に設定
+
+
+
+        this.timeObject = this.add.text(
+            window.innerWidth - 20,  // 固定のX座標
+            20,  // 固定のY座標
+            '',
+            {
+                fontFamily: 'Arial',
+                fontSize: '24px',
+                color: '#ffffff'
+            }
+        );
+        this.timeObject.setScrollFactor(0);  // スクロールに影響を受けないように設定
+        this.timeObject.setOrigin(1, 0);  // テキストの原点を左上に設定
+
+        this.time.addEvent({
+            delay: 1000,  // 1000ミリ秒ごと（1秒ごと）
+            loop: true,
+            callback: this.updateTimer,
+            callbackScope: this
+        });
+
+
+        this.updateTimerDisplay();
 
         // 初期画面に敵を配置
         for (let i = 0; i < 5; i++) {
@@ -188,6 +233,23 @@ export default class MainScene extends Phaser.Scene {
         this.score += score;
         this.scoreText?.setText(`Score: ${this.score}`)
     }
+    getScore(): number {
+        return this.score;
+    }
+
+    private updateTimer(): void {
+        this.timeLimit--;
+        this.updateTimerDisplay();
+
+        if (this.timeLimit <= 0) {
+            this.startScene("GameOver");
+        }
+    }
+
+    private updateTimerDisplay(): void {
+        this.timeObject.setText(`Time: ${this.timeLimit} s`);
+    }
+
     /**
      * ゲームオーバー画面に遷移する 次のシーンにデータを引き継ぐ
      * @param {string} key 次のシーンのキー
