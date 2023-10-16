@@ -252,6 +252,7 @@ export default class MainScene extends Phaser.Scene {
 
     /**
      * ゲームオーバー画面に遷移する 次のシーンにデータを引き継ぐ
+     * @param {string} key 次のシーンのキー
      * @returns {void} 戻り値なし
      */
     startScene(key:String) : void {
