@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 import GameOverScene from "./scenes/GameOverScene";
 import MainScene from "./scenes/MainScene";
-import GameClearImage from "./components/images/GameClearImage";
 import GameClearScene from "./scenes/GameClearScene";
 
 /**
