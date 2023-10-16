@@ -4,7 +4,6 @@ import {
     Button,
     Grid,
     Modal,
-    TextField,
     Typography
 } from "@mui/material";
 import * as React from 'react';
@@ -54,6 +53,7 @@ const head = () => {
 
 export const Home = () => {
     const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
+    const [nickname, setNickname] = React.useState<string>("");
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => setOpen(true);
@@ -66,6 +66,7 @@ export const Home = () => {
             document.documentElement.requestFullscreen();
         }
 
+        localStorage.setItem("nickname", nickname);
         setIsFullScreen(!isFullScreen);
     }
 
@@ -80,7 +81,7 @@ export const Home = () => {
                     </Grid>
                 </Grid>
                 <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
-                    <TextField id="outlined-basic" label="ニックネーム" variant="outlined" onChange={(e) => localStorage.setItem("nickname", e.target.value)} />
+                    <input value={nickname} onChange={(e) => setNickname(e.target.value)} />
                     <Button variant="contained" sx={{ margin: 3 }} onClick={() => handleGameStart()}>ゲームスタート</Button>
                     <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
                     <Modal
@@ -112,9 +113,11 @@ export const Home = () => {
         </Box>
     );
 
+    console.log("render");
+
     return (
         <MainLayout title={"走れ！すすむ君！ - " + isFullScreen ? "ようこそ！" : "ゲーム"} head={head()}>
-            {isFullScreen ? <GameComponent /> : <HomeComponent />}
+            {isFullScreen ? <GameComponent /> : HomeComponent()}
         </MainLayout>
     )
 }
