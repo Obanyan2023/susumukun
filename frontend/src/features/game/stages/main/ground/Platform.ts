@@ -50,7 +50,7 @@ export default class Platform extends BaseGround {
         }
 
         x = blocksize * 30;
-        this.setBlock(x, bottom - blocksize * 3, 3);//2区画目左側のブロック
+        this.setBlock(x, bottom - blocksize * 3, 0);//2区画目左側のブロック
         x += blocksize * 3;
         for (let i = x; i < x + blocksize * 3; i += blocksize) {//2区画目右側のブロック3つ
             this.setBlock(i, bottom - blocksize * 3, 0);
