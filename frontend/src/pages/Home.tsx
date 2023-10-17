@@ -10,7 +10,7 @@ import * as React from 'react';
 import Background from '../assets/images/image.jpg';
 import '../index.css'
 import { useState } from 'react';
-import {GameComponent} from "../components/Game";
+import { GameComponent } from "../components/Game";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -53,7 +53,7 @@ const head = () => {
 };
 
 export const Home = () => {
-    const [ isFullScreen, setIsFullScreen ] = React.useState<boolean>(document.fullscreenElement ? true : false);
+    const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => setOpen(true);
@@ -63,57 +63,61 @@ export const Home = () => {
         if (document.fullscreenElement) {
             document.exitFullscreen();
         } else {
-            document.documentElement.requestFullscreen();
+            try {
+                document.documentElement.requestFullscreen();
+            } catch (error) {
+                console.log("fullscreen処理に失敗しました");
+            }
         }
 
         setIsFullScreen(!isFullScreen);
     }
 
     const HomeComponent = () => (
-            <Box sx={image}>
-                <Grid container alignItems={"center"} direction={"column"} sx={{ overflow: 'hidden', height: '100vh', width: '100vw' }}>
-                    <Grid container spacing={2} sx={{ height: "30%" }} alignItems="center">
-                        <Grid item xs={12}>
-                            <Typography className="mfont" align="center" sx={{ fontFamily: 'Mochiy Pop P One', fontSize: 50 }}>
-                                {"走れ！すすむ君！"}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
-                        <Button variant="contained" sx={{ margin: 3 }} onClick={() => handleGameStart()}>ゲームスタート</Button>
-                        <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
-                        <Modal
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                        >
-                            <Box sx={style}>
-                                <Typography id="modal-modal-title" variant="h6" component="h2">
-                                    ルール説明
-                                </Typography>
-                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                    ・三回ミスしたらゲームオーバー<br />
-                                    ・ステージが変わるごとに体力は回復する<br />
-                                    ・スコアを他のプレイヤーと競う<br />
-                                    ・最高得点が10000 <br />
-                                    ・アイテム：100点（隠しアイテムは点数を高くする）<br />
-                                    ・敵：100点～（敵が強くなるたびに加算点数を増加させるから最高得点未定！敵の数によって決める) <br />
-                                </Typography>
-                                <Box sx={closebutton}>
-                                    <Button variant="contained" onClick={handleClose}>閉じる</Button>
-                                </Box>
-                            </Box>
-                        </Modal>
-                        <Button href="/scores" variant="contained" color='inherit' sx={{ margin: 3 }}> スコア確認</Button>
+        <Box sx={image}>
+            <Grid container alignItems={"center"} direction={"column"} sx={{ overflow: 'hidden', height: '100vh', width: '100vw' }}>
+                <Grid container spacing={2} sx={{ height: "30%" }} alignItems="center">
+                    <Grid item xs={12}>
+                        <Typography className="mfont" align="center" sx={{ fontFamily: 'Mochiy Pop P One', fontSize: 50 }}>
+                            {"走れ！すすむ君！"}
+                        </Typography>
                     </Grid>
                 </Grid>
-            </Box>
+                <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
+                    <Button variant="contained" sx={{ margin: 3 }} onClick={() => handleGameStart()}>ゲームスタート</Button>
+                    <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                                ルール説明
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                ・三回ミスしたらゲームオーバー<br />
+                                ・ステージが変わるごとに体力は回復する<br />
+                                ・スコアを他のプレイヤーと競う<br />
+                                ・最高得点が10000 <br />
+                                ・アイテム：100点（隠しアイテムは点数を高くする）<br />
+                                ・敵：100点～（敵が強くなるたびに加算点数を増加させるから最高得点未定！敵の数によって決める) <br />
+                            </Typography>
+                            <Box sx={closebutton}>
+                                <Button variant="contained" onClick={handleClose}>閉じる</Button>
+                            </Box>
+                        </Box>
+                    </Modal>
+                    <Button href="/scores" variant="contained" color='inherit' sx={{ margin: 3 }}> スコア確認</Button>
+                </Grid>
+            </Grid>
+        </Box>
     );
 
     return (
         <MainLayout title={"走れ！すすむ君！ - " + isFullScreen ? "ようこそ！" : "ゲーム"} head={head()}>
-            {isFullScreen ? <GameComponent/> : <HomeComponent/>}
+            {isFullScreen ? <GameComponent /> : <HomeComponent />}
         </MainLayout>
     )
 }
