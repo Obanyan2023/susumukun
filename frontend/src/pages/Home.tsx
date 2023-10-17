@@ -58,6 +58,7 @@ const head = () => {
 export const Home = () => {
     const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
     const [nickname, setNickname] = React.useState<string>("");
+
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => setOpen(true);
@@ -120,8 +121,8 @@ export const Home = () => {
                         </Box>
                     </Modal>
                     <Button href="/scores" variant="contained" color='inherit' sx={{ margin: 3 }}> スコア確認</Button>
-                </Grid>
-            </Grid>
+                </Grid >
+            </Grid >
         </Box>
     );
 
