@@ -2,8 +2,12 @@ import { MainLayout } from "../components/Layout/MainLayout";
 import {
     Box,
     Button,
+    FormControl,
     Grid,
+    InputLabel,
+    MenuItem,
     Modal,
+    Select,
     Typography
 } from "@mui/material";
 import * as React from 'react';
@@ -59,7 +63,7 @@ export const Home = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const handleGameStart = () => {
+    const handleGameStart = (difficult: number) => {
         if (document.fullscreenElement) {
             document.exitFullscreen();
         } else {
@@ -68,6 +72,7 @@ export const Home = () => {
 
         localStorage.setItem("nickname", nickname);
         setIsFullScreen(!isFullScreen);
+        localStorage.setItem("difficult", String(difficult));
     }
 
     const HomeComponent = () => (
@@ -82,7 +87,14 @@ export const Home = () => {
                 </Grid>
                 <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
                     <input value={nickname} onChange={(e) => setNickname(e.target.value)} />
-                    <Button variant="contained" sx={{ margin: 3 }} onClick={() => handleGameStart()}>ゲームスタート</Button>
+                    <FormControl sx={{ width: 100 }}>
+                        <InputLabel >難易度</InputLabel>
+                        <Select>
+                            <MenuItem onClick={() => handleGameStart(1)}>Hard</MenuItem>
+                            <MenuItem onClick={() => handleGameStart(2)}>Normal</MenuItem>
+                            <MenuItem onClick={() => handleGameStart(4)}>Easy</MenuItem>
+                        </Select>
+                    </FormControl>
                     <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
                     <Modal
                         open={open}
