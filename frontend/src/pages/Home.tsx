@@ -126,8 +126,6 @@ export const Home = () => {
         </Box>
     );
 
-    console.log("render");
-
     return (
         <MainLayout title={"走れ！すすむ君！ - " + isFullScreen ? "ようこそ！" : "ゲーム"} head={head()}>
             {isFullScreen ? <GameComponent /> : HomeComponent()}
