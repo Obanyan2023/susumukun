@@ -11,7 +11,7 @@ import {
     Typography
 } from "@mui/material";
 import * as React from 'react';
-import Background from '../assets/images/top-background.png';
+import Background from '../assets/images/image.png';
 import '../index.css'
 import { GameComponent } from "../components/Game";
 
