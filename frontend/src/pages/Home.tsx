@@ -7,7 +7,7 @@ import {
     Typography
 } from "@mui/material";
 import * as React from 'react';
-import Background from '../assets/images/image.jpg';
+import Background from '../assets/images/top-background.png';
 import '../index.css'
 import { useState } from 'react';
 import {GameComponent} from "../components/Game";
@@ -37,9 +37,9 @@ const setWinSize = () => {
 
 const image = {
     backgroundImage: `url(${setWinSize()})`,
-    backgroundSize: '100% 100%',
+    backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',  // 画像の繰り返しを無効にする
-    backgroundPosition: 'center',
+    backgroundPosition: 'center'
 };
 
 const closebutton = {
