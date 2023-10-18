@@ -65,6 +65,9 @@ export default class GameEndScene extends Phaser.Scene {
         });
         scoreText.setOrigin(0.5);
 
-        storeScoresApi(Math.random().toString(32).substring(2), this.score);
+        const nickname = localStorage.getItem("nickname")?.length !== 0 ? localStorage.getItem("nickname") : null;
+        localStorage.removeItem("nickname");
+
+        storeScoresApi(nickname ?? "名無し", this.score);
     }
 }
