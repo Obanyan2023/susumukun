@@ -32,7 +32,7 @@ export default class GameOverImage {
      */
     create(): void {
         this.scene.add
-            .image(window.innerWidth / 2, 600 / 2, "gameover")
+            .image(window.innerWidth / 2, window.innerHeight / 2, "gameover")
             .setOrigin(0.5, 0.5)
             .setScale(0.5);
     }

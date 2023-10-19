@@ -31,8 +31,8 @@ export default class Platform extends BaseGround {
     create(): void {
         let x;
         let end;
-        const bottom = window.innerHeight;
         const blocksize = 32;
+        const bottom = window.innerHeight - blocksize;
         this.object = this.scene.physics.add.staticGroup();
 
 
@@ -207,6 +207,7 @@ export default class Platform extends BaseGround {
             this.setBlock(i, bottom - blocksize * 7, 0);
             this.setBlock(i, bottom - blocksize * 3, 0);
             this.setBlock(i, bottom - blocksize * 2, 0);
+            console.log(i);
         }
         this.setBlock(x, bottom - blocksize * 5, 0);
         x += blocksize * 2;

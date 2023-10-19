@@ -50,7 +50,7 @@ export default class TmpButton {
      * @returns {Button} ボタンオブジェクト
      */
     createButton(): Button {
-        return new Button(this.scene, window.innerWidth / 2, 600 / 2 + 100, "tmp", {
+        return new Button(this.scene, window.innerWidth / 2, window.innerHeight / 2 + 100, "tmp", {
             fontSize: "32px",
         }).setOrigin(0.5, 0.5);
     }

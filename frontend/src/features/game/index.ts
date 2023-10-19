@@ -10,7 +10,7 @@ export const config = {
     type: Phaser.AUTO,
     mode: Phaser.Scale.ScaleModes.FIT,
     width: window.innerWidth,
-    height: 600,
+    height: window.innerHeight,
     physics: {
         default: "arcade",
         arcade: {

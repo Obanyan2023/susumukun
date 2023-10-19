@@ -31,7 +31,7 @@ export default class MoveLeftButton extends MoveButton {
      * @returns {Button} ボタンオブジェクト
      */
     private createButton(): Button {
-        return new Button(this.scene, 50, 600 - 135, "←", {
+        return new Button(this.scene, 50, window.innerHeight - 135, "←", {
             fontSize: "90px",
         });
     }
