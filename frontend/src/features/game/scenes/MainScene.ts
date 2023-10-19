@@ -58,7 +58,7 @@ export default class MainScene extends Phaser.Scene {
     /**
      * @var 制限時間 (秒)
      */
-    private timeLimit: number = 10; // 3分間
+    private timeLimit: number = 180; // 3分間
 
     /**
      * @var テキストオブジェクト

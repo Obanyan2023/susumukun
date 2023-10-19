@@ -31,9 +31,12 @@ export default class TimeOverImage {
      * @returns {void} 戻り値なし
      */
     create(): void {
-        this.scene.add
-            .image(window.innerWidth / 2, window.innerHeight / 2, "TimeOver")
+        const timeOverImage = this.scene.add
+            .image(window.innerWidth /2, window.innerHeight /2, "TimeOver")
             .setOrigin(0.5, 0.5)
             .setScale(0.5);
+            const scale = window.innerWidth / timeOverImage.width;
+        timeOverImage.setOrigin(0.5);
+        timeOverImage.setScale(scale);
     }
 }
