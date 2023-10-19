@@ -96,7 +96,7 @@ export const Home = () => {
                             <MenuItem onClick={() => handleGameStart(4)}>Easy</MenuItem>
                         </Select>
                     </FormControl>
-                    <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
+                    <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ゲーム内容</Button>
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -105,15 +105,17 @@ export const Home = () => {
                     >
                         <Box sx={style}>
                             <Typography id="modal-modal-title" variant="h6" component="h2">
-                                ルール説明
+                                ゲーム内容
                             </Typography>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                ・三回ミスしたらゲームオーバー<br />
-                                ・ステージが変わるごとに体力は回復する<br />
-                                ・スコアを他のプレイヤーと競う<br />
-                                ・最高得点が10000 <br />
-                                ・アイテム：100点（隠しアイテムは点数を高くする）<br />
-                                ・敵：100点～（敵が強くなるたびに加算点数を増加させるから最高得点未定！敵の数によって決める) <br />
+                            <b>「走れ！すすむ君！」はアプリ開発の世界を舞台にしたゲームです。主人公、すすむくんはアプリ開発者で、新しいアプリを完成させるためにはバグ（昆虫）たちとの戦いを繰り広げなければなりません。</b><br/>
+                            <br/>
+                            <strong>主人公のすすむ君を動かしてゴールを目指すゲーム！<br/></strong>
+                                ・緑のいもむしをふむと50点！<br/>
+                                ・赤のいもむしをふむと100点！<br/>
+                                ・エラーが出ているいもむしをふむと130点！<br/>
+                                ・バッタを踏むと150点！<br/>
+                                ・ゲームオーバーやタイムオーバーになると点数が減ってしまうゾ！<br/>
                             </Typography>
                             <Box sx={closebutton}>
                                 <Button variant="contained" onClick={handleClose}>閉じる</Button>
