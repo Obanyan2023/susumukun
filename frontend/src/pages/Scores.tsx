@@ -76,10 +76,10 @@ export default function Scores(): JSX.Element {
             textColor = "#C0C0C0"; // 2位の文字色
         } else if (index === 2) {
             fontSize = 25; // 3位の文字サイズ
-            textColor = "#8C4841"; // 3位の文字色
+            textColor = "#cda16f"; // 3位の文字色
         } else {
             fontSize = 20; // 4位と5位の文字サイズ
-            textColor = 'black'; // 4位と5位の文字色
+            textColor = 'white'; // 4位と5位の文字色
         }
 
             return (
@@ -94,7 +94,7 @@ export default function Scores(): JSX.Element {
     // すべてのスコアを表示
     const allScores = scores.map((score: ScoreEntity, index: number) => {
         return (
-            <Typography key={index} className="mfont" align="center" sx={{ color: 'black', fontFamily: 'fantasy', fontSize: 20 }}>
+            <Typography key={index} className="mfont" align="center" sx={{ color: 'white', fontFamily: 'fantasy', fontSize: 20 }}>
                 <div>{`${index + 1}. ${score.nickname}`}</div>
                 <div>{`${score.score}p`}</div>
                 <br />
@@ -106,10 +106,6 @@ export default function Scores(): JSX.Element {
         <MainLayout title={"走れ！すすむ君！ - スコア"}>
             <Box sx={image}>
                 <Grid container alignItems={"center"} direction={"column"} sx={{ overflow: 'hidden', height: '100vh', width: '100vw' }}>
-                    <button onClick={() => storeScoresApi(
-                        Math.random().toString(32).substring(2),
-                        Math.floor(Math.random() * 100 + 1)
-                    )}>デバッグ用 - ランダムデータ保存</button>
                     <div>
                         <div style={{ float: 'left', width: '50%' }}>
                             <Typography className="mfont" align="center" sx={{ color: 'red', fontFamily: 'fantasy', fontSize: 40 }}>
