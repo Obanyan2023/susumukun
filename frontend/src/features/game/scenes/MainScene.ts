@@ -274,6 +274,9 @@ export default class MainScene extends Phaser.Scene {
      * @returns {void} 戻り値なし
      */
     startScene(key: String): void {
+        if(key==="GameOver"){
+            this.score*=0.8;
+        }
         const data = {
             score: this.score,
         };
