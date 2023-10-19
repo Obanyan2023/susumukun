@@ -68,21 +68,14 @@ export default class Goal {
         if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
                 let height:number = 20
-                if (player.object?.body?.velocity !== undefined && this.object !== null &&
-                    player.object?.body.velocity.y > 0 && player.object?.y < this.object?.y - 100)  {
-
-                    player.object?.setVelocityY(-200);
-                    this.object?.destroy();
-                } else {
-                    player.destroy(() => {
-                        if (this.scene instanceof MainScene) {
+                player.destroy(() => {
+                    if (this.scene instanceof MainScene) {
                             const mainscene = this.scene;
                             mainscene.startScene('GameClear');
                         }
                     }
-                    , 1000);
-                }
-            });
+                , 1000);
+            })
         }
 
     }
