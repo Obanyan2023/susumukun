@@ -22,7 +22,7 @@ export default class GameClearImage {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image("gameclear", "images/tmp/gameclear.jpg");
+        this.scene.load.image("gameclear", "images/scenes/gameclear.png");
     }
 
     /**
