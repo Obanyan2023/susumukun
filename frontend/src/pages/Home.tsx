@@ -7,13 +7,17 @@ import {
     InputLabel,
     MenuItem,
     Modal,
-    Select,
     Typography
 } from "@mui/material";
 import * as React from 'react';
 import Background from '../assets/images/image.jpg';
 import '../index.css'
 import { GameComponent } from "../components/Game";
+import { normalize } from "path/posix";
+import Select from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
+
+
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -66,15 +70,9 @@ export const Home = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const set_level = (num: number) => {
-        if (num == 1) {
-            return " Hard ";
-        } else if (num == 2) {
-            return "Normal"
-        } else if (num == 4) {
-            return " Easy "
-        }
-    }
+    const handleChange = (event: SelectChangeEvent<number>) => {
+        setDifficult(event.target.value as number);
+    };
 
     const handleGameStart = (difficult: number) => {
         if (document.fullscreenElement) {
@@ -100,19 +98,16 @@ export const Home = () => {
                 </Grid>
                 <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
                     <Typography color="#000000" bgcolor="#ffffff">ニックネーム入力</Typography>
-                    <input value={nickname} onChange={(e) => setNickname(e.target.value)} /><br/>
-                    <div style={{ background: "#ffffff", display: 'flex', alignItems: 'center', borderRadius: "5px" }}>
-                        <FormControl sx={{ width: 100, marginRight: '10px' }}>
-                        <InputLabel>難易度</InputLabel>
-                            <Select>
-                                <MenuItem onClick={() => setDifficult(1)}>Hard</MenuItem>
-                                <MenuItem onClick={() => setDifficult(2)}>Normal</MenuItem>
-                                <MenuItem onClick={() => setDifficult(4)}>Easy</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <Typography sx={{color: "#000000", width: 100}} align="center">{set_level(difficult)}</Typography>
-                    </div><br/>
-                    <Button variant="contained" onClick={() => handleGameStart(difficult)}>Game Start</Button><br/>
+                    <input value={nickname} onChange={(e) => setNickname(e.target.value)} /><br />
+                    <FormControl sx={{ background: "#ffffff", width: 100, marginRight: '10px', borderRadius: "5px" }}>
+                        <InputLabel id="a-label">難易度</InputLabel>
+                        <Select labelId="a-label" id="a" onChange={handleChange} value={difficult} label="Age">
+                            <MenuItem value={1}>Hard</MenuItem>
+                            <MenuItem value={2}>Normal</MenuItem>
+                            <MenuItem value={4}>Easy</MenuItem>
+                        </Select>
+                    </FormControl><br />
+                    <Button variant="contained" onClick={() => handleGameStart(difficult)}>Game Start</Button><br />
                     <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
                     <Modal
                         open={open}
