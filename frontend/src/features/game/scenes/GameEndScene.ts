@@ -3,12 +3,13 @@ import TmpButton from "../components/buttons/TmpButton";
 import GameOverImage from "../components/images/GameOverImage";
 import GameClearImage from "../components/images/GameClearImage";
 import { storeScoresApi } from "../../scores/api";
+import TimeOverImage from "../components/images/TimeOverImage";
 
 export default class GameEndScene extends Phaser.Scene {
     /**
      * @var ゲーム終了画像
      */
-    protected gameEndImage: GameOverImage | GameClearImage;
+    protected gameEndImage: GameOverImage | GameClearImage | TimeOverImage;
 
     /**
      * @var ゲーム再スタートボタン
