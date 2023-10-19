@@ -126,7 +126,7 @@ export default class MainScene extends Phaser.Scene {
         this.goal.create(
             [this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[],
             this.player,
-            this.cameras.main.width + 3100,
+            6875,
             30
         );
 
@@ -142,7 +142,7 @@ export default class MainScene extends Phaser.Scene {
         const stage = {
             stage_x: 0,
             stage_y: 0,
-            width: window.innerWidth * 3,
+            width: 6900,
             height: window.innerHeight,
         };
 
