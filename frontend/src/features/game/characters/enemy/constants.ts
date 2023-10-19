@@ -44,7 +44,7 @@ export const RED_CATERPILLAR: EnemyEntity = {
 
 export const GRASSHOPPER: EnemyEntity = {
     name: "grasshopper-sprite",
-    velocityX: 80,
+    velocityX: 100,
     point: 150,
     frameWidth: 23,
     frameHeight: 12,

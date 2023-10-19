@@ -116,7 +116,15 @@ export default class Enemy {
 
                 // Grasshopper の場合，地面衝突時にジャンプする
                 if (this.enemy === GRASSHOPPER && this.object?.body?.touching.down === true) {
-                    this.object?.setVelocityY(-500);
+                    this.object?.setVelocityX(0);
+
+                    const timer = Math.floor(Math.random() * 500);
+                    this.scene.time.delayedCall(timer, () => {
+                        if (this.object?.body?.velocity.x === 0) {
+                            this.object?.setVelocityY(-timer);
+                            this.object?.setVelocityX(GRASSHOPPER.velocityX);
+                        }
+                    });
                 }
             });
 
