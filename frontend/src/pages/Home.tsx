@@ -61,6 +61,8 @@ export const Home = () => {
 
     const [open, setOpen] = React.useState(false);
 
+    const [difficult, setDifficult] = React.useState<number>(2);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -91,11 +93,12 @@ export const Home = () => {
                     <FormControl sx={{ width: 100 }}>
                         <InputLabel >難易度</InputLabel>
                         <Select>
-                            <MenuItem onClick={() => handleGameStart(1)}>Hard</MenuItem>
-                            <MenuItem onClick={() => handleGameStart(2)}>Normal</MenuItem>
-                            <MenuItem onClick={() => handleGameStart(4)}>Easy</MenuItem>
+                            <MenuItem onClick={() => setDifficult(1)}>Hard</MenuItem>
+                            <MenuItem onClick={() => setDifficult(2)}>Normal</MenuItem>
+                            <MenuItem onClick={() => setDifficult(4)}>Easy</MenuItem>
                         </Select>
                     </FormControl>
+                    <Button variant="contained" color="inherit" onClick={() => handleGameStart(difficult)}>Game Start</Button>
                     <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ルール説明</Button>
                     <Modal
                         open={open}
