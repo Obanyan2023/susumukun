@@ -13,7 +13,6 @@ import {
 import * as React from 'react';
 import Background from '../assets/images/image.jpg';
 import '../index.css'
-import { useState } from 'react';
 import { GameComponent } from "../components/Game";
 
 const style = {
@@ -58,6 +57,8 @@ const head = () => {
 
 export const Home = () => {
     const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
+    const [nickname, setNickname] = React.useState<string>("");
+
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => setOpen(true);
@@ -70,6 +71,7 @@ export const Home = () => {
             document.documentElement.requestFullscreen();
         }
 
+        localStorage.setItem("nickname", nickname);
         setIsFullScreen(!isFullScreen);
         localStorage.setItem("difficult", String(difficult));
     }
@@ -85,6 +87,7 @@ export const Home = () => {
                     </Grid>
                 </Grid>
                 <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
+                    <input value={nickname} onChange={(e) => setNickname(e.target.value)} />
                     <FormControl sx={{ width: 100 }}>
                         <InputLabel >難易度</InputLabel>
                         <Select>
@@ -118,14 +121,14 @@ export const Home = () => {
                         </Box>
                     </Modal>
                     <Button href="/scores" variant="contained" color='inherit' sx={{ margin: 3 }}> スコア確認</Button>
-                </Grid>
-            </Grid>
-        </Box >
+                </Grid >
+            </Grid >
+        </Box>
     );
 
     return (
         <MainLayout title={"走れ！すすむ君！ - " + isFullScreen ? "ようこそ！" : "ゲーム"} head={head()}>
-            {isFullScreen ? <GameComponent /> : <HomeComponent />}
+            {isFullScreen ? <GameComponent /> : HomeComponent()}
         </MainLayout>
     )
 }
