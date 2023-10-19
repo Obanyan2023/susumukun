@@ -109,14 +109,14 @@ export default class Enemy {
 
         // 衝突するオブジェクトの設定
         for (const object of objects) {
-            this.object.collider(object, () => {
+            this.object.collider(object, async () => {
                 if (this.object !== null) {
                     this.object.visible = true;
                 }
 
                 // Grasshopper の場合，地面衝突時にジャンプする
                 if (this.enemy === GRASSHOPPER && this.object?.body?.touching.down === true) {
-                    this.object?.setVelocityY(-500);
+                    this.object.setVelocityY(-400);
                 }
             });
 
