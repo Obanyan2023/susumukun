@@ -57,9 +57,7 @@ export default function Scores(): JSX.Element {
 
     // スコアを取得
     useEffect(() => {
-        // スコアを取得し、降順にソートして表示
         getScoresApi(DESC).then((res: ScoreEntity[]) => {
-            res.sort((a, b) => b.score - a.score);
             setScores(res);
         });
     }, []);
