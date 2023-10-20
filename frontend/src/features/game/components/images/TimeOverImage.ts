@@ -22,7 +22,7 @@ export default class TimeOverImage {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image("TimeOver", "images/tmp/timeover.jpg");
+        this.scene.load.image("TimeOver", "images/scenes/timeover.jpg");
     }
 
     /**
