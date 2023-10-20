@@ -126,6 +126,7 @@ export default function Scores(): JSX.Element {
                             )}
                         </div>
                     </div>
+                    <div><Button href="/" variant="contained" color='inherit' sx={{ margin: 3 }}> 閉じる</Button></div>
                 </Grid>
             </Box>
         </MainLayout>
