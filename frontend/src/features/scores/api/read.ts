@@ -1,6 +1,6 @@
 import { axios } from "../../../lib/axios";
-import {ScoreEntity} from "../../../types";
-import {AxiosError, AxiosResponse} from "axios";
+import { ScoreEntity } from "../../../types";
+import { AxiosError, AxiosResponse } from "axios";
 
 /**
  * スコアを取得する
@@ -14,9 +14,11 @@ export const getScoresApi = async (mode?: string): Promise<ScoreEntity[] | []> =
             params: {
                 mode: mode,
             },
-        }).then((response: AxiosResponse<{data: ScoreEntity[]}>) => {
+        })
+        .then((response: AxiosResponse<{ data: ScoreEntity[] }>) => {
             return response.data.data;
-        }).catch((error: AxiosError) => {
+        })
+        .catch((error: AxiosError) => {
             return [];
         });
 };

@@ -16,6 +16,8 @@ import '../index.css';
 import { GameComponent } from "../components/Game";
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
+import { DIFFICULTY_LEVELS, DifficultyLevel } from "../features/game/constants/DifficultyLevel";
+import { DIFFICULTY, NICKNAME } from "../features/game/constants/localStorageKeys";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -59,7 +61,7 @@ const head = () => {
 
 export const Home = () => {
     const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
-    const [nickname, setNickname] = React.useState<string>("");
+    const [nickname, setNickname] = React.useState<string>(localStorage.getItem("nickname") || "");
     const [open, setOpen] = React.useState(false);
 
     const [difficult, setDifficult] = React.useState<number>(2);
@@ -82,37 +84,42 @@ export const Home = () => {
             }
         }
 
-        localStorage.setItem("nickname", nickname);
+        localStorage.setItem(NICKNAME, nickname);
+        localStorage.setItem(DIFFICULTY, String(difficult));
         setIsFullScreen(!isFullScreen);
-        localStorage.setItem("difficult", String(difficult));
     }
 
     const HomeComponent = () => (
         <Box sx={image}>
-            <Grid container alignItems={"center"} direction={"column"} sx={{ height: '100vh', width: '100vw', justifyContent: "space-between" }}>
-                <Grid container spacing={2} sx={{ height: "30%" }} alignItems="center">
-                    <Grid item xs={12}>
-                        <Typography className="mfont" align="center" sx={{ fontFamily: 'Mochiy Pop P One', fontSize: 50 }}>
-                            {"走れ！すすむ君！"}
-                        </Typography>
+            <Box sx={{ height: '100vh', width: '100vw', justifyContent: "space-between" }}>
+                <Typography className="mfont" align="center" variant="h3" sx={{ fontFamily: 'Mochiy Pop P One', paddingY: 7 }}>
+                    走れ！すすむ君！
+                </Typography>
+                <Grid container spacing={1} component="form" alignItems="center" justifyContent="center" direction="column">
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <TextField focused label="ニックネーム" variant="outlined" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+                    </Grid>
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <FormControl>
+                            <InputLabel id="a-label">難易度</InputLabel>
+                            <Select labelId="a-label" id="a" onChange={handleChange} value={difficult} label="Age">
+                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel) => {
+                                    return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <Button variant="contained" onClick={() => handleGameStart(difficult)}>Game Start</Button>
+                    </Grid>
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <Button variant="contained" color='inherit' onClick={handleOpen}>ゲーム内容</Button>
+                    </Grid>
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <Button href="/scores" variant="contained" color='inherit'>スコア確認</Button>
                     </Grid>
                 </Grid>
-                <Grid container alignItems="center" direction="column" sx={{ height: "60%" }}>
-                    <Typography color="#000000" bgcolor="#ffffff">ニックネーム入力</Typography>
-                    <TextField sx={{ marginBottom: 2, marginX: 1 }} value={nickname} onChange={(e) => setNickname(e.target.value)} />
-                    <FormControl sx={{ marginY: 2, background: "#ffffff", width: 100, marginRight: '10px', borderRadius: "5px" }}>
-                        <InputLabel id="a-label">難易度</InputLabel>
-                        <Select labelId="a-label" id="a" onChange={handleChange} value={difficult} label="Age">
-                            <MenuItem value={1}>Hard</MenuItem>
-                            <MenuItem value={2}>Normal</MenuItem>
-                            <MenuItem value={4}>Easy</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <Button variant="contained" sx={{ marginY: 2, marginX: 1 }} onClick={() => handleGameStart(difficult)}>Game Start</Button>
-                    <Button variant="contained" color='inherit' sx={{ marginY: 2, marginX: 1 }} onClick={handleOpen}>ゲーム内容</Button>
-                    <Button href="/scores" variant="contained" color='inherit' sx={{ marginY: 2, marginX: 1 }}> スコア確認</Button>
-                </Grid >
-            </Grid >
+            </Box>
 
             <Modal
                 open={open}
