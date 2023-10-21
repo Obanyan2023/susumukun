@@ -4,6 +4,7 @@ import GameOverImage from "../components/images/GameOverImage";
 import GameClearImage from "../components/images/GameClearImage";
 import { storeScoresApi } from "../../scores/api";
 import TimeOverImage from "../components/images/TimeOverImage";
+import { is_set } from "../../../utils/isType";
 
 export default class GameEndScene extends Phaser.Scene {
     /**
@@ -69,6 +70,12 @@ export default class GameEndScene extends Phaser.Scene {
         const nickname = localStorage.getItem("nickname")?.length !== 0 ? localStorage.getItem("nickname") : null;
         localStorage.removeItem("nickname");
 
-        storeScoresApi(nickname ?? "名無し", this.score);
+        // プレイ難易度の取得
+        const difficulty = Number(localStorage.getItem("difficulty"));
+        if (!is_set<number>(difficulty)) {
+            return;
+        }
+
+        storeScoresApi(nickname ?? "名無し", this.score, difficulty);
     }
 }
