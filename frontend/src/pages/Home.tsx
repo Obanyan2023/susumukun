@@ -11,12 +11,10 @@ import {
 } from "@mui/material";
 import * as React from 'react';
 import Background from '../assets/images/image.png';
-import '../index.css'
+import '../index.css';
 import { GameComponent } from "../components/Game";
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
-
-
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -61,7 +59,6 @@ const head = () => {
 export const Home = () => {
     const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
     const [nickname, setNickname] = React.useState<string>("");
-
     const [open, setOpen] = React.useState(false);
 
     const [difficult, setDifficult] = React.useState<number>(2);
@@ -77,7 +74,11 @@ export const Home = () => {
         if (document.fullscreenElement) {
             document.exitFullscreen();
         } else {
-            document.documentElement.requestFullscreen();
+            try {
+                document.documentElement.requestFullscreen();
+            } catch (error) {
+                console.log("fullscreen処理に失敗しました");
+            }
         }
 
         localStorage.setItem("nickname", nickname);
