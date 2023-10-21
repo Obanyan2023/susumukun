@@ -17,6 +17,7 @@ import { GameComponent } from "../components/Game";
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
 import { DIFFICULTY_LEVELS, DifficultyLevel } from "../features/game/constants/DifficultyLevel";
+import { DIFFICULTY, NICKNAME } from "../features/game/constants/localStorageKeys";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -83,8 +84,8 @@ export const Home = () => {
             }
         }
 
-        localStorage.setItem("nickname", nickname);
-        localStorage.setItem("difficulty", String(difficult));
+        localStorage.setItem(NICKNAME, nickname);
+        localStorage.setItem(DIFFICULTY, String(difficult));
         setIsFullScreen(!isFullScreen);
     }
 
