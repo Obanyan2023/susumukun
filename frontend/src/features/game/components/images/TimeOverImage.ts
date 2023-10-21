@@ -1,7 +1,7 @@
 /**
- * ゲームオーバー画像
+ * タイムオーバー画像
  */
-export default class GameOverImage {
+export default class TimeOverImage {
     /**
      * @var 使用されるシーン
      */
@@ -22,7 +22,7 @@ export default class GameOverImage {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image("gameover", "images/scenes/gameover.jpg");
+        this.scene.load.image("TimeOver", "images/scenes/timeover.jpg");
     }
 
     /**
@@ -31,9 +31,12 @@ export default class GameOverImage {
      * @returns {void} 戻り値なし
      */
     create(): void {
-        this.scene.add
-            .image(window.innerWidth / 2, window.innerHeight / 2, "gameover")
+        const timeOverImage = this.scene.add
+            .image(window.innerWidth /2, window.innerHeight /2, "TimeOver")
             .setOrigin(0.5, 0.5)
             .setScale(0.5);
+            const scale = window.innerWidth / timeOverImage.width;
+        timeOverImage.setOrigin(0.5);
+        timeOverImage.setScale(scale);
     }
 }

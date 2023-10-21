@@ -81,7 +81,7 @@ export default class Player {
      */
     create(objects?: Phaser.Physics.Arcade.StaticGroup[]): void {
         // プレイヤーとそのアニメーションの宣言
-        this.object = new Character(this.scene, window.innerWidth / 4 , window.innerHeight - 80, "susumu");
+        this.object = new Character(this.scene, window.innerWidth / 4, window.innerHeight/4, "susumu");
         this.object.setOrigin(0.5, 1);
         this.cursors = this.scene.input.keyboard?.createCursorKeys();
         this.animation = {
@@ -105,10 +105,10 @@ export default class Player {
         // 壁に衝突したら加速度と反対向きに減速
         for (const object of objects ?? []) {
             this.object.collider(object, () => {
-                if(this.object?.body?.touching.left) {
+                if (this.object?.body?.touching.left) {
                     this.object?.setVelocityX(20);
                 }
-                if(this.object?.body?.touching.right) {
+                if (this.object?.body?.touching.right) {
                     this.object?.setVelocityX(-20);
                 }
             });
@@ -132,13 +132,13 @@ export default class Player {
             this.object?.setVelocityX(0);
         })
 
-        this.cursors?.left?.on( "down", () => {
+        this.cursors?.left?.on("down", () => {
             this.animation?.left.update();
             this.object?.setAccelerationX(-300);
             this.object?.setVelocityX(-160);
         })
 
-        this.cursors?.right?.on( "down", () => {
+        this.cursors?.right?.on("down", () => {
             this.animation?.right.update();
             this.object?.setAccelerationX(300);
             this.object?.setVelocityX(160);
@@ -151,9 +151,9 @@ export default class Player {
      * @param min 最小値
      * @param max 最大値
      */
-    callLimitVelocityX(min:number, max:number): void {
+    callLimitVelocityX(min: number, max: number): void {
         if (this.object?.body !== null) {
-            this.object?.setVelocityX(Phaser.Math.Clamp(this.object?.body.velocity.x , min, max));
+            this.object?.setVelocityX(Phaser.Math.Clamp(this.object?.body.velocity.x, min, max));
         }
     }
 
@@ -168,7 +168,7 @@ export default class Player {
     * @returns {void} 戻り値なし
     * @description プレイヤーを非表示にし、待機時間後にコールバック関数を呼び出す。
     */
-    destroy(callback:()=>void, timeout:number): void {
+    destroy(callback: () => void, timeout: number): void {
         this.object?.setVisible(false);
         this.scene.cameras.main.stopFollow();
         this.scene.time.delayedCall(
