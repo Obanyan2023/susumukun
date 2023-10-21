@@ -29,6 +29,9 @@ export const EASY: DifficultyLevel = {
     enemies: [BASE_CATERPILLAR, RED_CATERPILLAR],
 };
 
+// 難易度レベルの配列
+export const DIFFICULTY_LEVELS: DifficultyLevel[] = [HARD, NORMAL, EASY];
+
 // シード値をキーにした難易度レベルのマップ
 export const DIFFICULTY_LEVEL_MAP: { [key: string]: DifficultyLevel } = {
     [HARD.SEED]: HARD,

@@ -16,6 +16,8 @@ import '../index.css';
 import { GameComponent } from "../components/Game";
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
+import { DIFFICULTY_LEVELS, DifficultyLevel } from "../features/game/constants/DifficultyLevel";
+import { DIFFICULTY, NICKNAME } from "../features/game/constants/localStorageKeys";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -82,9 +84,9 @@ export const Home = () => {
             }
         }
 
-        localStorage.setItem("nickname", nickname);
+        localStorage.setItem(NICKNAME, nickname);
+        localStorage.setItem(DIFFICULTY, String(difficult));
         setIsFullScreen(!isFullScreen);
-        localStorage.setItem("difficult", String(difficult));
     }
 
     const HomeComponent = () => (
@@ -100,10 +102,10 @@ export const Home = () => {
                     <Grid item xs={12} sx={{ paddingBottom: 3 }}>
                         <FormControl>
                             <InputLabel id="a-label">難易度</InputLabel>
-                            <Select labelId="a-label" id="a" onChange={handleChange} value={difficult} label="Level">
-                                <MenuItem value={1}>Hard</MenuItem>
-                                <MenuItem value={2}>Normal</MenuItem>
-                                <MenuItem value={4}>Easy</MenuItem>
+                            <Select labelId="a-label" id="a" onChange={handleChange} value={difficult} label="Age">
+                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel) => {
+                                    return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
+                                })}
                             </Select>
                         </FormControl>
                     </Grid>

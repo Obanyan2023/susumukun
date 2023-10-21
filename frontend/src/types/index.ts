@@ -7,4 +7,5 @@
 export type ScoreEntity = {
     nickname: string;
     score: number;
-}
+    difficulty: number;
+};
