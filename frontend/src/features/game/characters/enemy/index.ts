@@ -2,7 +2,16 @@ import { GAME_OVER } from "../../constants/SceneKeys";
 import MainScene from "../../scenes/MainScene";
 import Character from "../Character";
 import Player from "../player";
-import { BASE_CATERPILLAR, ERROR_CATERPILLAR, RED_CATERPILLAR, GRASSHOPPER, ENEMY_CONFIGS } from "./constants";
+import {
+    BASE_CATERPILLAR,
+    ERROR_CATERPILLAR,
+    RED_CATERPILLAR,
+    GRASSHOPPER,
+    ENEMY_CONFIGS,
+    EnemyEntity,
+} from "../../constants/Enemies";
+import { DIFFICULTY_LEVEL_MAP } from "../../constants/DifficultyLevel";
+import { getAryRand } from "../../../../utils/Random";
 
 /**
  * エネミーの種類
@@ -84,10 +93,12 @@ export default class Enemy {
     }
     /**
      * 敵の名前をランダムに取得する
+     *
+     * @param {number} difficult 難易度
      * @returns {EnemyName} 敵の名前
      */
-    static get_enemyName(): EnemyName {
-        return ENEMY_CONFIGS[Phaser.Math.Between(0, 3)];
+    static get_enemyName(difficult: number): EnemyName {
+        return getAryRand<EnemyEntity>(DIFFICULTY_LEVEL_MAP[difficult].enemies);
     }
 
     /**
