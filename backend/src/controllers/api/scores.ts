@@ -7,6 +7,7 @@ import { nodeCache } from "../../lib/nodeCache";
 type scoresEntity = {
     nickname: string;
     score: number;
+    difficulty: number;
 };
 
 /**
@@ -33,14 +34,16 @@ export const getMethod = (mode?: string): Array<scoresEntity> | [] => {
  *
  * @param {string} nickname プレイヤー名
  * @param {number} score スコア
+ * @param {number} difficulty 難易度
  * @returns {void} 戻り値無し
  */
-export const postMethod = (nickname: string, score: number): void => {
+export const postMethod = (nickname: string, score: number, difficulty: number): void => {
     const scores: Array<scoresEntity> = nodeCache.get("scores") ?? [];
 
     scores.push({
         nickname: nickname,
         score: score,
+        difficulty: difficulty,
     });
 
     nodeCache.set("scores", scores);

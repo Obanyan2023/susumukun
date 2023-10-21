@@ -5,7 +5,8 @@ import MoveLeftButton from "../components/buttons/move/MoveLeftButton";
 import MoveRightButton from "../components/buttons/move/MoveRightButton";
 import MainStage from "../stages/main";
 import Goal from "../characters/goal";
-import {GAME_CLEAR, GAME_OVER, TIME_OVER} from "../constants/SceneKeys";
+import { GAME_CLEAR, GAME_OVER, TIME_OVER } from "../constants/SceneKeys";
+import { DIFFICULTY } from "../constants/localStorageKeys";
 /**
  * ゲームのメインシーン
  */
@@ -93,7 +94,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.events.on("update", this.updateTimer, this);
 
-        this.difficult = Number(localStorage.getItem("difficult"));
+        this.difficult = Number(localStorage.getItem(DIFFICULTY));
     }
 
     /**
