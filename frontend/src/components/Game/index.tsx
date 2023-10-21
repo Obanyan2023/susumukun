@@ -9,9 +9,9 @@ export const GameComponent = () => {
     const screenOrientation = window.screen.orientation;
 
     // 画面を横向きに固定
-    if (is_set(screenOrientation)) {
+    if (is_set(screenOrientation) && (screenOrientation as any).lock) {
         // @ts-ignore
-        screenOrientation.lock('landscape')
+        (screenOrientation as any).lock('landscape')
             .catch((error: unknown) => {
                 //
             });
