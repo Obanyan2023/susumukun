@@ -5,6 +5,7 @@ import MoveLeftButton from "../components/buttons/move/MoveLeftButton";
 import MoveRightButton from "../components/buttons/move/MoveRightButton";
 import MainStage from "../stages/main";
 import Goal from "../characters/goal";
+import {GAME_CLEAR, GAME_OVER, TIME_OVER} from "../constants/SceneKeys";
 /**
  * ゲームのメインシーン
  */
@@ -201,7 +202,7 @@ export default class MainScene extends Phaser.Scene {
         // プレイヤー落下時にゲームオーバー画面に遷移する
         if (!this.physics.world.bounds.contains(this.cameras.main.width / 2, (this.player.object?.y as number) + 1)) {
             this.player.destroy(() => {
-                this.startScene("GameOver");
+                this.startScene(GAME_OVER);
             }, 1000);
         }
         this.player.callLimitVelocityX(-160, 160);
@@ -260,7 +261,7 @@ export default class MainScene extends Phaser.Scene {
         this.updateTimerDisplay();
 
         if (this.timeLimit <= 0) {
-            this.startScene("TimeOver");
+            this.startScene(TIME_OVER);
         }
     }
 
@@ -274,13 +275,19 @@ export default class MainScene extends Phaser.Scene {
      * @returns {void} 戻り値なし
      */
     startScene(key: String): void {
-        if(key==="GameOver" || key==="TimeOver"){
-            this.score*=0.8;
+        // ゲームオーバー・タイムオーバー時はスコアを減点
+        if (key === GAME_OVER || key === TIME_OVER) {
+            this.score *= 0.8;
         }
-        
-        const data = {
+
+        // ゲームクリア時は残り時間をスコアとして加算
+        if (key === GAME_CLEAR && this.timeLimit >= 0) {
+            this.score += this.timeLimit * 5;
+        }
+
+        // シーンを遷移する
+        this.scene.start(`${key}`, {
             score: this.score,
-        };
-        this.scene.start(`${key}`, data);
+        });
     }
 }

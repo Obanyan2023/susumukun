@@ -1,3 +1,4 @@
+import { GAME_OVER } from "../../constants/SceneKeys";
 import MainScene from "../../scenes/MainScene";
 import Character from "../Character";
 import Player from "../player";
@@ -165,7 +166,7 @@ export default class Enemy {
                     mainscene?.updateScore(this.enemy.point);
                 } else {
                     player.destroy(() => {
-                        mainscene?.startScene("GameOver");
+                        mainscene?.startScene(GAME_OVER);
                     }, 1000);
                 }
             });
