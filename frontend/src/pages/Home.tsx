@@ -7,13 +7,16 @@ import {
     InputLabel,
     MenuItem,
     Modal,
-    Select,
     Typography
 } from "@mui/material";
 import * as React from 'react';
 import Background from '../assets/images/image.png';
 import '../index.css'
 import { GameComponent } from "../components/Game";
+import Select from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
+
+
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -61,8 +64,14 @@ export const Home = () => {
 
     const [open, setOpen] = React.useState(false);
 
+    const [difficult, setDifficult] = React.useState<number>(2);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleChange = (event: SelectChangeEvent<number>) => {
+        setDifficult(event.target.value as number);
+    };
 
     const handleGameStart = (difficult: number) => {
         if (document.fullscreenElement) {
@@ -87,15 +96,17 @@ export const Home = () => {
                     </Grid>
                 </Grid>
                 <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
-                    <input value={nickname} onChange={(e) => setNickname(e.target.value)} />
-                    <FormControl sx={{ width: 100 }}>
-                        <InputLabel >難易度</InputLabel>
-                        <Select>
-                            <MenuItem onClick={() => handleGameStart(1)}>Hard</MenuItem>
-                            <MenuItem onClick={() => handleGameStart(2)}>Normal</MenuItem>
-                            <MenuItem onClick={() => handleGameStart(4)}>Easy</MenuItem>
+                    <Typography color="#000000" bgcolor="#ffffff">ニックネーム入力</Typography>
+                    <input value={nickname} onChange={(e) => setNickname(e.target.value)} /><br />
+                    <FormControl sx={{ background: "#ffffff", width: 100, marginRight: '10px', borderRadius: "5px" }}>
+                        <InputLabel id="a-label">難易度</InputLabel>
+                        <Select labelId="a-label" id="a" onChange={handleChange} value={difficult} label="Age">
+                            <MenuItem value={1}>Hard</MenuItem>
+                            <MenuItem value={2}>Normal</MenuItem>
+                            <MenuItem value={4}>Easy</MenuItem>
                         </Select>
-                    </FormControl>
+                    </FormControl><br />
+                    <Button variant="contained" onClick={() => handleGameStart(difficult)}>Game Start</Button><br />
                     <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ゲーム内容</Button>
                     <Modal
                         open={open}
