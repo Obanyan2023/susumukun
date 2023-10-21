@@ -68,8 +68,8 @@ export default class GameEndScene extends Phaser.Scene {
         });
         scoreText.setOrigin(0.5);
 
+        // ニックネームの取得
         const nickname = localStorage.getItem(NICKNAME)?.length !== 0 ? localStorage.getItem(NICKNAME) : null;
-        localStorage.removeItem(NICKNAME);
 
         // プレイ難易度の取得
         const difficulty = Number(localStorage.getItem(DIFFICULTY));
