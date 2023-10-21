@@ -22,7 +22,7 @@ export default class GameOverImage {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image("gameover", "images/tmp/gameover.jpg");
+        this.scene.load.image("gameover", "images/scenes/gameover.jpg");
     }
 
     /**

@@ -39,7 +39,7 @@ export default class Goal {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image(this.name , `images/enemy/${this.name}1.png`);
+        this.scene.load.image(this.name , `images/enemy/${this.name}.png`);
     }
 
     /**
@@ -57,7 +57,7 @@ export default class Goal {
     create(objects: Phaser.Physics.Arcade.StaticGroup[], player: Player, x: number, y: number): void {
         // ゴールの宣言
         this.object = new Character(this.scene, x, y, this.name);
-        this.object.setOrigin(1, 1);
+        this.object.setOrigin(0.5, 1);
         this.object.setScale(window.innerHeight / this.object.height / 10);
         // 衝突するオブジェクトの設定
         for (const object of objects) {
@@ -68,21 +68,14 @@ export default class Goal {
         if (player.object != null) {
             this.scene.physics.add.overlap(this.object, player.object, () => {
                 let height:number = 20
-                if (player.object?.body?.velocity !== undefined && this.object !== null &&
-                    player.object?.body.velocity.y > 0 && player.object?.y < this.object?.y - 100)  {
-
-                    player.object?.setVelocityY(-200);
-                    this.object?.destroy();
-                } else {
-                    player.destroy(() => {
-                        if (this.scene instanceof MainScene) {
+                player.destroy(() => {
+                    if (this.scene instanceof MainScene) {
                             const mainscene = this.scene;
                             mainscene.startScene('GameClear');
                         }
                     }
-                    , 1000);
-                }
-            });
+                , 1000);
+            })
         }
 
     }
