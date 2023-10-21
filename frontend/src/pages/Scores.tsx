@@ -80,14 +80,14 @@ export default function Scores(): JSX.Element {
             textColor = 'white'; // 4位と5位の文字色
         }
 
-            return (
-                <Typography key={index} className="mfont" align="center" sx={{ color: textColor, fontFamily: 'fantasy', fontSize: fontSize }}>
-                    <div>{`NO.${index + 1} ${score.nickname}`}</div>
-                    <div>{`${score.score}p`}</div>
-                    <br />
-                </Typography>
-            );
-        });
+        return (
+            <Typography key={index} className="mfont" align="center" sx={{ color: textColor, fontFamily: 'fantasy', fontSize: fontSize }}>
+                <div>{`NO.${index + 1} ${score.nickname}`}</div>
+                <div>{`${score.score}p`}</div>
+                <br />
+            </Typography>
+        );
+    });
 
     // すべてのスコアを表示
     const allScores = scores.map((score: ScoreEntity, index: number) => {

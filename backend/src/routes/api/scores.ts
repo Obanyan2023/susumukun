@@ -39,14 +39,15 @@ router.get("/scores", (req: Request, res: Response, next: NextFunction): void =>
 router.post("/scores", (req: Request, res: Response, next: NextFunction): void => {
     const nickname = req.body.nickname;
     const score = req.body.score;
+    const difficulty = req.body.difficulty;
 
     // リクエストボディのバリデーション
-    if (!is_string(nickname) || !is_number(score)) {
+    if (!is_string(nickname) || !is_number(score) || !is_number(difficulty)) {
         res.status(400).json({ message: "Bad request" });
         return;
     }
 
-    httpOk(res, { callback: () => postMethod(nickname, score) });
+    httpOk(res, { callback: () => postMethod(nickname, score, difficulty) });
 });
 
 export default router;

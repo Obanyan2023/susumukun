@@ -7,13 +7,17 @@ import {
     InputLabel,
     MenuItem,
     Modal,
-    Select,
+    TextField,
     Typography
 } from "@mui/material";
 import * as React from 'react';
 import Background from '../assets/images/image.png';
-import '../index.css'
+import '../index.css';
 import { GameComponent } from "../components/Game";
+import Select from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
+import { DIFFICULTY_LEVELS, DifficultyLevel } from "../features/game/constants/DifficultyLevel";
+import { DIFFICULTY, NICKNAME } from "../features/game/constants/localStorageKeys";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -57,74 +61,91 @@ const head = () => {
 
 export const Home = () => {
     const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
-    const [nickname, setNickname] = React.useState<string>("");
-
+    const [nickname, setNickname] = React.useState<string>(localStorage.getItem("nickname") || "");
     const [open, setOpen] = React.useState(false);
+
+    const [difficult, setDifficult] = React.useState<number>(2);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleChange = (event: SelectChangeEvent<number>) => {
+        setDifficult(event.target.value as number);
+    };
 
     const handleGameStart = (difficult: number) => {
         if (document.fullscreenElement) {
             document.exitFullscreen();
         } else {
-            document.documentElement.requestFullscreen();
+            try {
+                document.documentElement.requestFullscreen();
+            } catch (error) {
+                console.log("fullscreen処理に失敗しました");
+            }
         }
 
-        localStorage.setItem("nickname", nickname);
+        localStorage.setItem(NICKNAME, nickname);
+        localStorage.setItem(DIFFICULTY, String(difficult));
         setIsFullScreen(!isFullScreen);
-        localStorage.setItem("difficult", String(difficult));
     }
 
     const HomeComponent = () => (
         <Box sx={image}>
-            <Grid container alignItems={"center"} direction={"column"} sx={{ overflow: 'hidden', height: '100vh', width: '100vw' }}>
-                <Grid container spacing={2} sx={{ height: "30%" }} alignItems="center">
-                    <Grid item xs={12}>
-                        <Typography className="mfont" align="center" sx={{ fontFamily: 'Mochiy Pop P One', fontSize: 50 }}>
-                            {"走れ！すすむ君！"}
-                        </Typography>
+            <Box sx={{ height: '100vh', width: '100vw', justifyContent: "space-between" }}>
+                <Typography className="mfont" align="center" variant="h3" sx={{ fontFamily: 'Mochiy Pop P One', paddingY: 7 }}>
+                    走れ！すすむ君！
+                </Typography>
+                <Grid container spacing={1} component="form" alignItems="center" justifyContent="center" direction="column">
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <TextField focused label="ニックネーム" variant="outlined" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+                    </Grid>
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <FormControl>
+                            <InputLabel id="a-label">難易度</InputLabel>
+                            <Select labelId="a-label" id="a" onChange={handleChange} value={difficult} label="Age">
+                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel) => {
+                                    return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <Button variant="contained" onClick={() => handleGameStart(difficult)}>Game Start</Button>
+                    </Grid>
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <Button variant="contained" color='inherit' onClick={handleOpen}>ゲーム内容</Button>
+                    </Grid>
+                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                        <Button href="/scores" variant="contained" color='inherit'>スコア確認</Button>
                     </Grid>
                 </Grid>
-                <Grid container alignItems="center" direction="column" sx={{ bottom: "10%" }} >
-                    <input value={nickname} onChange={(e) => setNickname(e.target.value)} />
-                    <FormControl sx={{ width: 100 }}>
-                        <InputLabel >難易度</InputLabel>
-                        <Select>
-                            <MenuItem onClick={() => handleGameStart(1)}>Hard</MenuItem>
-                            <MenuItem onClick={() => handleGameStart(2)}>Normal</MenuItem>
-                            <MenuItem onClick={() => handleGameStart(4)}>Easy</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <Button variant="contained" color='inherit' sx={{ margin: 3 }} onClick={handleOpen}>ゲーム内容</Button>
-                    <Modal
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={style}>
-                            <Typography id="modal-modal-title" variant="h6" component="h2">
-                                ゲーム内容
-                            </Typography>
-                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            <b>「走れ！すすむ君！」はアプリ開発の世界を舞台にしたゲームです。主人公、すすむくんはアプリ開発者で、新しいアプリを完成させるためにはバグ（昆虫）たちとの戦いを繰り広げなければなりません。</b><br/>
-                            <br/>
-                            <strong>主人公のすすむ君を動かしてゴールを目指すゲーム！<br/></strong>
-                                ・緑のいもむしをふむと50点！<br/>
-                                ・赤のいもむしをふむと100点！<br/>
-                                ・エラーが出ているいもむしをふむと130点！<br/>
-                                ・バッタを踏むと150点！<br/>
-                                ・ゲームオーバーやタイムオーバーになると点数が減ってしまうゾ！<br/>
-                            </Typography>
-                            <Box sx={closebutton}>
-                                <Button variant="contained" onClick={handleClose}>閉じる</Button>
-                            </Box>
-                        </Box>
-                    </Modal>
-                    <Button href="/scores" variant="contained" color='inherit' sx={{ margin: 3 }}> スコア確認</Button>
-                </Grid >
-            </Grid >
+            </Box>
+
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        ゲーム内容
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <b>「走れ！すすむ君！」はアプリ開発の世界を舞台にしたゲームです。主人公、すすむくんはアプリ開発者で、新しいアプリを完成させるためにはバグ（昆虫）たちとの戦いを繰り広げなければなりません。</b><br />
+                        <br />
+                        <strong>主人公のすすむ君を動かしてゴールを目指すゲーム！<br /></strong>
+                        ・緑のいもむしをふむと50点！<br />
+                        ・赤のいもむしをふむと100点！<br />
+                        ・エラーが出ているいもむしをふむと130点！<br />
+                        ・バッタを踏むと150点！<br />
+                        ・ゲームオーバーやタイムオーバーになると点数が減ってしまうゾ！<br />
+                    </Typography>
+                    <Box sx={closebutton}>
+                        <Button variant="contained" onClick={handleClose}>閉じる</Button>
+                    </Box>
+                </Box>
+            </Modal>
         </Box>
     );
 
