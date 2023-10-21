@@ -59,7 +59,7 @@ const head = () => {
 
 export const Home = () => {
     const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
-    const [nickname, setNickname] = React.useState<string>("");
+    const [nickname, setNickname] = React.useState<string>(localStorage.getItem("nickname") || "");
     const [open, setOpen] = React.useState(false);
 
     const [difficult, setDifficult] = React.useState<number>(2);
