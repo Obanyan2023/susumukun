@@ -181,7 +181,7 @@ export default class MainScene extends Phaser.Scene {
 
         // 初期画面に敵を配置
         for (let i = 0; i < 6 / this.difficult; i++) {
-            const newEnemy = new Enemy(this, Enemy.get_enemyName());
+            const newEnemy = new Enemy(this, Enemy.get_enemyName(this.difficult));
             newEnemy.create(
                 [this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[],
                 this.player,
@@ -222,7 +222,7 @@ export default class MainScene extends Phaser.Scene {
 
         let rand = Phaser.Math.Between(0, 70 * this.difficult);
 
-        let enemy_name = Enemy.get_enemyName();
+        let enemy_name = Enemy.get_enemyName(this.difficult);
         if (this.before_x === undefined) {
             this.before_x = this.cameras.main.scrollX;
         }
