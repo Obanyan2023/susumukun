@@ -260,7 +260,7 @@ export default class MainScene extends Phaser.Scene {
         this.updateTimerDisplay();
 
         if (this.timeLimit <= 0) {
-            this.startScene("GameOver");
+            this.startScene("TimeOver");
         }
     }
 
@@ -274,9 +274,10 @@ export default class MainScene extends Phaser.Scene {
      * @returns {void} 戻り値なし
      */
     startScene(key: String): void {
-        if(key==="GameOver"){
+        if(key==="GameOver" || key==="TimeOver"){
             this.score*=0.8;
         }
+        
         const data = {
             score: this.score,
         };
