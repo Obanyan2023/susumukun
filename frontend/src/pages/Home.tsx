@@ -64,7 +64,7 @@ export const Home = () => {
     const [nickname, setNickname] = React.useState<string>(localStorage.getItem("nickname") || "");
     const [open, setOpen] = React.useState(false);
 
-    const [difficult, setDifficult] = React.useState<number>(2);
+    const [difficult, setDifficult] = React.useState<number>(Number(localStorage.getItem(DIFFICULTY)) || 0);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
