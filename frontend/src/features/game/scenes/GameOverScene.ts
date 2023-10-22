@@ -1,5 +1,5 @@
 import GameOverImage from "../components/images/GameOverImage";
-import TmpButton from "../components/buttons/TmpButton";
+import HomeButton from "../components/buttons/HomeButton";
 import GameEndScene from "./GameEndScene";
 import { GAME_OVER } from "../constants/SceneKeys";
 
@@ -7,13 +7,13 @@ import { GAME_OVER } from "../constants/SceneKeys";
  * ゲームオーバーシーン
  */
 export default class GameOverScene extends GameEndScene {
-    /**
-     * コンストラクタ
-     */
-    constructor() {
-        super(GAME_OVER);
+  /**
+   * コンストラクタ
+   */
+  constructor() {
+    super(GAME_OVER);
 
-        this.gameEndImage = new GameOverImage(this);
-        this.tmpButton = new TmpButton(this);
-    }
+    this.gameEndImage = new GameOverImage(this);
+    this.tmpButton = new HomeButton(this);
+  }
 }

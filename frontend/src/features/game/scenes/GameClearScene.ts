@@ -1,5 +1,5 @@
 import GameClearImage from "../components/images/GameClearImage";
-import TmpButton from "../components/buttons/TmpButton";
+import HomeButton from "../components/buttons/HomeButton";
 import GameEndScene from "./GameEndScene";
 import { GAME_CLEAR } from "../constants/SceneKeys";
 
@@ -7,13 +7,13 @@ import { GAME_CLEAR } from "../constants/SceneKeys";
  * ゲームクリアシーン
  */
 export default class GameClearScene extends GameEndScene {
-    /**
-     * コンストラクタ
-     */
-    constructor() {
-        super(GAME_CLEAR);
+  /**
+   * コンストラクタ
+   */
+  constructor() {
+    super(GAME_CLEAR);
 
-        this.gameEndImage = new GameClearImage(this);
-        this.tmpButton = new TmpButton(this);
-    }
+    this.gameEndImage = new GameClearImage(this);
+    this.tmpButton = new HomeButton(this);
+  }
 }
