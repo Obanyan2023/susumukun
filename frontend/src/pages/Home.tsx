@@ -16,7 +16,7 @@ import '../index.css';
 import { GameComponent } from "../components/Game";
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
-import { DIFFICULTY_LEVELS, DifficultyLevel } from "../features/game/constants/DifficultyLevel";
+import { DIFFICULTY_LEVELS, DifficultyLevel, NORMAL } from "../features/game/constants/DifficultyLevel";
 import { DIFFICULTY, NICKNAME } from "../features/game/constants/localStorageKeys";
 
 const style = {
@@ -64,7 +64,7 @@ export const Home = () => {
     const [nickname, setNickname] = React.useState<string>(localStorage.getItem("nickname") || "");
     const [open, setOpen] = React.useState(false);
 
-    const [difficult, setDifficult] = React.useState<number>(2);
+    const [difficult, setDifficult] = React.useState<number>(Number(localStorage.getItem(DIFFICULTY)) || NORMAL.SEED);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
