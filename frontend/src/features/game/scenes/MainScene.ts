@@ -7,7 +7,7 @@ import MainStage from "../stages/main";
 import Goal from "../characters/goal";
 import { GAME_CLEAR, GAME_OVER, TIME_OVER } from "../constants/SceneKeys";
 import { DIFFICULTY } from "../constants/localStorageKeys";
-/**
+/*
  * ゲームのメインシーン
  */
 export default class MainScene extends Phaser.Scene {
@@ -141,6 +141,14 @@ export default class MainScene extends Phaser.Scene {
         this.scoreText = this.add.text(10, 10, `Score: ${this.score}`, { fontSize: "40px" });
         this.scoreText.setScrollFactor(0);
 
+        /**
+         * ステージの設定
+         *
+         * @property {number} stage_x - ステージのX座標
+         * @property {number} stage_y - ステージのY座標 (画面を超えてジャンプできる様に -100)
+         * @property {number} width - ステージの幅
+         * @property {number} height - ステージの高さ（stage_y の負の値・カメラ位置調整）
+         */
         const stage = {
             stage_x: 0,
             stage_y: 0,
@@ -154,7 +162,6 @@ export default class MainScene extends Phaser.Scene {
         // ワールドの境界を設定する
         this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
 
-        this.cameras.main.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
         this.cameras.main.setScroll(0, 0); // カメラのスクロールを0に設定
 
         this.timeObject = this.add.text(

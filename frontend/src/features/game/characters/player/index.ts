@@ -1,3 +1,4 @@
+import { is_set } from "../../../../utils/isType";
 import Character from "../Character";
 import LeftAnimation from "./animations/LeftAnimation";
 import RightAnimation from "./animations/RightAnimation";
@@ -49,6 +50,12 @@ export default class Player {
     cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
 
     /**
+     * @var ボタンが押されているかどうか
+     */
+    leftButtonPressed = false;
+    rightButtonPressed = false;
+
+    /**
      * コンストラクタ
      *
      * @param {Phaser.Scene} scene シーン
@@ -81,7 +88,7 @@ export default class Player {
      */
     create(objects?: Phaser.Physics.Arcade.StaticGroup[]): void {
         // プレイヤーとそのアニメーションの宣言
-        this.object = new Character(this.scene, window.innerWidth / 4, window.innerHeight/4, "susumu");
+        this.object = new Character(this.scene, window.innerWidth / 4, window.innerHeight / 2, "susumu");
         this.object.setOrigin(0.5, 1);
         this.cursors = this.scene.input.keyboard?.createCursorKeys();
         this.animation = {
@@ -98,8 +105,8 @@ export default class Player {
         // 初めに正面を向かせるために1度呼び出し
         this.animation.turn.update();
 
-        // カメラの追従
-        this.scene.cameras.main.startFollow(this.object);
+        // カメラの追従・Y軸の固定
+        this.scene.cameras.main.startFollow(this.object, false, 1, 0);
 
         // 衝突するオブジェクトの設定
         // 壁に衝突したら加速度と反対向きに減速
@@ -118,32 +125,60 @@ export default class Player {
             if (this.object?.body?.touching.down) {
                 this.object?.setVelocityY(-400);
             }
-        })
+        });
 
         this.cursors?.left?.on("up", () => {
-            this.animation?.turn.update();
-            this.object?.setAccelerationX(0);
-            this.object?.setVelocityX(0);
+            this.leftButtonPressed = false;
+            this.stopPlayer();
         })
 
         this.cursors?.right?.on("up", () => {
-            this.animation?.turn.update();
-            this.object?.setAccelerationX(0);
-            this.object?.setVelocityX(0);
+            this.rightButtonPressed = false;
+            this.stopPlayer();
         })
 
         this.cursors?.left?.on("down", () => {
-            this.animation?.left.update();
-            this.object?.setAccelerationX(-300);
-            this.object?.setVelocityX(-160);
+            this.leftButtonPressed = true;
+            this.movePlayer("left");
         })
 
         this.cursors?.right?.on("down", () => {
+            this.rightButtonPressed = true;
+            this.movePlayer("right");
+        })
+
+    }
+
+    movePlayer(direction : "left" | "right"):void {
+        if (direction === "right") {
             this.animation?.right.update();
             this.object?.setAccelerationX(300);
             this.object?.setVelocityX(160);
-        })
+        }
+        if (direction === "left") {
+            this.animation?.left.update();
+            this.object?.setAccelerationX(-300);
+            this.object?.setVelocityX(-160);
+        }
+    }
 
+    stopPlayer():void {
+        if(!this.rightButtonPressed && !this.leftButtonPressed) {
+            this.animation?.turn.update();
+            this.object?.setAccelerationX(0);
+            this.object?.setVelocityX(0);
+            return;
+        }
+        if (this.rightButtonPressed) {
+            this.animation?.right.update();
+            this.movePlayer("right");
+            return;
+        }
+        if (this.leftButtonPressed) {
+            this.animation?.left.update();
+            this.movePlayer("left");
+            return;
+        }
     }
     /**
      * x方向の速度の上限・下限値を設定する
@@ -157,25 +192,44 @@ export default class Player {
         }
     }
 
+    /**
+     * プレイヤーの更新
+     *
+     * @returns {void} 戻り値なし
+     */
     update(): void {
+        if (!is_set<Character>(this.object) || !is_set<Object>(this.object.body)) {
+            return;
+        }
+
+        // プレイヤーが画面の上側（3割以上）に来たらカメラを上（上限50）に移動させる
+        if (this.object.body.y < this.scene.scale.height * 0.3 && this.scene.cameras.main.scrollY > -50) {
+            this.scene.cameras.main.setScroll(this.scene.cameras.main.scrollX, this.scene.cameras.main.scrollY - 1);
+        }
+
+        // プレイヤーが画面の下側（5割以下）に来たらカメラを下（下限0・中央まで）に移動させる
+        if (this.scene.scale.height * 0.5 < this.object.body.y && this.scene.cameras.main.scrollY < 0) {
+            if (this.object.body.y !== this.scene.cameras.main.scrollY) {
+                this.scene.cameras.main.setScroll(this.scene.cameras.main.scrollX, this.scene.cameras.main.scrollY + 5);
+            } else {
+                this.scene.cameras.main.setScroll(this.scene.cameras.main.scrollX, this.object.body.y + 1);
+            }
+        }
     }
 
     /**
-    * 削除処理
-    * 
-    * @param {()=>void} callback 削除時のコールバック関数
-    * @param {number} timeout コールバック関数が呼び出されるまでの待機時間
-    * @returns {void} 戻り値なし
-    * @description プレイヤーを非表示にし、待機時間後にコールバック関数を呼び出す。
-    */
+     * 削除処理
+     *
+     * @param {()=>void} callback 削除時のコールバック関数
+     * @param {number} timeout コールバック関数が呼び出されるまでの待機時間
+     * @returns {void} 戻り値なし
+     * @description プレイヤーを非表示にし、待機時間後にコールバック関数を呼び出す。
+     */
     destroy(callback: () => void, timeout: number): void {
         this.object?.setVisible(false);
         this.scene.cameras.main.stopFollow();
-        this.scene.time.delayedCall(
-            timeout,
-            () => {
-                callback();
-            }
-        )
+        this.scene.time.delayedCall(timeout, () => {
+            callback();
+        });
     }
 }
