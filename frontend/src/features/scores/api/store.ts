@@ -1,5 +1,4 @@
 import { axios } from "../../../lib/axios";
-import Axios, { AxiosError, AxiosResponse } from "axios";
 
 /**
  * スコアを保存する
@@ -16,10 +15,10 @@ export const storeScoresApi = async (nickname: string, score: number, difficulty
             score: score,
             difficulty: difficulty,
         })
-        .then((response: AxiosResponse) => {
+        .then(() => {
             //
         })
-        .catch((error: AxiosError) => {
-            alert("スコアの保存に失敗しました");
+        .catch(() => {
+            //
         });
 };

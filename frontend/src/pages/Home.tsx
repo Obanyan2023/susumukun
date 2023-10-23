@@ -97,12 +97,12 @@ export const Home = () => {
                 </Typography>
                 <Grid container spacing={1} component="form" alignItems="center" justifyContent="center" direction="column">
                     <Grid item xs={12} sx={{ paddingBottom: 3 }}>
-                        <TextField focused label="ニックネーム" variant="outlined" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+                        <TextField focused label="ニックネーム" variant="filled" value={nickname} onChange={(e) => setNickname(e.target.value)} sx={{ bgcolor: "white" }} />
                     </Grid>
                     <Grid item xs={12} sx={{ paddingBottom: 3 }}>
                         <FormControl>
                             <InputLabel id="a-label">難易度</InputLabel>
-                            <Select labelId="a-label" id="a" onChange={handleChange} value={difficult} label="Age">
+                            <Select labelId="a-label" id="a" sx={{ bgcolor: "white" }} onChange={handleChange} value={difficult} label="Age">
                                 {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel) => {
                                     return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
                                 })}
