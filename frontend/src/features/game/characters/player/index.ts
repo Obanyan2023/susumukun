@@ -50,6 +50,12 @@ export default class Player {
     cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
 
     /**
+     * @var ボタンが押されているかどうか
+     */
+    leftButtonPressed = false;
+    rightButtonPressed = false;
+
+    /**
      * コンストラクタ
      *
      * @param {Phaser.Scene} scene シーン
@@ -122,28 +128,57 @@ export default class Player {
         });
 
         this.cursors?.left?.on("up", () => {
-            this.animation?.turn.update();
-            this.object?.setAccelerationX(0);
-            this.object?.setVelocityX(0);
-        });
+            this.leftButtonPressed = false;
+            this.stopPlayer();
+        })
 
         this.cursors?.right?.on("up", () => {
-            this.animation?.turn.update();
-            this.object?.setAccelerationX(0);
-            this.object?.setVelocityX(0);
-        });
+            this.rightButtonPressed = false;
+            this.stopPlayer();
+        })
 
         this.cursors?.left?.on("down", () => {
-            this.animation?.left.update();
-            this.object?.setAccelerationX(-300);
-            this.object?.setVelocityX(-160);
-        });
+            this.leftButtonPressed = true;
+            this.movePlayer("left");
+        })
 
         this.cursors?.right?.on("down", () => {
+            this.rightButtonPressed = true;
+            this.movePlayer("right");
+        })
+
+    }
+
+    movePlayer(direction : "left" | "right"):void {
+        if (direction === "right") {
             this.animation?.right.update();
             this.object?.setAccelerationX(300);
             this.object?.setVelocityX(160);
-        });
+        }
+        if (direction === "left") {
+            this.animation?.left.update();
+            this.object?.setAccelerationX(-300);
+            this.object?.setVelocityX(-160);
+        }
+    }
+
+    stopPlayer():void {
+        if(!this.rightButtonPressed && !this.leftButtonPressed) {
+            this.animation?.turn.update();
+            this.object?.setAccelerationX(0);
+            this.object?.setVelocityX(0);
+            return;
+        }
+        if (this.rightButtonPressed) {
+            this.animation?.right.update();
+            this.movePlayer("right");
+            return;
+        }
+        if (this.leftButtonPressed) {
+            this.animation?.left.update();
+            this.movePlayer("left");
+            return;
+        }
     }
     /**
      * x方向の速度の上限・下限値を設定する
