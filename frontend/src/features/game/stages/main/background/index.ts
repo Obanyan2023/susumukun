@@ -1,5 +1,4 @@
 import BaseBackground from "./BaseBackground";
-import ExampleMoveEntity from "./ExampleMoveEntity";
 import Sky from "./Sky";
 
 /**
@@ -12,11 +11,6 @@ export default class Background extends BaseBackground {
     sky: Sky;
 
     /**
-     * @var 動く背景
-     */
-    exampleMoveEntity: ExampleMoveEntity;
-
-    /**
      * コンストラクタ
      *
      * 背景を管理するクラスのインスタンスを作成する
@@ -26,7 +20,6 @@ export default class Background extends BaseBackground {
     constructor(scene: Phaser.Scene) {
         super(scene);
         this.sky = new Sky(scene);
-        this.exampleMoveEntity = new ExampleMoveEntity(scene);
     }
 
     /**
@@ -36,7 +29,6 @@ export default class Background extends BaseBackground {
      */
     preload(): void {
         this.sky.preload();
-        this.exampleMoveEntity.preload();
     }
 
     /**
@@ -46,6 +38,5 @@ export default class Background extends BaseBackground {
      */
     create(): void {
         this.sky.create();
-        this.exampleMoveEntity.create();
     }
 }
