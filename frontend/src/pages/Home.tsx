@@ -46,7 +46,7 @@ const image = {
     backgroundImage: `url(${setWinSize()})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',  // 画像の繰り返しを無効にする
-    backgroundPosition: 'center',
+    backgroundPosition: 'center'
 };
 
 const closebutton = {
