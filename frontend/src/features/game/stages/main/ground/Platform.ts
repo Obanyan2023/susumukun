@@ -209,7 +209,7 @@ export default class Platform extends BaseGround {
 
         x = blocksize * 210;
         for (let i = x; i < blocksize * 225; i += blocksize) {
-            for (let j = 0; j < bottom - blocksize*6; j += blocksize) {
+            for (let j = 0; j < bottom - blocksize*7; j += blocksize) {
                 this.setBlock(i, j, 0);
             }
         }
