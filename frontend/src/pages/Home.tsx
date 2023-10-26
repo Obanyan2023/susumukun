@@ -91,7 +91,7 @@ export const Home = () => {
 
     const HomeComponent = () => (
         <Box sx={image}>
-            <Box sx={{ height: '100vh', width: '100vw', justifyContent: "space-between" }}>
+            <Box sx={{ minHeight: '100vh', minWidth: '100vw', justifyContent: "space-between" }}>
                 <Typography className="mfont" align="center" variant="h3" sx={{ fontFamily: 'Mochiy Pop P One', paddingY: 7 }}>
                     走れ！すすむ君！
                 </Typography>
@@ -99,7 +99,7 @@ export const Home = () => {
                     <Grid item xs={12} sx={{ paddingBottom: 3 }}>
                         <TextField focused label="ニックネーム" variant="filled" value={nickname} onChange={(e) => setNickname(e.target.value)} sx={{ bgcolor: "white" }} />
                     </Grid>
-                    <Grid item xs={12} sx={{ paddingBottom: 3 }}>
+                    <Grid item xs={12} sx={{ paddingBottom: 3}}>
                         <FormControl>
                             <InputLabel id="a-label">難易度</InputLabel>
                             <Select labelId="a-label" id="a" sx={{ bgcolor: "white" }} onChange={handleChange} value={difficult} label="Age">
