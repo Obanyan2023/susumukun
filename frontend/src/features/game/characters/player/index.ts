@@ -171,19 +171,19 @@ export default class Player {
         keyA?.on("down",() => {
             this.leftButtonPressed = true;
             this.movePlayer("left");
-        })
+        });
         keyD?.on("down",() => {
             this.rightButtonPressed = true;
             this.movePlayer("right");
-        })
+        });
         keyA?.on("up",() => {
             this.leftButtonPressed = false;
             this.stopPlayer();
-        })
+        });
         keyD?.on("up",() => {
             this.rightButtonPressed = false;
             this.stopPlayer();
-        })
+        });
 
         this.cursors?.right?.on("up", () => {
             this.rightButtonPressed = false;
