@@ -1,11 +1,12 @@
-import { homedir } from "os";
+import { GAME } from "../../constants/SceneKeys";
+import { DIFFICULTY, NICKNAME } from "../../constants/localStorageKeys";
+import MainScene from "../../scenes/MainScene";
 import Button from "./Button";
-import { Home } from "../../../../pages/Home";
 
 /**
  * ゲームオーバ画面のボタン
  */
-export default class HomeButton {
+export default class ContinueButton {
   /**
    * @var 使用されるシーン
    */
@@ -39,8 +40,10 @@ export default class HomeButton {
     this.object.on(
       "pointerup",
       () => {
-        console.log("HomeButton is clicked!!");
-        window.location.reload();
+        console.log("ContinueButton is clicked!!");
+        window.localStorage.getItem(DIFFICULTY);
+        window.localStorage.getItem(NICKNAME);
+        this.scene.scene.start(GAME);
       },
       this
     );
@@ -55,8 +58,8 @@ export default class HomeButton {
     return new Button(
       this.scene,
       window.innerWidth / 2,
-      window.innerHeight / 2 + 200,
-      "タイトルへ戻る",
+      window.innerHeight / 2 + 100,
+      "リトライ",
       {
         fontSize: "32px",
       }
