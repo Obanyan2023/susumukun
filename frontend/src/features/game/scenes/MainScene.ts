@@ -60,7 +60,7 @@ export default class MainScene extends Phaser.Scene {
     /**
      * @var 制限時間 (秒)
      */
-    private timeLimit: number = 180; // 3分間
+    private timeLimit: number;
 
     /**
      * @var テキストオブジェクト
@@ -85,6 +85,7 @@ export default class MainScene extends Phaser.Scene {
         this.leftButton = new MoveLeftButton(this);
         this.rightButton = new MoveRightButton(this);
         this.jumpButton = new MoveJumpButton(this);
+        this.timeLimit = 180;
 
         this.goal = new Goal(this, "goal");
 
@@ -117,6 +118,7 @@ export default class MainScene extends Phaser.Scene {
     create(): void {
         this.input.addPointer(1);
         this.input.addPointer(2);
+        this.timeLimit = 180;
 
         // 背景と地面の作成
         this.stage.create();
@@ -264,7 +266,7 @@ export default class MainScene extends Phaser.Scene {
         return this.score;
     }
 
-    private updateTimer(): void {
+    updateTimer(): void {
         this.timeLimit--;
         this.updateTimerDisplay();
 
