@@ -38,7 +38,7 @@ export const RED_CATERPILLAR: EnemyEntity = {
 export const ERROR_CATERPILLAR: EnemyEntity = {
     name: "error-caterpillar-sprite",
     velocityX: 80,
-    point: 130,
+    point: 150,
     frameWidth: 30,
     frameHeight: 8,
     frameRate: 8,
@@ -47,7 +47,7 @@ export const ERROR_CATERPILLAR: EnemyEntity = {
 export const GRASSHOPPER: EnemyEntity = {
     name: "grasshopper-sprite",
     velocityX: 100,
-    point: 150,
+    point: 200,
     frameWidth: 23,
     frameHeight: 12,
     frameRate: 2,
