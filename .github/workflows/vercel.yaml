@@ -4,6 +4,9 @@ on:
   push:
     branches: ['main']
 
+  schedule:
+    - cron: '0 * * * *' # every day at 00:00 UTC
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
