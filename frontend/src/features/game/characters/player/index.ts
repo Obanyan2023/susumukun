@@ -148,6 +148,12 @@ export default class Player {
             });
         }
 
+        this.cursors?.space?.on("down", () => {
+            if (this.object?.body?.touching.down) {
+                this.object?.setVelocityY(this.config.jumpVelocityY);
+            }
+        });
+
         this.cursors?.up?.on("down", () => {
             if (this.object?.body?.touching.down) {
                 this.object?.setVelocityY(this.config.jumpVelocityY);
@@ -156,6 +162,26 @@ export default class Player {
 
         this.cursors?.left?.on("up", () => {
             this.leftButtonPressed = false;
+            this.stopPlayer();
+        });
+
+        const keyA = this.scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        const keyD = this.scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+        keyA?.on("down",() => {
+            this.leftButtonPressed = true;
+            this.movePlayer("left");
+        });
+        keyD?.on("down",() => {
+            this.rightButtonPressed = true;
+            this.movePlayer("right");
+        });
+        keyA?.on("up",() => {
+            this.leftButtonPressed = false;
+            this.stopPlayer();
+        });
+        keyD?.on("up",() => {
+            this.rightButtonPressed = false;
             this.stopPlayer();
         });
 
