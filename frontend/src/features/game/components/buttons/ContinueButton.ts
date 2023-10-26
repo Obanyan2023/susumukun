@@ -59,7 +59,7 @@ export default class ContinueButton {
       this.scene,
       window.innerWidth / 2,
       window.innerHeight / 2 + 100,
-      "リトライ",
+      "もう一度プレイ",
       {
         fontSize: "32px",
       }

@@ -119,6 +119,7 @@ export default class MainScene extends Phaser.Scene {
         this.input.addPointer(1);
         this.input.addPointer(2);
         this.timeLimit = 180;
+        this.score = 0;
 
         // 背景と地面の作成
         this.stage.create();
