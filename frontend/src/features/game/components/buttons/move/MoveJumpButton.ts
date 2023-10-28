@@ -20,7 +20,7 @@ export default class MoveJumpButton extends MoveButton {
         // 地面に着地しているときのみオブジェクトのジャンプを行う
         super.create(player, () => {
             if (player.object?.body?.touching.down) {
-                player.object?.setVelocityY(-400);
+                player.object?.setVelocityY(this.config.jumpVelocityY);
             }
         });
     }

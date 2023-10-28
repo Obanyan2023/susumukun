@@ -9,14 +9,23 @@ import {
     GRASSHOPPER,
     ENEMY_CONFIGS,
     EnemyEntity,
+    CHALLENGE_ERROR_CATERPILLAR,
+    CHALLENGE_GRASSHOPPER,
 } from "../../constants/Enemies";
 import { DIFFICULTY_LEVEL_MAP } from "../../constants/DifficultyLevel";
 import { getAryRand } from "../../../../utils/Random";
+import { is_set } from "../../../../utils/isType";
 
 /**
  * エネミーの種類
  */
-type EnemyName = typeof BASE_CATERPILLAR | typeof ERROR_CATERPILLAR | typeof RED_CATERPILLAR | typeof GRASSHOPPER;
+type EnemyName =
+    | typeof BASE_CATERPILLAR
+    | typeof ERROR_CATERPILLAR
+    | typeof RED_CATERPILLAR
+    | typeof GRASSHOPPER
+    | typeof CHALLENGE_ERROR_CATERPILLAR
+    | typeof CHALLENGE_GRASSHOPPER;
 
 /**
  * エネミークラス
@@ -48,16 +57,62 @@ export default class Enemy {
         this.enemy = enemy;
     }
 
+    /**
+     * シーンの更新
+     *
+     * @return {void} 戻り値なし
+     */
     update(): void {
         if (!this.object?.body) {
             return;
         }
 
-        // 特定のエネミーの場合，ランダムで反転する
+        // ERROR_CATERPILLAR の場合，ランダムで反転する
         if (this.enemy === ERROR_CATERPILLAR) {
             const random = Phaser.Math.Between(1, 50);
             if (this.object.body.velocity !== undefined && random === 1) {
                 this.object.setVelocityX(this.object.body.velocity.x * -1);
+            }
+        }
+
+        // CHALLENGE_ERROR_CATERPILLAR の場合，ランダムで反転する
+        if (this.enemy === CHALLENGE_ERROR_CATERPILLAR) {
+            const seed = Phaser.Math.Between(1, 50);
+            const velocityX = this.object.body.velocity.x;
+            const pm = Math.floor(Math.random() * 2) - 1;
+            const deceleration = 10;
+
+            // 速度が一定以上の場合，減速する
+            // 速度が一定以下の場合，ランダムな方向に移動する
+            if (10 <= velocityX) {
+                this.object.setVelocityX(velocityX - deceleration);
+            } else if (0 < velocityX) {
+                this.object.setVelocityX(CHALLENGE_ERROR_CATERPILLAR.velocityX * pm);
+            } else if (velocityX <= -10) {
+                this.object.setVelocityX(velocityX + deceleration);
+            } else if (velocityX < 0) {
+                this.object.setVelocityX(CHALLENGE_ERROR_CATERPILLAR.velocityX * pm);
+            } else {
+                this.object.setVelocityX(CHALLENGE_ERROR_CATERPILLAR.velocityX * pm);
+            }
+
+            // シード値が 1 の場合，反転する
+            if (seed === 1) {
+                if (is_set<Character>(this.object) && is_set<object>(this.object.body)) {
+                    this.object.setVelocityX(this.object.body.velocity.x * -1);
+                }
+            }
+
+            // シード値が 2 の場合，ランダム時間停止する
+            if (this.object.body.velocity.x !== 0 && seed === 2) {
+                const timer = Math.floor(Math.random() * 2);
+
+                this.object.setVelocityX(0);
+                this.scene.time.delayedCall(timer, () => {
+                    if (is_set<Character>(this.object)) {
+                        this.object.setVelocityX(CHALLENGE_ERROR_CATERPILLAR.velocityX * pm);
+                    }
+                });
             }
         }
 
@@ -135,6 +190,19 @@ export default class Enemy {
                         if (this.object?.body?.velocity.x === 0) {
                             this.object?.setVelocityY(-timer);
                             this.object?.setVelocityX(GRASSHOPPER.velocityX);
+                        }
+                    });
+                }
+
+                // CHALLENGE_GRASSHOPPER の場合，地面衝突時にジャンプする
+                if (this.enemy === CHALLENGE_GRASSHOPPER && this.object?.body?.touching.down === true) {
+                    this.object?.setVelocityX(0);
+
+                    const timer = Math.floor(Math.random() * 500) + 500;
+                    this.scene.time.delayedCall(timer, () => {
+                        if (this.object?.body?.velocity.x === 0) {
+                            this.object?.setVelocityY(-timer);
+                            this.object?.setVelocityX(CHALLENGE_GRASSHOPPER.velocityX);
                         }
                     });
                 }
