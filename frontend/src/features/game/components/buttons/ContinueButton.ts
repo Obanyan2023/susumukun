@@ -41,8 +41,6 @@ export default class ContinueButton {
       "pointerup",
       () => {
         console.log("ContinueButton is clicked!!");
-        window.localStorage.getItem(DIFFICULTY);
-        window.localStorage.getItem(NICKNAME);
         this.scene.scene.start(GAME);
       },
       this
