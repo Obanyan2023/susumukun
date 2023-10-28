@@ -7,6 +7,8 @@ import MainStage from "../stages/main";
 import Goal from "../characters/goal";
 import { GAME_CLEAR, GAME_OVER, TIME_OVER } from "../constants/SceneKeys";
 import { DIFFICULTY } from "../constants/localStorageKeys";
+import { CHALLENGE, DEFAULT, PlayerConfig } from "../constants/Player";
+import { CHALLENGE as DIFFICULTY_CHALLENGE } from "../constants/DifficultyLevel";
 /*
  * ゲームのメインシーン
  */
@@ -70,7 +72,14 @@ export default class MainScene extends Phaser.Scene {
     /**
      * @var 難易度
      */
-    private difficult: number = 2;
+    private readonly difficulty: number = 2;
+
+    /**
+     * プレイヤーの設定
+     *
+     * @private
+     */
+    private readonly config: PlayerConfig;
 
     /**
      * コンストラクタ
@@ -95,7 +104,8 @@ export default class MainScene extends Phaser.Scene {
 
         this.events.on("update", this.updateTimer, this);
 
-        this.difficult = Number(localStorage.getItem(DIFFICULTY));
+        this.difficulty = Number(localStorage.getItem(DIFFICULTY));
+        this.config = this.difficulty !== DIFFICULTY_CHALLENGE.SEED ? DEFAULT : CHALLENGE;
     }
 
     /**
@@ -190,8 +200,8 @@ export default class MainScene extends Phaser.Scene {
         this.updateTimerDisplay();
 
         // 初期画面に敵を配置
-        for (let i = 0; i < 6 / this.difficult; i++) {
-            const newEnemy = new Enemy(this, Enemy.get_enemyName(this.difficult));
+        for (let i = 0; i < 6 / this.difficulty; i++) {
+            const newEnemy = new Enemy(this, Enemy.get_enemyName(this.difficulty));
             newEnemy.create(
                 [this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[],
                 this.player,
@@ -216,7 +226,6 @@ export default class MainScene extends Phaser.Scene {
                 this.startScene(GAME_OVER);
             }, 1000);
         }
-        this.player.callLimitVelocityX(-160, 160);
         this.enemy_update();
     }
 
@@ -230,9 +239,9 @@ export default class MainScene extends Phaser.Scene {
             return;
         }
 
-        let rand = Phaser.Math.Between(0, 70 * this.difficult);
+        let rand = Phaser.Math.Between(0, 70 * this.difficulty);
 
-        let enemy_name = Enemy.get_enemyName(this.difficult);
+        let enemy_name = Enemy.get_enemyName(this.difficulty);
         if (this.before_x === undefined) {
             this.before_x = this.cameras.main.scrollX;
         }
@@ -293,7 +302,12 @@ export default class MainScene extends Phaser.Scene {
 
         // ゲームクリア時は残り時間をスコアとして加算
         if (key === GAME_CLEAR && this.timeLimit >= 0) {
-            this.score += this.timeLimit * 5;
+            if (this.difficulty === DIFFICULTY_CHALLENGE.SEED) {
+                this.score += this.timeLimit * 10000;
+                this.score += 1000000;
+            } else {
+                this.score += this.timeLimit * 5;
+            }
         }
 
         // シーンを遷移する

@@ -1,16 +1,30 @@
-import { BASE_CATERPILLAR, ERROR_CATERPILLAR, EnemyEntity, GRASSHOPPER, RED_CATERPILLAR } from "./Enemies";
+import {
+    BASE_CATERPILLAR,
+    CHALLENGE_ERROR_CATERPILLAR,
+    CHALLENGE_GRASSHOPPER,
+    ERROR_CATERPILLAR,
+    EnemyEntity,
+    GRASSHOPPER,
+    RED_CATERPILLAR,
+} from "./Enemies";
 
 /**
  * 難易度レベル
  *
- * @property {number} SEED シード値
- * @property {string} NAME 難易度名
- * @property {EnemyEntity[]} enemies 出現する敵の配列
+ * @param {number} SEED シード値
+ * @param {string} NAME 難易度名
+ * @param {EnemyEntity[]} enemies 出現する敵の配列
  */
 export type DifficultyLevel = {
     SEED: number;
     NAME: string;
     enemies: EnemyEntity[];
+};
+
+export const CHALLENGE: DifficultyLevel = {
+    SEED: 0.9,
+    NAME: "Challenge",
+    enemies: [CHALLENGE_ERROR_CATERPILLAR, CHALLENGE_GRASSHOPPER],
 };
 
 export const HARD: DifficultyLevel = {
@@ -30,10 +44,11 @@ export const EASY: DifficultyLevel = {
 };
 
 // 難易度レベルの配列
-export const DIFFICULTY_LEVELS: DifficultyLevel[] = [HARD, NORMAL, EASY];
+export const DIFFICULTY_LEVELS: DifficultyLevel[] = [CHALLENGE, HARD, NORMAL, EASY];
 
 // シード値をキーにした難易度レベルのマップ
 export const DIFFICULTY_LEVEL_MAP: { [key: string]: DifficultyLevel } = {
+    [CHALLENGE.SEED]: CHALLENGE,
     [HARD.SEED]: HARD,
     [NORMAL.SEED]: NORMAL,
     [EASY.SEED]: EASY,

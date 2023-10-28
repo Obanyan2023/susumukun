@@ -1,4 +1,7 @@
 import { is_set } from "../../../../utils/isType";
+import { CHALLENGE as DIFFICULTY_CHALLENGE, NORMAL } from "../../constants/DifficultyLevel";
+import { CHALLENGE, DEFAULT, PlayerConfig } from "../../constants/Player";
+import { DIFFICULTY } from "../../constants/localStorageKeys";
 import Character from "../Character";
 import LeftAnimation from "./animations/LeftAnimation";
 import RightAnimation from "./animations/RightAnimation";
@@ -56,12 +59,24 @@ export default class Player {
     rightButtonPressed = false;
 
     /**
+     * @var 難易度
+     */
+    private readonly difficulty: number;
+
+    /**
+     * @var プレイヤーの設定
+     */
+    private readonly config: PlayerConfig;
+
+    /**
      * コンストラクタ
      *
      * @param {Phaser.Scene} scene シーン
      */
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
+        this.difficulty = Number(localStorage.getItem(DIFFICULTY)) ?? NORMAL.SEED;
+        this.config = this.difficulty !== DIFFICULTY_CHALLENGE.SEED ? DEFAULT : CHALLENGE;
     }
 
     /**
@@ -97,6 +112,11 @@ export default class Player {
             right: new RightAnimation(this.scene, this),
         };
 
+        // 難易度がCHALLENGEの場合は重力を設定する
+        if (this.difficulty === DIFFICULTY_CHALLENGE.SEED) {
+            this.object.setGravityY(this.config.gravityY ?? 800);
+        }
+
         // アニメーションの作成
         this.animation.turn.create();
         this.animation.left.create();
@@ -111,36 +131,43 @@ export default class Player {
         // 衝突するオブジェクトの設定
         // 壁に衝突したら加速度と反対向きに減速
         for (const object of objects ?? []) {
-            this.object.collider(object, () => {
-                if (this.object?.body?.touching.left) {
-                    this.object?.setVelocityX(20);
+            this.object.collider(object, (): void => {
+                if (!is_set<Character>(this.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(this.object.body)) {
+                    return;
                 }
-                if (this.object?.body?.touching.right) {
-                    this.object?.setVelocityX(-20);
+
+                if (this.object.body.touching.left) {
+                    this.object.setVelocityX(20);
+                    return;
+                }
+
+                if (this.object.body.touching.right) {
+                    this.object.setVelocityX(-20);
+                    return;
                 }
             });
         }
 
         this.cursors?.space?.on("down", () => {
             if (this.object?.body?.touching.down) {
-                this.object?.setVelocityY(-400);
+                this.object?.setVelocityY(this.config.jumpVelocityY);
             }
         });
 
         this.cursors?.up?.on("down", () => {
             if (this.object?.body?.touching.down) {
-                this.object?.setVelocityY(-400);
+                this.object?.setVelocityY(this.config.jumpVelocityY);
             }
         });
 
         this.cursors?.left?.on("up", () => {
             this.leftButtonPressed = false;
             this.stopPlayer();
-        })
+        });
 
         const keyA = this.scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         const keyD = this.scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        
+
         keyA?.on("down",() => {
             this.leftButtonPressed = true;
             this.movePlayer("left");
@@ -161,35 +188,34 @@ export default class Player {
         this.cursors?.right?.on("up", () => {
             this.rightButtonPressed = false;
             this.stopPlayer();
-        })
+        });
 
         this.cursors?.left?.on("down", () => {
             this.leftButtonPressed = true;
             this.movePlayer("left");
-         })
+        });
 
         this.cursors?.right?.on("down", () => {
             this.rightButtonPressed = true;
             this.movePlayer("right");
-        })
-
+        });
     }
 
-    movePlayer(direction : "left" | "right"):void {
+    movePlayer(direction: "left" | "right"): void {
         if (direction === "right") {
             this.animation?.right.update();
-            this.object?.setAccelerationX(300);
-            this.object?.setVelocityX(160);
+            this.object?.setAccelerationX(this.config.rightAccelerationX);
+            this.object?.setVelocityX(this.config.rightVelocityX);
         }
         if (direction === "left") {
             this.animation?.left.update();
-            this.object?.setAccelerationX(-300);
-            this.object?.setVelocityX(-160);
+            this.object?.setAccelerationX(this.config.leftAccelerationX);
+            this.object?.setVelocityX(this.config.leftVelocityX);
         }
     }
 
-    stopPlayer():void {
-        if(!this.rightButtonPressed && !this.leftButtonPressed) {
+    stopPlayer(): void {
+        if (!this.rightButtonPressed && !this.leftButtonPressed) {
             this.animation?.turn.update();
             this.object?.setAccelerationX(0);
             this.object?.setVelocityX(0);
@@ -213,9 +239,11 @@ export default class Player {
      * @param max 最大値
      */
     callLimitVelocityX(min: number, max: number): void {
-        if (this.object?.body !== null) {
-            this.object?.setVelocityX(Phaser.Math.Clamp(this.object?.body.velocity.x, min, max));
+        if (!is_set<Character>(this.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(this.object.body)) {
+            return;
         }
+
+        this.object?.setVelocityX(Phaser.Math.Clamp(this.object.body.velocity.x, min, max));
     }
 
     /**
@@ -224,7 +252,7 @@ export default class Player {
      * @returns {void} 戻り値なし
      */
     update(): void {
-        if (!is_set<Character>(this.object) || !is_set<Object>(this.object.body)) {
+        if (!is_set<Character>(this.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(this.object.body)) {
             return;
         }
 
@@ -241,6 +269,8 @@ export default class Player {
                 this.scene.cameras.main.setScroll(this.scene.cameras.main.scrollX, this.object.body.y + 1);
             }
         }
+
+        this.callLimitVelocityX(this.config.leftVelocityX, this.config.rightVelocityX);
     }
 
     /**

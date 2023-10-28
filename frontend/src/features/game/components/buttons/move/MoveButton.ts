@@ -1,6 +1,9 @@
 import Phaser from "phaser";
 import Button from "../Button";
 import Player from "../../../characters/player";
+import { DIFFICULTY } from "../../../constants/localStorageKeys";
+import { CHALLENGE, DEFAULT, PlayerConfig } from "../../../constants/Player";
+import { CHALLENGE as DIFFICULTY_CHALLENGE } from "../../../constants/DifficultyLevel";
 
 /**
  * オブジェクトの移動を行うボタンの基底クラス
@@ -16,6 +19,8 @@ export default class MoveButton {
      */
     object: Button | null = null;
 
+    protected readonly config: PlayerConfig;
+
     /**
      * コンストラクタ
      *
@@ -23,6 +28,9 @@ export default class MoveButton {
      */
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
+
+        const difficulty = localStorage.getItem(DIFFICULTY) ?? -1;
+        this.config = difficulty !== String(DIFFICULTY_CHALLENGE.SEED) ? DEFAULT : CHALLENGE;
     }
 
     /**
@@ -67,7 +75,7 @@ export default class MoveButton {
      */
     private event(player: Player, pointer: Phaser.Input.Pointer): void {
         if (pointer.x >= this.scene.cameras.main.width / 2) {
-            return;   
+            return;
         }
 
         player.animation?.turn.update();
