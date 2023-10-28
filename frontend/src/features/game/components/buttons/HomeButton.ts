@@ -54,11 +54,14 @@ export default class HomeButton {
   createButton(): Button {
     return new Button(
       this.scene,
-      window.innerWidth / 2 - 300,
+      window.innerWidth / 2 - 150,
       window.innerHeight / 2 + 150,
       "タイトルへ戻る",
       {
         fontSize: "32px",
+        padding: {
+          y: 10,
+      }
       }
     ).setOrigin(0.5, 0.5);
   }
