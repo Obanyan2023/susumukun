@@ -57,8 +57,8 @@ export default class ContinueButton {
   createButton(): Button {
     return new Button(
       this.scene,
-      window.innerWidth / 2,
-      window.innerHeight / 2 + 100,
+      window.innerWidth / 2 + 300,
+      window.innerHeight / 2 + 150,
       "もう一度プレイ",
       {
         fontSize: "32px",
