@@ -2,6 +2,7 @@ import GameOverImage from "../components/images/GameOverImage";
 import HomeButton from "../components/buttons/HomeButton";
 import GameEndScene from "./GameEndScene";
 import { GAME_OVER } from "../constants/SceneKeys";
+import ContinueButton from "../components/buttons/ContinueButton";
 
 /**
  * ゲームオーバーシーン

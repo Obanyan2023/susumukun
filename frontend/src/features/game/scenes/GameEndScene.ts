@@ -6,6 +6,7 @@ import { storeScoresApi } from "../../scores/api";
 import TimeOverImage from "../components/images/TimeOverImage";
 import { is_set } from "../../../utils/isType";
 import { DIFFICULTY, NICKNAME } from "../constants/localStorageKeys";
+import ContinueButton from "../components/buttons/ContinueButton";
 
 export default class GameEndScene extends Phaser.Scene {
   /**
@@ -17,6 +18,11 @@ export default class GameEndScene extends Phaser.Scene {
    * @var ゲーム再スタートボタン
    */
   protected tmpButton: HomeButton;
+
+  /**
+   * @var ゲームリトライボタン
+   */
+  protected continueButton: ContinueButton;
 
   /**
    * @var スコア
@@ -32,6 +38,7 @@ export default class GameEndScene extends Phaser.Scene {
     super({ key: key });
 
     this.tmpButton = new HomeButton(this);
+    this.continueButton = new ContinueButton(this);
     this.gameEndImage = new GameOverImage(this);
   }
 
@@ -62,6 +69,7 @@ export default class GameEndScene extends Phaser.Scene {
   create(): void {
     this.gameEndImage.create();
     this.tmpButton.create();
+    this.continueButton.create();
 
     const scoreText = this.add.text(
       window.innerWidth / 2,
