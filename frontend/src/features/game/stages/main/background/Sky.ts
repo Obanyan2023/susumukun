@@ -24,7 +24,7 @@ export default class Sky extends BaseBackground {
      * @returns {void} 戻り値なし
      */
     create(): void {
-        this.image = this.scene.add.image(0, window.innerHeight / 2, "parkingarea").setScrollFactor(0.5);
+        this.image = this.scene.add.image(0, window.innerHeight / 2, "parkingarea").setScrollFactor(0.1);
         const maxSize = Math.min(window.innerWidth, window.innerHeight);
         const imageMarginHeight = Math.max(50000 / maxSize, 1);
         const imageHeight = this.image.height - imageMarginHeight;

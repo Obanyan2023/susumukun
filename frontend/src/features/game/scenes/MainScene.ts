@@ -151,7 +151,7 @@ export default class MainScene extends Phaser.Scene {
          */
         const stage = {
             stage_x: 0,
-            stage_y: window.innerHeight * -1,
+            stage_y: -window.innerHeight,
             width: 11600,
             height: window.innerHeight*2,
         };
