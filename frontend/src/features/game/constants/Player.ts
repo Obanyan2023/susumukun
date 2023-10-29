@@ -24,7 +24,7 @@ export const DEFAULT: PlayerConfig = {
 };
 
 export const CHALLENGE: PlayerConfig = {
-    jumpVelocityY: -1000,
+    jumpVelocityY: -900,
     rightAccelerationX: 1000,
     rightVelocityX: 400,
     leftAccelerationX: -1000,
