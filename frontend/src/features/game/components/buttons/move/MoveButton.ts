@@ -22,6 +22,11 @@ export default class MoveButton {
     protected readonly config: PlayerConfig;
 
     /**
+     * @var 難易度
+     */
+    protected readonly difficulty: number = 2;
+
+    /**
      * コンストラクタ
      *
      * @param scene シーン
@@ -29,8 +34,8 @@ export default class MoveButton {
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
 
-        const difficulty = localStorage.getItem(DIFFICULTY) ?? -1;
-        this.config = difficulty !== String(DIFFICULTY_CHALLENGE.SEED) ? DEFAULT : CHALLENGE;
+        this.difficulty = Number(localStorage.getItem(DIFFICULTY));
+        this.config = this.difficulty !== DIFFICULTY_CHALLENGE.SEED ? DEFAULT : CHALLENGE;
     }
 
     /**

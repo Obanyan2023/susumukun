@@ -9,6 +9,8 @@ import { GAME_CLEAR, GAME_OVER, TIME_OVER } from "../constants/SceneKeys";
 import { DIFFICULTY } from "../constants/localStorageKeys";
 import { CHALLENGE, DEFAULT, PlayerConfig } from "../constants/Player";
 import { CHALLENGE as DIFFICULTY_CHALLENGE } from "../constants/DifficultyLevel";
+import {is_set} from "../../../utils/isType";
+import Character from "../characters/Character";
 /*
  * ゲームのメインシーン
  */
@@ -49,11 +51,6 @@ export default class MainScene extends Phaser.Scene {
     private goal: Goal;
 
     /**
-     * @var 前回のカメラ位置
-     */
-    private before_x: number | undefined;
-
-    /**
      * @var スコア
      */
     private score: number = 0;
@@ -80,6 +77,26 @@ export default class MainScene extends Phaser.Scene {
      * @private
      */
     private readonly config: PlayerConfig;
+
+    /**
+     * ステージの設定
+     *
+     * @property {number} x - ステージのX座標
+     * @property {number} y - ステージのY座標
+     * @property {number} width - ステージの幅
+     * @property {number} height - ステージの高さ
+     */
+    private readonly stageConfig: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    } = {
+        x: 0,
+        y: -200,
+        width: 6900,
+        height: window.innerHeight + 200,
+    };
 
     /**
      * コンストラクタ
@@ -154,26 +171,11 @@ export default class MainScene extends Phaser.Scene {
         this.scoreText = this.add.text(10, 10, `Score: ${this.score}`, { fontSize: "40px" });
         this.scoreText.setScrollFactor(0);
 
-        /**
-         * ステージの設定
-         *
-         * @property {number} stage_x - ステージのX座標
-         * @property {number} stage_y - ステージのY座標 (画面を超えてジャンプできる様に -100)
-         * @property {number} width - ステージの幅
-         * @property {number} height - ステージの高さ（stage_y の負の値・カメラ位置調整）
-         */
-        const stage = {
-            stage_x: 0,
-            stage_y: -200,
-            width: 6900,
-            height: window.innerHeight + 200,
-        };
-
         // カメラの設定
-        this.cameras.main.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
+        this.cameras.main.setBounds(this.stageConfig.x, this.stageConfig.y, this.stageConfig.width, this.stageConfig.height);
 
         // ワールドの境界を設定する
-        this.physics.world.setBounds(stage.stage_x, stage.stage_y, stage.width, stage.height);
+        this.physics.world.setBounds(this.stageConfig.x, this.stageConfig.y, this.stageConfig.width, this.stageConfig.height);
 
         this.cameras.main.setScroll(0, 0); // カメラのスクロールを0に設定
 
@@ -208,6 +210,9 @@ export default class MainScene extends Phaser.Scene {
                 Phaser.Math.Between(window.innerWidth / 3, window.innerWidth),
                 (window.innerHeight / 3) * 2
             );
+            newEnemy.object?.on("destroy", () => {
+                this.enemyGroup.splice(this.enemyGroup.indexOf(newEnemy), 1);
+            });
             this.enemyGroup.push(newEnemy);
         }
     }
@@ -235,29 +240,25 @@ export default class MainScene extends Phaser.Scene {
      * @returns {void} 戻り値なし
      */
     enemy_update(): void {
-        if (this.player.object === null) {
+        if (!is_set<Character>(this.player.object)) {
             return;
         }
 
-        let rand = Phaser.Math.Between(0, 70 * this.difficulty);
-
-        let enemy_name = Enemy.get_enemyName(this.difficulty);
-        if (this.before_x === undefined) {
-            this.before_x = this.cameras.main.scrollX;
-        }
-        if (this.cameras.main.scrollX > this.before_x && rand === 1) {
-            const newEnemy = new Enemy(this, enemy_name);
+        if (this.isCreateEnemy()) {
+            const newEnemy = new Enemy(this, Enemy.get_enemyName(this.difficulty));
             newEnemy.create(
                 [this.stage.ground.platform.object] as Phaser.Physics.Arcade.StaticGroup[],
                 this.player,
-                this.cameras.main.scrollX + window.innerWidth + 50,
+                this.cameras.main.scrollX + window.innerWidth + Phaser.Math.Between(200, 500),
                 window.innerHeight / 10
             );
+            newEnemy.object?.on("destroy", () => {
+                this.enemyGroup.splice(this.enemyGroup.indexOf(newEnemy), 1);
+            });
             this.enemyGroup.push(newEnemy);
-            this.before_x = this.cameras.main.scrollX;
         }
 
-        this.enemyGroup.forEach((enemy) => {
+        this.enemyGroup.forEach((enemy: Enemy, index: number) => {
             enemy.update();
             let height: number = 15;
             if (
@@ -266,6 +267,31 @@ export default class MainScene extends Phaser.Scene {
                 enemy.object?.destroy();
             }
         });
+    }
+
+    /**
+     * 敵を生成するかどうかを判定する
+     *
+     * @returns {boolean} 敵を生成するかどうか
+     */
+    private isCreateEnemy(): boolean {
+        const seed = Phaser.Math.Between(0, 100 * this.difficulty);
+
+        return (
+            // 敵の数が一定数以下のとき
+            this.enemyGroup.length < 15 / this.difficulty &&
+            this.cameras.main.scrollX + window.innerWidth < this.stageConfig.width - 500 &&
+            (
+                    // 乱数の値が1のとき
+                    seed === 1 ||
+                    // 難易度が CHALLENGE のとき
+                    (
+                        DIFFICULTY_CHALLENGE.SEED === this.difficulty &&
+                        seed <= 5
+                    )
+
+                )
+        );
     }
 
     updateScore(score: number): void {
@@ -303,7 +329,7 @@ export default class MainScene extends Phaser.Scene {
         // ゲームクリア時は残り時間をスコアとして加算
         if (key === GAME_CLEAR && this.timeLimit >= 0) {
             if (this.difficulty === DIFFICULTY_CHALLENGE.SEED) {
-                this.score += this.timeLimit * 10000;
+                this.score += this.timeLimit * 5000;
                 this.score += 1000000;
             } else {
                 this.score += this.timeLimit * 5;

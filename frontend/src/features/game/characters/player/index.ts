@@ -136,12 +136,12 @@ export default class Player {
                     return;
                 }
 
-                if (this.object.body.touching.left) {
+                if (this.object.body.touching.left && is_set<(x: number)=>Phaser.Physics.Arcade.Sprite>(this.object.setVelocityX)) {
                     this.object.setVelocityX(20);
                     return;
                 }
 
-                if (this.object.body.touching.right) {
+                if (this.object.body.touching.right && is_set<(x: number)=>Phaser.Physics.Arcade.Sprite>(this.object.setVelocityX)) {
                     this.object.setVelocityX(-20);
                     return;
                 }
@@ -149,20 +149,45 @@ export default class Player {
         }
 
         this.cursors?.space?.on("down", () => {
-            if (this.object?.body?.touching.down) {
-                this.object?.setVelocityY(this.config.jumpVelocityY);
+            if (!is_set<Character>(this.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(this.object.body)) {
+                return;
+            }
+
+            if (this.object.body.touching.down && is_set<(x: number)=>Phaser.Physics.Arcade.Sprite>(this.object.setVelocityX)) {
+                this.object.setVelocityY(this.config.jumpVelocityY);
+                return;
             }
         });
 
         this.cursors?.up?.on("down", () => {
-            if (this.object?.body?.touching.down) {
-                this.object?.setVelocityY(this.config.jumpVelocityY);
+            if (!is_set<Character>(this.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(this.object.body)) {
+                return;
+            }
+
+            if (this.object.body.touching.down && is_set<(x: number)=>Phaser.Physics.Arcade.Sprite>(this.object.setVelocityY)) {
+                this.object.setVelocityY(this.config.jumpVelocityY);
+                return;
             }
         });
 
         this.cursors?.left?.on("up", () => {
             this.leftButtonPressed = false;
             this.stopPlayer();
+        });
+
+        this.cursors?.right?.on("up", () => {
+            this.rightButtonPressed = false;
+            this.stopPlayer();
+        });
+
+        this.cursors?.left?.on("down", () => {
+            this.leftButtonPressed = true;
+            this.movePlayer("left");
+        });
+
+        this.cursors?.right?.on("down", () => {
+            this.rightButtonPressed = true;
+            this.movePlayer("right");
         });
 
         const keyA = this.scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -184,54 +209,58 @@ export default class Player {
             this.rightButtonPressed = false;
             this.stopPlayer();
         });
-
-        this.cursors?.right?.on("up", () => {
-            this.rightButtonPressed = false;
-            this.stopPlayer();
-        });
-
-        this.cursors?.left?.on("down", () => {
-            this.leftButtonPressed = true;
-            this.movePlayer("left");
-        });
-
-        this.cursors?.right?.on("down", () => {
-            this.rightButtonPressed = true;
-            this.movePlayer("right");
-        });
     }
 
     movePlayer(direction: "left" | "right"): void {
+        if (!is_set<Character>(this.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(this.object.body) || !is_set<Animation>(this.animation)) {
+            return;
+        }
+
+        if (!is_set<(x: number)=>Phaser.Physics.Arcade.Sprite>(this.object.setVelocityX)) {
+            return;
+        }
+
         if (direction === "right") {
-            this.animation?.right.update();
-            this.object?.setAccelerationX(this.config.rightAccelerationX);
-            this.object?.setVelocityX(this.config.rightVelocityX);
+            this.animation.right.update();
+            this.object.setAccelerationX(this.config.rightAccelerationX);
+            this.object.setVelocityX(this.config.rightVelocityX);
         }
         if (direction === "left") {
-            this.animation?.left.update();
-            this.object?.setAccelerationX(this.config.leftAccelerationX);
-            this.object?.setVelocityX(this.config.leftVelocityX);
+            this.animation.left.update();
+            this.object.setAccelerationX(this.config.leftAccelerationX);
+            this.object.setVelocityX(this.config.leftVelocityX);
         }
     }
 
     stopPlayer(): void {
-        if (!this.rightButtonPressed && !this.leftButtonPressed) {
-            this.animation?.turn.update();
-            this.object?.setAccelerationX(0);
-            this.object?.setVelocityX(0);
+        if (!is_set<Character>(this.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(this.object.body) || !is_set<Animation>(this.animation)) {
             return;
         }
+
+        if (!is_set<(x: number)=>Phaser.Physics.Arcade.Sprite>(this.object.setVelocityX)) {
+            return;
+        }
+
+        if (!this.rightButtonPressed && !this.leftButtonPressed) {
+            this.animation.turn.update();
+            this.object.setAccelerationX(0);
+            this.object.setVelocityX(0);
+            return;
+        }
+
         if (this.rightButtonPressed) {
-            this.animation?.right.update();
+            this.animation.right.update();
             this.movePlayer("right");
             return;
         }
+
         if (this.leftButtonPressed) {
-            this.animation?.left.update();
+            this.animation.left.update();
             this.movePlayer("left");
             return;
         }
     }
+
     /**
      * x方向の速度の上限・下限値を設定する
      * @returns {void} 戻り値なし
@@ -243,7 +272,11 @@ export default class Player {
             return;
         }
 
-        this.object?.setVelocityX(Phaser.Math.Clamp(this.object.body.velocity.x, min, max));
+        if (!is_set<(x: number)=>Phaser.Physics.Arcade.Sprite>(this.object.setVelocityX)) {
+            return;
+        }
+
+        this.object.setVelocityX(Phaser.Math.Clamp(this.object.body.velocity.x, min, max));
     }
 
     /**
@@ -282,7 +315,11 @@ export default class Player {
      * @description プレイヤーを非表示にし、待機時間後にコールバック関数を呼び出す。
      */
     destroy(callback: () => void, timeout: number): void {
-        this.object?.setVisible(false);
+        if (!is_set<Character>(this.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(this.object.body)) {
+            return;
+        }
+
+        this.object.setVisible(false);
         this.scene.cameras.main.stopFollow();
         this.scene.time.delayedCall(timeout, () => {
             callback();
