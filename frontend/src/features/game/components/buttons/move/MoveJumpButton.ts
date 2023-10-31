@@ -1,6 +1,8 @@
 import Player from "../../../characters/player";
 import Button from "../Button";
 import MoveButton from "./MoveButton";
+import {is_set} from "../../../../../utils/isType";
+import Character from "../../../characters/Character";
 
 /**
  * オブジェクトのジャンプを行うボタン
@@ -19,8 +21,13 @@ export default class MoveJumpButton extends MoveButton {
 
         // 地面に着地しているときのみオブジェクトのジャンプを行う
         super.create(player, () => {
-            if (player.object?.body?.touching.down) {
-                player.object?.setVelocityY(-400);
+            if (!is_set<Character>(player.object) || !is_set<Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody>(player.object.body)) {
+                return;
+            }
+
+            if (player.object.body.touching.down) {
+                player.object.setVelocityY(this.config.jumpVelocityY);
+                return;
             }
         });
     }
