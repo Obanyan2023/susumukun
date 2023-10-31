@@ -279,7 +279,7 @@ export default class MainScene extends Phaser.Scene {
 
         return (
             // 敵の数が一定数以下のとき
-            this.enemyGroup.length < 15 / this.difficulty &&
+            this.enemyGroup.length < this.scale.width / 75 / this.difficulty &&
             this.cameras.main.scrollX + window.innerWidth < this.stageConfig.width - 500 &&
             (
                     // 乱数の値が1のとき
