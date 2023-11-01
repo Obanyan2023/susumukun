@@ -17,6 +17,24 @@ export type EnemyEntity = {
     frameRate: number;
 };
 
+export const CHALLENGE_ERROR_CATERPILLAR: EnemyEntity = {
+    name: "error-caterpillar-sprite",
+    velocityX: 650,
+    point: 8500,
+    frameWidth: 30,
+    frameHeight: 8,
+    frameRate: 8,
+};
+
+export const CHALLENGE_GRASSHOPPER: EnemyEntity = {
+    name: "grasshopper-sprite",
+    velocityX: 500,
+    point: 12000,
+    frameWidth: 23,
+    frameHeight: 12,
+    frameRate: 2,
+};
+
 export const BASE_CATERPILLAR: EnemyEntity = {
     name: "base-caterpillar-sprite",
     velocityX: 20,
