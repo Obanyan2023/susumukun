@@ -9,10 +9,17 @@ import { MainLayout } from "../components/Layout/MainLayout";
 import { DESC } from "../config";
 import { ScoreEntity } from "../types";
 import { is_set } from "../utils/isType";
-import { getScoresApi, storeScoresApi } from "../features/scores/api";
+import { getScoresApi } from "../features/scores/api";
 import '../index.css';
 import Background from '../assets/images/black.png';
-import { DIFFICULTY_LEVELS, DifficultyLevel, EASY, HARD, NORMAL } from "../features/game/constants/DifficultyLevel";
+import {
+    CHALLENGE,
+    DIFFICULTY_LEVELS,
+    DifficultyLevel,
+    EASY,
+    HARD,
+    NORMAL
+} from "../features/game/constants/DifficultyLevel";
 
 
 /**
@@ -22,7 +29,6 @@ import { DIFFICULTY_LEVELS, DifficultyLevel, EASY, HARD, NORMAL } from "../featu
  */
 export default function Scores(): JSX.Element {
     const [scores, setScores] = useState<{ [key: number]: ScoreEntity[] }>([]);
-    const [open, setOpen] = React.useState(false);
 
     // ウィンドウサイズを設定
     const setWinSize = () => {
@@ -67,18 +73,24 @@ export default function Scores(): JSX.Element {
                     <Button href="/" variant="contained" color='inherit' sx={{ margin: 3 }}> 閉じる</Button>
                 </Grid>
                 <Grid container alignItems={"flex-start"} justifyContent={"space-evenly"} direction={"row"}>
-                    {is_set<{ [key: number]: ScoreEntity[] }>(scores) && DIFFICULTY_LEVELS.map((v: DifficultyLevel): React.JSX.Element => (
-                        <Box sx={{ margin: 3 }}>
-                            <Typography className="mfont" align="center" sx={{ color: 'red', fontFamily: 'Impact', fontSize: 40 }}>
-                                {v.NAME}
-                            </Typography>
-                            {is_set<ScoreEntity[]>(scores[v.SEED]) && scores[v.SEED].map((v: ScoreEntity, i: number) => (
-                                <Typography key={i} className="mfont" align="center" sx={{ color: 'gray', fontFamily: 'Impact', fontSize: 30, marginTop: 1, marginBottom: 1 }}>
-                                    {i + 1}位 {v.nickname} {v.score}
+                    {is_set<{ [key: number]: ScoreEntity[] }>(scores) && DIFFICULTY_LEVELS.map((v: DifficultyLevel): React.JSX.Element => {
+                        if (v.SEED === CHALLENGE.SEED) {
+                            return <></>;
+                        }
+
+                        return(
+                            <Box sx={{ margin: 3 }}>
+                                <Typography className="mfont" align="center" sx={{ color: 'red', fontFamily: 'Impact', fontSize: 40 }}>
+                                    {v.NAME}
                                 </Typography>
-                            ))}
-                        </Box>
-                    ))}
+                                {is_set<ScoreEntity[]>(scores[v.SEED]) && scores[v.SEED].map((v: ScoreEntity, i: number) => (
+                                    <Typography key={i} className="mfont" align="center" sx={{ color: 'gray', fontFamily: 'Impact', fontSize: 30, marginTop: 1, marginBottom: 1 }}>
+                                        {i + 1}位 {v.nickname} {v.score}
+                                    </Typography>
+                                ))}
+                            </Box>
+                        );
+                    })}
                 </Grid>
             </Box>
         </MainLayout>

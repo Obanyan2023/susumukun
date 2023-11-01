@@ -7,6 +7,7 @@ import TimeOverImage from "../components/images/TimeOverImage";
 import { is_set } from "../../../utils/isType";
 import { DIFFICULTY, NICKNAME } from "../constants/localStorageKeys";
 import ContinueButton from "../components/buttons/ContinueButton";
+import {CHALLENGE} from "../constants/DifficultyLevel";
 
 export default class GameEndScene extends Phaser.Scene {
   /**
@@ -89,7 +90,12 @@ export default class GameEndScene extends Phaser.Scene {
 
     // プレイ難易度の取得
     const difficulty = Number(localStorage.getItem(DIFFICULTY));
+
     if (!is_set<number>(difficulty)) {
+      return;
+    }
+
+    if (CHALLENGE.SEED === difficulty) {
       return;
     }
 
