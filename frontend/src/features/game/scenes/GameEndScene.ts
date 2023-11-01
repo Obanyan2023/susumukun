@@ -104,10 +104,13 @@ export default class GameEndScene extends Phaser.Scene {
       return;
     }
 
+    storeScoresApi(nickname ?? "名無し", this.score, difficulty);
+
     if (HARD.SEED === difficulty && this.score >= this.challengeScore && this.gameEndImage instanceof GameClearImage) {
       localStorage.setItem(CAN_CHALLENGE, "true");
-    }
 
-    storeScoresApi(nickname ?? "名無し", this.score, difficulty);
+      alert("チャレンジモードに挑戦できるようになりました！");
+      window.location.reload();
+    }
   }
 }
