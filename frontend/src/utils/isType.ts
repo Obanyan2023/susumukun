@@ -7,3 +7,15 @@
 export function is_set<T>(value: unknown): value is T {
   return value !== undefined && value !== null;
 }
+
+export function is_string(value: unknown): value is string {
+    return typeof value === "string";
+}
+
+export function customBoolean(value: unknown): boolean {
+  if (is_string(value)) {
+    return value === "true";
+  }
+
+  return false;
+}

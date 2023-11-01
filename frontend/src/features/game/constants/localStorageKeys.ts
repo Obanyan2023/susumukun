@@ -3,3 +3,6 @@ export const NICKNAME = "nickname";
 
 // 難易度を保存するためのキー
 export const DIFFICULTY = "difficulty";
+
+// チャレンジモードに挑戦可能かどうかを保存するためのキー
+export const CAN_CHALLENGE = "canChallenge";

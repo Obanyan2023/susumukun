@@ -16,8 +16,9 @@ import '../index.css';
 import { GameComponent } from "../components/Game";
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
-import { DIFFICULTY_LEVELS, DifficultyLevel, NORMAL } from "../features/game/constants/DifficultyLevel";
-import { DIFFICULTY, NICKNAME } from "../features/game/constants/localStorageKeys";
+import {CHALLENGE, DIFFICULTY_LEVELS, DifficultyLevel, NORMAL} from "../features/game/constants/DifficultyLevel";
+import {CAN_CHALLENGE, DIFFICULTY, NICKNAME} from "../features/game/constants/localStorageKeys";
+import {customBoolean} from "../utils/isType";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -103,8 +104,12 @@ export const Home = () => {
                         <FormControl>
                             <InputLabel id="a-label">難易度</InputLabel>
                             <Select labelId="a-label" id="a" sx={{ bgcolor: "white" }} onChange={handleChange} value={difficult} label="Age">
-                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel) => {
-                                    return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
+                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel): JSX.Element | null => {
+                                    if (LEVEL.SEED !== CHALLENGE.SEED || customBoolean(localStorage.getItem(CAN_CHALLENGE))) {
+                                        return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
+                                    }
+
+                                    return null;
                                 })}
                             </Select>
                         </FormControl>
