@@ -16,8 +16,15 @@ import '../index.css';
 import { GameComponent } from "../components/Game";
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
-import { DIFFICULTY_LEVELS, DifficultyLevel, NORMAL } from "../features/game/constants/DifficultyLevel";
-import { DIFFICULTY, NICKNAME } from "../features/game/constants/localStorageKeys";
+import {CHALLENGE, DIFFICULTY_LEVELS, DifficultyLevel, NORMAL} from "../features/game/constants/DifficultyLevel";
+import {
+    CAN_CHALLENGE,
+    CHA_CHALLENGE_NOTIFICATION,
+    DIFFICULTY,
+    NICKNAME
+} from "../features/game/constants/localStorageKeys";
+import {customBoolean} from "../utils/isType";
+import {useEffect} from "react";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -89,6 +96,15 @@ export const Home = () => {
         setIsFullScreen(!isFullScreen);
     }
 
+    useEffect(() => {
+        setTimeout(() => {
+            if (customBoolean(localStorage.getItem(CAN_CHALLENGE)) && !customBoolean(localStorage.getItem(CHA_CHALLENGE_NOTIFICATION))) {
+                localStorage.setItem(CHA_CHALLENGE_NOTIFICATION, "true");
+                alert(`チャレンジモードが解放されました！\n難易度を「${CHALLENGE.NAME}」に変更してみてください！`);
+            }
+        }, 100);
+    }, []);
+
     const HomeComponent = () => (
         <Box sx={image}>
             <Box sx={{ minHeight: '100vh', minWidth: '100vw', justifyContent: "space-between" }}>
@@ -103,8 +119,12 @@ export const Home = () => {
                         <FormControl>
                             <InputLabel id="a-label">難易度</InputLabel>
                             <Select labelId="a-label" id="a" sx={{ bgcolor: "white" }} onChange={handleChange} value={difficult} label="Age">
-                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel) => {
-                                    return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
+                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel): JSX.Element | null => {
+                                    if (LEVEL.SEED !== CHALLENGE.SEED || customBoolean(localStorage.getItem(CAN_CHALLENGE))) {
+                                        return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
+                                    }
+
+                                    return null;
                                 })}
                             </Select>
                         </FormControl>

@@ -4,10 +4,10 @@ import GameOverImage from "../components/images/GameOverImage";
 import GameClearImage from "../components/images/GameClearImage";
 import { storeScoresApi } from "../../scores/api";
 import TimeOverImage from "../components/images/TimeOverImage";
-import { is_set } from "../../../utils/isType";
-import { DIFFICULTY, NICKNAME } from "../constants/localStorageKeys";
+import {customBoolean, is_set} from "../../../utils/isType";
+import {CAN_CHALLENGE, DIFFICULTY, NICKNAME} from "../constants/localStorageKeys";
 import ContinueButton from "../components/buttons/ContinueButton";
-import {CHALLENGE} from "../constants/DifficultyLevel";
+import {CHALLENGE, HARD} from "../constants/DifficultyLevel";
 
 export default class GameEndScene extends Phaser.Scene {
   /**
@@ -29,6 +29,11 @@ export default class GameEndScene extends Phaser.Scene {
    * @var スコア
    */
   protected score: number = 0;
+
+  /**
+   * @var チャレンジモードに挑戦するためのスコア
+   */
+  protected challengeScore: number = 2000;
 
   /**
    * コンストラクタ
@@ -100,5 +105,15 @@ export default class GameEndScene extends Phaser.Scene {
     }
 
     storeScoresApi(nickname ?? "名無し", this.score, difficulty);
+
+    if (HARD.SEED === difficulty && this.score >= this.challengeScore && this.gameEndImage instanceof GameClearImage &&  !customBoolean(localStorage.getItem(CAN_CHALLENGE))) {
+      localStorage.setItem(CAN_CHALLENGE, "true");
+      this.tmpButton.object?.destroy();
+      this.continueButton.object?.destroy();
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
   }
 }
