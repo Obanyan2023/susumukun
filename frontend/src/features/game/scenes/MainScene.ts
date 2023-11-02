@@ -93,9 +93,9 @@ export default class MainScene extends Phaser.Scene {
         height: number;
     } = {
         x: 0,
-        y: -200,
-        width: 6900,
-        height: window.innerHeight + 200,
+        y: -window.innerHeight,
+        width: 11600,
+        height: window.innerHeight*2,
     };
 
     /**
@@ -170,21 +170,6 @@ export default class MainScene extends Phaser.Scene {
         // スコア表示
         this.scoreText = this.add.text(10, 10, `Score: ${this.score}`, { fontSize: "40px" });
         this.scoreText.setScrollFactor(0);
-
-        /**
-         * ステージの設定
-         *
-         * @property {number} stage_x - ステージのX座標
-         * @property {number} stage_y - ステージのY座標 (画面を超えてジャンプできる様に -100)
-         * @property {number} width - ステージの幅
-         * @property {number} height - ステージの高さ（stage_y の負の値・カメラ位置調整）
-         */
-        const stage = {
-            stage_x: 0,
-            stage_y: -window.innerHeight,
-            width: 11600,
-            height: window.innerHeight*2,
-        };
 
         // カメラの設定
         this.cameras.main.setBounds(this.stageConfig.x, this.stageConfig.y, this.stageConfig.width, this.stageConfig.height);
