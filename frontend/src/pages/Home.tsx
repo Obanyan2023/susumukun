@@ -17,8 +17,14 @@ import { GameComponent } from "../components/Game";
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
 import {CHALLENGE, DIFFICULTY_LEVELS, DifficultyLevel, NORMAL} from "../features/game/constants/DifficultyLevel";
-import {CAN_CHALLENGE, DIFFICULTY, NICKNAME} from "../features/game/constants/localStorageKeys";
+import {
+    CAN_CHALLENGE,
+    CHA_CHALLENGE_NOTIFICATION,
+    DIFFICULTY,
+    NICKNAME
+} from "../features/game/constants/localStorageKeys";
 import {customBoolean} from "../utils/isType";
+import {useEffect} from "react";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -89,6 +95,15 @@ export const Home = () => {
         localStorage.setItem(DIFFICULTY, String(difficult));
         setIsFullScreen(!isFullScreen);
     }
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (customBoolean(localStorage.getItem(CAN_CHALLENGE)) && !customBoolean(localStorage.getItem(CHA_CHALLENGE_NOTIFICATION))) {
+                localStorage.setItem(CHA_CHALLENGE_NOTIFICATION, "true");
+                alert(`チャレンジモードが解放されました！\n難易度を「${CHALLENGE.NAME}」に変更してみてください！`);
+            }
+        }, 100);
+    }, []);
 
     const HomeComponent = () => (
         <Box sx={image}>
