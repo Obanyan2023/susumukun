@@ -1,3 +1,4 @@
 import NodeCache from "node-cache";
 
-export const nodeCache = new NodeCache();
+// 30分間キャッシュを保持する
+export const nodeCache = new NodeCache({ stdTTL: 60 * 30 });
