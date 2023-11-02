@@ -40,7 +40,7 @@ export default class Platform extends BaseGround {
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
         }
-        for (x = blocksize * 67; x < blocksize * 113; x += blocksize) {//全区画の1番下の地面
+        for (x = blocksize * 67; x < blocksize * 114; x += blocksize) {//全区画の1番下の地面
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
         }
@@ -98,13 +98,15 @@ export default class Platform extends BaseGround {
         this.setBlock(x, bottom - blocksize * 2, 0);//5区画目右側のブロック
         x += blocksize * 3;
         this.setBlock(x, bottom - blocksize * 4, 0);//5区画目左側のブロック
+        x += blocksize;
+        this.setBlock(x, bottom - blocksize * 4, 0);//5区画目左側のブロック
         x += blocksize * 4;
         this.setBlock(x, bottom - blocksize, 0);//5区画目左側のブロック
         this.setBlock(x, bottom - blocksize * 2, 0);//5区画目右側のブロック
         this.setBlock(x, bottom - blocksize * 3, 0);//5区画目右側のブロック
         this.setBlock(x, bottom - blocksize * 4, 0);//5区画目右側のブロック
-        console.log(x / blocksize);
-        for (x = blocksize * 115; x < blocksize * 130; x += blocksize) {//6区画目の地面
+
+        for (x = blocksize * 116; x < blocksize * 130; x += blocksize) {//6区画目の地面
             this.setBlock(x, bottom - blocksize, 0);
             this.setBlock(x, bottom, 0);
             this.setBlock(x, bottom + blocksize, 0);
@@ -186,6 +188,145 @@ export default class Platform extends BaseGround {
         }
 
         x = blocksize * 200;
+        for (let i = x; i < blocksize * 203; i += blocksize) {
+            this.setBlock(i, bottom - blocksize * 2, 0);
+            this.setBlock(i, bottom - blocksize, 0);
+            this.setBlock(i, bottom, 0);
+            this.setBlock(i, bottom + blocksize, 0);
+        }
+        x = blocksize * 205;
+        end = x + blocksize;
+        for (let i = bottom - blocksize * 3; i <= bottom - blocksize; i += blocksize) {//8区画目の下り階段
+            for (let j = x; j < end; j += blocksize) {
+                this.setBlock(j, i, 0);
+            }
+            end += blocksize;
+        }
+        for (let i = x; i < blocksize * 208; i += blocksize) {
+            this.setBlock(i, bottom, 0);
+            this.setBlock(i, bottom + blocksize, 0);
+        }
+
+        x = blocksize * 210;
+        for (let i = x; i < blocksize * 225; i += blocksize) {
+            for (let j = -window.innerHeight / 2; j < bottom - blocksize * 7; j += blocksize) {
+                this.setBlock(i, j, 0);
+            }
+        }
+        for (let i = blocksize * 210; i < blocksize * 215; i += blocksize) {
+            this.setBlock(i, bottom - blocksize * 3, 0);
+        }
+        for (let i = blocksize * 218; i < blocksize * 223; i += blocksize) {
+            this.setBlock(i, bottom - blocksize * 3, 0);
+        }
+        for (let i = blocksize * 211; i < blocksize * 214; i += blocksize) {
+            this.setBlock(i, bottom - blocksize * 2, 0);
+            this.setBlock(i, bottom - blocksize, 0);
+            this.setBlock(i, bottom, 0);
+            this.setBlock(i, bottom + blocksize, 0);
+        }
+        for (let i = blocksize * 219; i < blocksize * 222; i += blocksize) {
+            this.setBlock(i, bottom - blocksize * 2, 0);
+            this.setBlock(i, bottom - blocksize, 0);
+            this.setBlock(i, bottom, 0);
+            this.setBlock(i, bottom + blocksize, 0);
+        }
+
+
+        for (x = blocksize * 226; x < blocksize * 231; x += blocksize) {
+            this.setBlock(x, bottom - blocksize * 3, 0);
+        }
+
+        for (x = blocksize * 234; x < blocksize * 239; x += blocksize) {
+            this.setBlock(x, bottom - blocksize * 3, 0);
+        }
+
+        for (let i = bottom - blocksize * 2; i <= bottom + blocksize; i += blocksize) {
+            this.setBlock(blocksize * 236, i, 0);
+        }
+        for (x = blocksize * 241; x < blocksize * 249; x += blocksize) {
+            this.setBlock(x, bottom - blocksize * 5, 0);
+        }
+
+        for (x = blocksize * 252; x <= blocksize * 265; x += blocksize) {
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+
+        for (let i = bottom - blocksize * 11; i <= bottom - blocksize * 3; i += blocksize) {
+            this.setBlock(blocksize * 260, i, 0);
+        }
+
+        for (let i = bottom - blocksize * 11; i <= bottom; i += blocksize) {
+            this.setBlock(blocksize * 265, i, 0);
+        }
+
+
+        this.setBlock(blocksize * 264, bottom - blocksize * 3, 0);
+        this.setBlock(blocksize * 264, bottom - blocksize * 7, 0);
+        this.setBlock(blocksize * 264, bottom - blocksize * 11, 0);
+        this.setBlock(blocksize * 261, bottom - blocksize * 5, 0);
+        this.setBlock(blocksize * 261, bottom - blocksize * 9, 0);
+
+        for (x = blocksize * 268; x < blocksize * 273; x += blocksize) {
+            this.setBlock(x, bottom - blocksize * 11, 0);
+        }
+
+        for (x = blocksize * 276; x < blocksize * 281; x += blocksize) {
+            this.setBlock(x, bottom - blocksize * 11, 0);
+        }
+
+        x = blocksize * 284;
+        this.setBlock(x, bottom - blocksize * 8, 0);
+        this.setBlock(x + blocksize, bottom - blocksize * 8, 0);
+        x = blocksize * 287;
+        this.setBlock(x, bottom - blocksize * 5, 0);
+        this.setBlock(x + blocksize, bottom - blocksize * 5, 0);
+        x = blocksize * 290;
+        this.setBlock(x, bottom - blocksize * 2, 0);
+        this.setBlock(x + blocksize, bottom - blocksize * 2, 0);
+        for (x = blocksize * 293; x <= blocksize * 309; x += blocksize) {
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+
+        x = blocksize * 302;
+        end = x + blocksize * 8;
+        for (let i = bottom - blocksize; i >= bottom - blocksize * 7; i -= blocksize) {
+            for (let j = x; j < end; j += blocksize) {
+                this.setBlock(j, i, 0);
+            }
+            x += blocksize;
+        }
+
+        for (x = blocksize * 311; x < blocksize * 318; x += blocksize) {
+            this.setBlock(x, bottom - blocksize * 9, 0);
+        }
+
+        for (x = blocksize * 320; x < blocksize * 324; x += blocksize) {
+            this.setBlock(x, bottom - blocksize * 5, 0);
+            this.setBlock(x, bottom - blocksize * 4, 0);
+            this.setBlock(x, bottom - blocksize * 3, 0);
+            this.setBlock(x, bottom - blocksize * 2, 0);
+            this.setBlock(x, bottom - blocksize, 0);
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+
+        for (x = blocksize * 321; x < blocksize * 323; x += blocksize) {
+            this.setBlock(x, bottom - blocksize * 8, 0);
+            this.setBlock(x, bottom - blocksize * 7, 0);
+            this.setBlock(x, bottom - blocksize * 6, 0);
+            this.setBlock(x, bottom - blocksize * 5, 0);
+        }
+
+        for (x = blocksize * 324; x < blocksize * 340; x += blocksize) {
+            this.setBlock(x, bottom, 0);
+            this.setBlock(x, bottom + blocksize, 0);
+        }
+
+
+        x = blocksize * 342;
         this.setBlock(x, bottom - blocksize * 2, 0);//ゴール区画1段目のブロック
         x += blocksize;
         this.setBlock(x, bottom - blocksize * 2, 0);

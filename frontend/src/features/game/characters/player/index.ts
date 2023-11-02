@@ -126,7 +126,7 @@ export default class Player {
         this.animation.turn.update();
 
         // カメラの追従・Y軸の固定
-        this.scene.cameras.main.startFollow(this.object, false, 1, 0);
+        this.scene.cameras.main.startFollow(this.object, false, 1, 0.9);
 
         // 衝突するオブジェクトの設定
         // 壁に衝突したら加速度と反対向きに減速
