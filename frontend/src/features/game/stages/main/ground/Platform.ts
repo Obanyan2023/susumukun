@@ -19,8 +19,8 @@ export default class Platform extends BaseGround {
      * @returns {void} 戻り値なし
      */
     preload(): void {
-        this.scene.load.image("ground", "platform.png");
-        this.scene.load.image("enemy_block", "platform.png");
+        this.scene.load.image("ground", "images/objects/platform.png");
+        this.scene.load.image("enemy_block", "images/objects/platform.png");
     }
 
     /**
