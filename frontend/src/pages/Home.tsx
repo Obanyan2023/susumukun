@@ -61,8 +61,26 @@ const closebutton = {
 };
 
 const head = () => {
+    const title = "走れ！すすむ君！";
+    const description = "「走れ！すすむ君！」はアプリ開発の世界を舞台にしたゲームです。主人公、すすむくんはアプリ開発者で、新しいアプリを完成させるためにはバグ（昆虫）たちとの戦いを繰り広げなければなりません。";
+    const host = window.location.protocol + window.location.host;
+    const url = window.location.href;
+
     return (
-        <link href="https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Dela+Gothic+One&family=DotGothic16&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+P+One&family=Zen+Antique&family=Zen+Kurenaido&display=swap" rel="stylesheet"></link>
+        <>
+            {/* https://developers.google.com/search/docs/crawling-indexing/special-tags?hl=ja */}
+            <meta name="description" content={description}/>
+            <meta property="og:description" content={description} />
+
+            {/*  OGP  */}
+            <meta property="og:title" content={title} />
+            <meta property="og:site_name" content={title} />
+            <meta property="og:url" content={url} />
+            <meta property="og:image" content={host + "/ogp-home.png"} />
+
+            {/* style */}
+            <link href="https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Dela+Gothic+One&family=DotGothic16&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+P+One&family=Zen+Antique&family=Zen+Kurenaido&display=swap" rel="stylesheet"></link>
+        </>
     );
 };
 
@@ -170,7 +188,7 @@ export const Home = () => {
     );
 
     return (
-        <MainLayout title={"走れ！すすむ君！ - " + isFullScreen ? "ようこそ！" : "ゲーム"} head={head()}>
+        <MainLayout head={head()}>
             {isFullScreen ? <GameComponent /> : HomeComponent()}
         </MainLayout>
     )
