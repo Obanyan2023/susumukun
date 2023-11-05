@@ -1,7 +1,8 @@
 import { Head } from "../Head/Head";
+import React from "react";
  
 type MainLayoutProps = {
-    title: string;
+    title?: string;
     head?: React.ReactNode;
     children: React.ReactNode;
 };
@@ -13,8 +14,7 @@ type MainLayoutProps = {
  */
 export const MainLayout = ({ title, head, children }: MainLayoutProps) => (
     <>
-        <Head title={title} />
-        <Head title={title}>
+        <Head title={title ?? "走れ！すすむ君！"}>
             {head}
         </Head>
         {children}
