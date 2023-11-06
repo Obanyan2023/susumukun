@@ -87,7 +87,7 @@ export const Home = () => {
             try {
                 document.documentElement.requestFullscreen();
             } catch (error) {
-                console.log("fullscreen処理に失敗しました");
+                //
             }
         }
 
@@ -119,9 +119,9 @@ export const Home = () => {
                         <FormControl>
                             <InputLabel id="a-label">難易度</InputLabel>
                             <Select labelId="a-label" id="a" sx={{ bgcolor: "white" }} onChange={handleChange} value={difficult} label="Age">
-                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel): JSX.Element | null => {
+                                {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel, index: number): JSX.Element | null => {
                                     if (LEVEL.SEED !== CHALLENGE.SEED || customBoolean(localStorage.getItem(CAN_CHALLENGE))) {
-                                        return <MenuItem value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
+                                        return <MenuItem key={index} value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
                                     }
 
                                     return null;

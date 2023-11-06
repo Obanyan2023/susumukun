@@ -12,6 +12,10 @@ export default class TurnAnimation extends Animation {
      * @returns {void} 戻り値なし
      */
     create(): void {
+        if (this.scene.anims.exists("turn")) {
+            return;
+        }
+
         this.scene.anims.create({
             key: "turn",
             frames: [{ key: "susumu", frame: 4 }],
