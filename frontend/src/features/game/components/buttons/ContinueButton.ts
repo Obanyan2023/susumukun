@@ -40,7 +40,6 @@ export default class ContinueButton {
     this.object.on(
       "pointerup",
       () => {
-        console.log("ContinueButton is clicked!!");
         this.scene.scene.start(GAME);
       },
       this

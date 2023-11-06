@@ -72,13 +72,13 @@ export default function Scores(): JSX.Element {
                     <Button href="/" variant="contained" color='inherit' sx={{ margin: 3 }}> 閉じる</Button>
                 </Grid>
                 <Grid container alignItems={"flex-start"} justifyContent={"space-evenly"} direction={"row"}>
-                    {is_set<{ [key: number]: ScoreEntity[] }>(scores) && DIFFICULTY_LEVELS.map((v: DifficultyLevel): React.JSX.Element => {
+                    {is_set<{ [key: number]: ScoreEntity[] }>(scores) && DIFFICULTY_LEVELS.map((v: DifficultyLevel, index: number): React.JSX.Element | null => {
                         if (v.SEED === CHALLENGE.SEED) {
-                            return <></>;
+                            return null;
                         }
 
                         return(
-                            <Box sx={{ margin: 3 }}>
+                            <Box key={index} sx={{ margin: 3 }}>
                                 <Typography className="mfont" align="center" sx={{ color: 'red', fontFamily: 'Impact', fontSize: 40 }}>
                                     {v.NAME}
                                 </Typography>

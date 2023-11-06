@@ -39,7 +39,6 @@ export default class HomeButton {
     this.object.on(
       "pointerup",
       () => {
-        console.log("HomeButton is clicked!!");
         window.location.reload();
       },
       this

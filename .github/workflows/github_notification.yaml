@@ -16,7 +16,6 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           username: "ぎっとはぶちゃん"
           message: "
-@everyone\n
 [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})\n
 のマージを完了しました。mainの内容を各ブランチへ取り込んでおいてください
 "
