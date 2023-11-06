@@ -12,9 +12,13 @@ export default class LeftAnimation extends Animation {
      * @returns {void} 戻り値なし
      */
     create(): void {
+        if (this.scene.anims.exists("left")) {
+            return;
+        }
+
         this.scene.anims.create({
             key: "left",
-            frames: this.scene.anims.generateFrameNumbers("susumu", { start: 0, end: 3 }),
+            frames: this.scene.anims.generateFrameNumbers("susumu", {start: 0, end: 3}),
             frameRate: 10,
             repeat: -1,
         });

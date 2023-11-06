@@ -12,6 +12,10 @@ export default class RightAnimation extends Animation {
      * @returns {void} 戻り値なし
      */
     create(): void {
+        if (this.scene.anims.exists("right")) {
+            return;
+        }
+
         this.scene.anims.create({
             key: "right",
             frames: this.scene.anims.generateFrameNumbers("susumu", { start: 5, end: 8 }),

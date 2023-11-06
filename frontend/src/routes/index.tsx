@@ -6,8 +6,8 @@ export const AppRoutes = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index element={Home()} />
-                <Route path="/scores" element={Scores()} />
+                <Route path={"/"} element={<Home/>} />
+                <Route path={"/scores"} element={<Scores/>} />
             </Routes>
         </BrowserRouter>
     );
