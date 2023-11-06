@@ -21,10 +21,11 @@ import {
     CAN_CHALLENGE,
     CHA_CHALLENGE_NOTIFICATION,
     DIFFICULTY,
-    NICKNAME
+    NICKNAME, PLAYING, TRY_ORIENTATION_LOCK
 } from "../features/game/constants/localStorageKeys";
 import {customBoolean} from "../utils/isType";
 import {useEffect} from "react";
+import {isLandscape, setLandscape} from "../utils/Orientations";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -66,14 +67,37 @@ function head(): JSX.Element {
     );
 };
 
+/**
+ * webアプリの初期化処理
+ *
+ * @returns void
+ */
+function init(): void {
+    const localStorageRefresh = () => {
+        localStorage.removeItem(TRY_ORIENTATION_LOCK);
+        localStorage.removeItem(PLAYING);
+    }
+
+    localStorageRefresh();
+
+    window.addEventListener('orientationchange', () => {
+        if (customBoolean(localStorage.getItem(PLAYING)) && isLandscape()) {
+            return;
+        }
+
+        localStorageRefresh();
+        window.location.reload();
+    })
+}
+
 export const Home = () => {
     const [isFullScreen, setIsFullScreen] = React.useState<boolean>(document.fullscreenElement ? true : false);
     const [nickname, setNickname] = React.useState<string>(localStorage.getItem("nickname") || "");
     const [open, setOpen] = React.useState(false);
-
     const [difficult, setDifficult] = React.useState<number>(Number(localStorage.getItem(DIFFICULTY)) || NORMAL.SEED);
 
     const handleOpen = () => setOpen(true);
+
     const handleClose = () => setOpen(false);
 
     const handleChange = (event: SelectChangeEvent<number>) => {
@@ -81,6 +105,7 @@ export const Home = () => {
     };
 
     const handleGameStart = (difficult: number) => {
+        // フルスクリーン処理
         if (document.fullscreenElement) {
             document.exitFullscreen();
         } else {
@@ -89,6 +114,12 @@ export const Home = () => {
             } catch (error) {
                 //
             }
+        }
+
+        // 画面向きを横に固定
+        if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i) && !setLandscape()) {
+            localStorage.removeItem(TRY_ORIENTATION_LOCK);
+            return;
         }
 
         localStorage.setItem(NICKNAME, nickname);
@@ -104,6 +135,9 @@ export const Home = () => {
             }
         }, 100);
     }, []);
+
+    // 初期化処理
+    init();
 
     const HomeComponent = () => (
         <Box sx={image}>
