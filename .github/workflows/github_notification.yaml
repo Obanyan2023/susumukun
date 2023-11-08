@@ -12,9 +12,9 @@ jobs:
       - name: set message
         run: |
           if [ "${{ github.base_ref }}" == "main" ]; then
-            echo "::set-output name=MESSAGE::本番環境へのデプロイが行われます。"
+            echo "MESSAGE=本番環境へのデプロイが行われます。" >> $GITHUB_ENV
           elif [ "${{ github.base_ref }}" == "develop" ]; then
-            echo "::set-output name=MESSAGE::開発用ブランチに変更が加わりました。"
+            echo "MESSAGE=開発用ブランチに変更が加わりました。" >> $GITHUB_ENV
           fi
       - name: Need to incorporate changes
         uses: appleboy/discord-action@0.0.3
@@ -23,8 +23,8 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           username: "ぎっとはぶちゃん"
           message: "
-[**${{ github.event.pull_request.title }} ##{{ github.event.number }}**](${{ github.event.pull_request.html_url }})\n
+[**${{ github.event.pull_request.title }} #${{ github.event.number }}**](${{ github.event.pull_request.html_url }})\n
 \n
 上記のプルリクエストが `${{ github.base_ref }}` ブランチにマージされました。\n
-${{ steps.set_message.outputs.MESSAGE }}\n
+${{ env.MESSAGE }}\n
 "
