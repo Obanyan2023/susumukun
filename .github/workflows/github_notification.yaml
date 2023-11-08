@@ -9,13 +9,6 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: set message
-        run: |
-          if [ "${{ github.base_ref }}" == "main" ]; then
-            echo "MESSAGE=本番環境へのデプロイが行われます。" >> $GITHUB_ENV
-          elif [ "${{ github.base_ref }}" == "develop" ]; then
-            echo "MESSAGE=開発用ブランチに変更が加わりました。" >> $GITHUB_ENV
-          fi
       - name: Need to incorporate changes
         uses: appleboy/discord-action@0.0.3
         with:
@@ -23,8 +16,6 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           username: "ぎっとはぶちゃん"
           message: "
-[**${{ github.event.pull_request.title }} #${{ github.event.number }}**](${{ github.event.pull_request.html_url }})\n
-\n
-上記のプルリクエストが `${{ github.base_ref }}` ブランチにマージされました。\n
-${{ env.MESSAGE }}\n
+[${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})\n
+のマージを完了しました。
 "
