@@ -101,6 +101,11 @@ export const Home = () => {
     const handleClose = () => setOpen(false);
 
     const handleChange = (event: SelectChangeEvent<number>) => {
+        if (event.target.value as number === CHALLENGE.SEED && !customBoolean(localStorage.getItem(CAN_CHALLENGE))) {
+            alert("チャレンジモードはまだ解放されていません！\nHardモードでスコア2000点以上を目指してください！")
+            return;
+        }
+
         setDifficult(event.target.value as number);
     };
 
@@ -154,11 +159,24 @@ export const Home = () => {
                             <InputLabel id="a-label">難易度</InputLabel>
                             <Select labelId="a-label" id="a" sx={{ bgcolor: "white" }} onChange={handleChange} value={difficult} label="Age">
                                 {DIFFICULTY_LEVELS.map((LEVEL: DifficultyLevel, index: number): JSX.Element | null => {
-                                    if (LEVEL.SEED !== CHALLENGE.SEED || customBoolean(localStorage.getItem(CAN_CHALLENGE))) {
-                                        return <MenuItem key={index} value={LEVEL.SEED}>{LEVEL.NAME}</MenuItem>
-                                    }
+                                    const style = () => {
+                                        if (LEVEL.SEED !== CHALLENGE.SEED || customBoolean(localStorage.getItem(CAN_CHALLENGE))) {
+                                            return {};
+                                        }
+                                        return {
+                                            ":hover": {
+                                                color: "#aaa",
+                                                backgroundColor: "#fff"
+                                            },
+                                            color: "#aaa",
+                                        };
+                                    };
 
-                                    return null;
+                                    return (
+                                        <MenuItem key={index} value={LEVEL.SEED} sx={style}>
+                                            {LEVEL.NAME}
+                                        </MenuItem>
+                                    );
                                 })}
                             </Select>
                         </FormControl>
